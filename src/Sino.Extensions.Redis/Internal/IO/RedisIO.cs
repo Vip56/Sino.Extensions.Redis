@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Sino.Extensions.Redis.Internal.IO
 {
-    class RedisIO : IDisposable
+    public class RedisIO : IDisposable
     {
         readonly RedisWriter _writer;
         RedisReader _reader;

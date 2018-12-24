@@ -5,7 +5,7 @@ using System.IO;
 
 namespace Sino.Extensions.Redis.Internal
 {
-    class RedisPipeline : IDisposable
+    public class RedisPipeline : IDisposable
     {
         readonly Stream _buffer;
         readonly Stream _destination;
