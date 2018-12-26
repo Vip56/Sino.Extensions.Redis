@@ -27,7 +27,7 @@ namespace Sino.Extensions.Redis
             _semaphore = new SemaphoreSlim(max, max);
         }
 
-        public T Multi<T>(Func<RedisClient, T> func)
+        public T Multi<T>(RedisCommand<T> cmd)
         {
             _semaphore.Wait(30000);
 
@@ -40,7 +40,7 @@ namespace Sino.Extensions.Redis
                     if (!string.IsNullOrEmpty(_password))
                         client.Auth(_password);
                 }
-                var result = func(client);
+                var result = client.Write(cmd);
                 _pool.Enqueue(client);
                 return result;
             }
@@ -60,7 +60,7 @@ namespace Sino.Extensions.Redis
             }
         }
 
-        public Task<T> MultiAsync<T>(Func<RedisClient, Task<T>> func)
+        public Task<T> MultiAsync<T>(RedisCommand<T> cmd)
         {
             _semaphore.Wait(30000);
 
@@ -73,7 +73,7 @@ namespace Sino.Extensions.Redis
                     if (!string.IsNullOrEmpty(_password))
                         client.Auth(_password);
                 }
-                var result = func(client);
+                var result = client.WriteAsync(cmd);
                 _pool.Enqueue(client);
                 return result;
             }

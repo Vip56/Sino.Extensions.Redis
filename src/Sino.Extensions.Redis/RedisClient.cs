@@ -1,13 +1,15 @@
-﻿using Sino.Extensions.Redis.Internal;
+﻿using Sino.Extensions.Redis.Commands;
+using Sino.Extensions.Redis.Internal;
 using Sino.Extensions.Redis.Internal.IO;
 using System;
 using System.IO;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Sino.Extensions.Redis
 {
-    public partial class RedisClient : IRedisClientSync , IRedisClientAsync
+    public partial class RedisClient
     {
         const int DEFAULT_PORT = 6379;
         const bool DEFAULT_SSL = false;
@@ -219,6 +221,49 @@ namespace Sino.Extensions.Redis
                 return (_connector.EndPoint as DnsEndPoint).Port;
             else
                 return -1;
+        }
+
+        public bool Connect(int timeout)
+        {
+            return _connector.Connect();
+        }
+
+        public Task<bool> ConnectAsync()
+        {
+            return _connector.ConnectAsync();
+        }
+
+        public T Write<T>(RedisCommand<T> command)
+        {
+            if (_transaction.Active)
+                return _transaction.Write(command);
+            else if (_monitor.Listening)
+                return default(T);
+            else if (_streaming)
+            {
+                _connector.Write(command);
+                return default(T);
+            }
+            else
+                return _connector.Call(command);
+        }
+
+        public Task<T> WriteAsync<T>(RedisCommand<T> command)
+        {
+            if (_transaction.Active)
+                return _transaction.WriteAsync(command);
+            else
+                return _connector.CallAsync(command);
+        }
+
+        /// <summary>
+        /// 利用密码进行授权
+        /// </summary>
+        /// <param name="password">密码</param>
+        /// <returns>状态消息</returns>
+        public string Auth(string password)
+        {
+            return Write(ConnectionCommands.Auth(password));
         }
 
         public void Dispose()
