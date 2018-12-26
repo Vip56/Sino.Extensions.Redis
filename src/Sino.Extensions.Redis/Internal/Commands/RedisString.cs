@@ -4,7 +4,7 @@ using System.ComponentModel;
 
 namespace Sino.Extensions.Redis.Internal.Commands
 {
-    class RedisString : RedisCommand<string>
+    public class RedisString : RedisCommand<string>
     {
         public RedisString(string command, params object[] args)
             : base(command, args) { }

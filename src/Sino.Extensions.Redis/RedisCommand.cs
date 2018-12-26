@@ -2,7 +2,7 @@
 
 namespace Sino.Extensions.Redis
 {
-    class RedisCommand
+    public class RedisCommand
     {
         readonly string _command;
         readonly object[] _args;
@@ -18,7 +18,7 @@ namespace Sino.Extensions.Redis
         }
     }
 
-    abstract class RedisCommand<T> : RedisCommand
+    public abstract class RedisCommand<T> : RedisCommand
     {
         protected RedisCommand(string command, params object[] args)
             : base(command, args) { }

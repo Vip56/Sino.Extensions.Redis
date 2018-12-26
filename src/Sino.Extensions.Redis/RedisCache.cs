@@ -85,7 +85,14 @@ namespace Sino.Extensions.Redis
         public void Set(string key, byte[] value, DistributedCacheEntryOptions options)
         {
             string val = Encoding.UTF8.GetString(value);
-            _pool.GetSet(_instance + key, val);
+            if (options.AbsoluteExpirationRelativeToNow != null)
+            {
+                _pool.Set(_instance + key, val, options.AbsoluteExpirationRelativeToNow.Value);
+            }
+            else
+            {
+                _pool.GetSet(_instance + key, val);
+            }
         }
 
         public Task SetAsync(string key, byte[] value, DistributedCacheEntryOptions options)

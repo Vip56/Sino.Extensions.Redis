@@ -10,7 +10,14 @@ namespace Sino.Extensions.Redis.Internal
 {
     class RedisConnector
     {
+        /// <summary>
+        /// 并发数
+        /// </summary>
         readonly int _concurrency;
+
+        /// <summary>
+        /// 缓存空间尺寸
+        /// </summary>
         readonly int _bufferSize;
         readonly Lazy<AsyncConnector> _asyncConnector;
         readonly IRedisSocket _redisSocket;

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Sino.Extensions.Redis.Internal.IO
 {
-    class RedisWriter
+    public class RedisWriter
     {
         const char Bulk = (char)RedisMessage.Bulk;
         const char MultiBulk = (char)RedisMessage.MultiBulk;

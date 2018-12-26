@@ -1,42 +1,35 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using Sino.Extensions.Redis.Internal.IO;
 
-namespace Sino.Extensions.Redis.Internal.Commands
+namespace Sino.Extensions.Redis.Commands
 {
-    public class RedisStatus : RedisCommand<string>
+    /// <summary>
+    /// 返回类型为批量结果的命令对象
+    /// </summary>
+    public class ReturnTypeWithStatus : RedisCommand<string>
     {
-        public RedisStatus(string command, params object[] args)
+        public bool IsEmpty { get; set; } = false;
+
+        public bool IsNullable { get; set; } = false;
+
+        public ReturnTypeWithStatus(string command, params object[] args)
             : base(command, args) { }
 
         public override string Parse(RedisReader reader)
         {
-            return reader.ReadStatus();
-        }
-
-        public class Empty : RedisCommand<string>
-        {
-            public Empty(string command, params object[] args)
-                : base(command, args)
-            { }
-            public override string Parse(RedisReader reader)
+            if(IsEmpty)
             {
                 RedisMessage type = reader.ReadType();
                 if ((int)type == -1)
-                    return String.Empty;
+                    return string.Empty;
                 else if (type == RedisMessage.Error)
                     throw new RedisException(reader.ReadStatus(false));
 
                 throw new RedisProtocolException($"Unexpected type: {type}");
             }
-        }
-
-        public class Nullable : RedisCommand<string>
-        {
-            public Nullable(string command, params object[] args)
-                : base(command, args)
-            { }
-
-            public override string Parse(RedisReader reader)
+            else if(IsNullable)
             {
                 RedisMessage type = reader.ReadType();
                 if (type == RedisMessage.Status)
@@ -48,6 +41,8 @@ namespace Sino.Extensions.Redis.Internal.Commands
 
                 return null;
             }
+            else
+                return reader.ReadStatus();
         }
     }
 }
