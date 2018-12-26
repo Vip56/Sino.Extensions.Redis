@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Sino.Extensions.Redis.Internal.IO
 {
+    /// <summary>
+    /// 套接字实现
+    /// </summary>
     class RedisSocket : IRedisSocket
     {
         readonly bool _ssl;
