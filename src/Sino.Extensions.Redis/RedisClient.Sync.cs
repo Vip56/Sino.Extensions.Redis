@@ -5,50 +5,6 @@ namespace Sino.Extensions.Redis
 {
     public partial class RedisClient
     {
-        #region Connection
-
-		/// <summary>
-        /// 回显指定的消息
-        /// </summary>
-        /// <param name="message">回显的消息</param>
-        /// <returns>消息</returns>
-		public string Echo(string message)
-        {
-            return Write(RedisCommands.Echo(message));
-        }
-
-		/// <summary>
-        /// 对服务端进行心跳
-        /// </summary>
-        /// <returns>状态消息</returns>
-		public string Ping()
-        {
-            return Write(RedisCommands.Ping());
-        }
-
-        /// <summary>
-        /// 关闭连接
-        /// </summary>
-        /// <returns>状态消息</returns>
-        public string Quit()
-        {
-            string response = Write(RedisCommands.Quit());
-            _connector.Dispose();
-            return response;
-        }
-
-        /// <summary>
-        /// 修改当前连接的数据库
-        /// </summary>
-        /// <param name="index">数据库索引（基于0开始）</param>
-        /// <returns>状态消息/returns>
-        public string Select(int index)
-        {
-            return Write(RedisCommands.Select(index));
-        }
-
-        #endregion
-
         #region Keys
 
         /// <summary>

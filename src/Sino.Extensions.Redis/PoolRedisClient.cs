@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Sino.Extensions.Redis.Commands;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net;
@@ -97,22 +98,42 @@ namespace Sino.Extensions.Redis
 
         public string Echo(string message)
         {
-            return Multi((client) => client.Echo(message));
+            return Multi(ConnectionCommands.Echo(message));
+        }
+
+        public Task<string> EchoAsync(string message)
+        {
+            return MultiAsync(ConnectionCommands.Echo(message));
         }
 
         public string Ping()
         {
-            return Multi((client) => client.Ping());
+            return Multi(ConnectionCommands.Ping());
+        }
+
+        public Task<string> PingAsync()
+        {
+            return MultiAsync(ConnectionCommands.Ping());
         }
 
         public string Quit()
         {
-            return Multi((client) => client.Quit());
+            return Multi(ConnectionCommands.Quit());
+        }
+
+        public Task<string> QuitAsync()
+        {
+            return MultiAsync(ConnectionCommands.Quit());
         }
 
         public string Select(int index)
         {
-            return Multi((client) => client.Select(index));
+            return Multi(ConnectionCommands.Select(index));
+        }
+
+        public Task<string> SelectAsync(int index)
+        {
+            return MultiAsync(ConnectionCommands.Select(index));
         }
 
         #endregion

@@ -6,53 +6,6 @@ namespace Sino.Extensions.Redis
 {
     public partial class RedisClient
     {
-        #region Connection
-
-        /// <summary>
-        /// Echo the given string
-        /// </summary>
-        /// <param name="message">Message to echo</param>
-        /// <returns>Task associated with echo response</returns>
-        public Task<string> EchoAsync(string message)
-        {
-            return WriteAsync(RedisCommands.Echo(message));
-        }
-
-        /// <summary>
-        /// Ping the server
-        /// </summary>
-        /// <returns>Task associated with status message</returns>
-        public Task<string> PingAsync()
-        {
-            return WriteAsync(RedisCommands.Ping());
-        }
-
-        /// <summary>
-        /// Close the connection
-        /// </summary>
-        /// <returns>Task associated with status message</returns>
-        public Task<string> QuitAsync()
-        {
-            return WriteAsync(RedisCommands.Quit())
-                .ContinueWith<string>(t =>
-                {
-                    _connector.Dispose();
-                    return t.Result;
-                });
-        }
-
-        /// <summary>
-        /// Change the selected database for the current connection
-        /// </summary>
-        /// <param name="index">Zero-based database index</param>
-        /// <returns>Status message</returns>
-        public Task<string> SelectAsync(int index)
-        {
-            return WriteAsync(RedisCommands.Select(index));
-        }
-
-        #endregion
-
         #region Keys
 
         /// <summary>
