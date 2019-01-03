@@ -142,142 +142,222 @@ namespace Sino.Extensions.Redis
 
         public long Del(params string[] keys)
         {
-            return Multi((client) => client.Del(keys));
+            return Multi(KeyCommands.Del(keys));
+        }
+
+        public Task<long> DelAsync(params string[] keys)
+        {
+            return MultiAsync(KeyCommands.Del(keys));
         }
 
         public byte[] Dump(string key)
         {
-            return Multi((client) => client.Dump(key));
+            return Multi(KeyCommands.Dump(key));
+        }
+
+        public Task<byte[]> DumpAsync(string key)
+        {
+            return MultiAsync(KeyCommands.Dump(key));
         }
 
         public bool Exists(string key)
         {
-            return Multi((client) => client.Exists(key));
+            return Multi(KeyCommands.Exists(key));
         }
 
-        public bool Expire(string key, TimeSpan expiration)
+        public Task<bool> ExistsAsync(string key)
         {
-            return Multi((client) => client.Expire(key, expiration));
+            return MultiAsync(KeyCommands.Exists(key));
         }
 
         public bool Expire(string key, int seconds)
         {
-            return Multi((client) => client.Expire(key, seconds));
+            return Multi(KeyCommands.Expire(key, seconds));
+        }
+
+        public Task<bool> ExpireAsync(string key, int seconds)
+        {
+            return MultiAsync(KeyCommands.Expire(key, seconds));
         }
 
         public bool ExpireAt(string key, DateTime expirationDate)
         {
-            return Multi((client) => client.ExpireAt(key, expirationDate));
+            return Multi(KeyCommands.ExpireAt(key, expirationDate.GetUnixTime()));
+        }
+
+        public Task<bool> ExpireAtAsync(string key, DateTime expirationDate)
+        {
+            return MultiAsync(KeyCommands.ExpireAt(key, expirationDate.GetUnixTime()));
         }
 
         public bool ExpireAt(string key, int timestamp)
         {
-            return Multi((client) => client.ExpireAt(key, timestamp));
+            return Multi(KeyCommands.ExpireAt(key, timestamp));
+        }
+
+        public Task<bool> ExpireAtAsync(string key, int timestamp)
+        {
+            return MultiAsync(KeyCommands.ExpireAt(key, timestamp));
         }
 
         public string[] Keys(string pattern)
         {
-            return Multi((client) => client.Keys(pattern));
+            return Multi(KeyCommands.Keys(pattern));
+        }
+
+        public Task<string[]> KeysAsync(string pattern)
+        {
+            return MultiAsync(KeyCommands.Keys(pattern));
         }
 
         public string Migrate(string host, int port, string key, int destinationDb, int timeoutMilliseconds)
         {
-            return Multi((client) => client.Migrate(host, port, key, destinationDb, timeoutMilliseconds));
+            return Multi(KeyCommands.Migrate(host, port, key, destinationDb, timeoutMilliseconds));
+        }
+
+        public Task<string> MigrateAsync(string host, int port, string key, int destinationDb, int timeoutMilliseconds)
+        {
+            return MultiAsync(KeyCommands.Migrate(host, port, key, destinationDb, timeoutMilliseconds));
         }
 
         public string Migrate(string host, int port, string key, int destinationDb, TimeSpan timeout)
         {
-            return Multi((client) => client.Migrate(host, port, key, destinationDb, timeout));
+            return Multi(KeyCommands.Migrate(host, port, key, destinationDb, (int)timeout.TotalMilliseconds));
+        }
+
+        public Task<string> MigrateAsync(string host, int port, string key, int destinationDb, TimeSpan timeout)
+        {
+            return MultiAsync(KeyCommands.Migrate(host, port, key, destinationDb, (int)timeout.TotalMilliseconds));
         }
 
         public bool Move(string key, int database)
         {
-            return Multi((client) => client.Move(key, database));
+            return Multi(KeyCommands.Move(key, database));
         }
 
-        public string ObjectEncoding(params string[] arguments)
+        public Task<bool> MoveAsync(string key, int database)
         {
-            return Multi((client) => client.ObjectEncoding(arguments));
+            return MultiAsync(KeyCommands.Move(key, database));
         }
 
-        public long? Object(RedisObjectSubCommand subCommand, params string[] arguments)
+        public long ObjectIdleTime(string key)
         {
-            return Multi((client) => client.Object(subCommand, arguments));
+            return Multi(KeyCommands.ObjectIdleTime(key));
+        }
+
+        public Task<long> ObjectIdleTimeAsync(string key)
+        {
+            return MultiAsync(KeyCommands.ObjectIdleTime(key));
         }
 
         public bool Persist(string key)
         {
-            return Multi((client) => client.Persist(key));
+            return Multi(KeyCommands.Persist(key));
+        }
+
+        public Task<bool> PersistAsync(string key)
+        {
+            return MultiAsync(KeyCommands.Persist(key));
         }
 
         public bool PExpire(string key, TimeSpan expiration)
         {
-            return Multi((client) => client.PExpire(key, expiration));
+            return Multi(KeyCommands.PExpire(key, (long)expiration.TotalMilliseconds));
+        }
+
+        public Task<bool> PExpireAsync(string key, TimeSpan expiration)
+        {
+            return MultiAsync(KeyCommands.PExpire(key, (long)expiration.TotalMilliseconds));
         }
 
         public bool PExpire(string key, long milliseconds)
         {
-            return Multi((client) => client.PExpire(key, milliseconds));
+            return Multi(KeyCommands.PExpire(key, milliseconds));
+        }
+
+        public Task<bool> PExpireAsync(string key, long milliseconds)
+        {
+            return MultiAsync(KeyCommands.PExpire(key, milliseconds));
         }
 
         public bool PExpireAt(string key, DateTime date)
         {
-            return Multi((client) => client.PExpireAt(key, date));
+            return Multi(KeyCommands.PExpireAt(key, date.GetUnixTime()));
+        }
+
+        public Task<bool> PExpireAtAsync(string key, DateTime date)
+        {
+            return MultiAsync(KeyCommands.PExpireAt(key, date.GetUnixTime()));
         }
 
         public bool PExpireAt(string key, long timestamp)
         {
-            return Multi((client) => client.PExpireAt(key, timestamp));
+            return Multi(KeyCommands.PExpireAt(key, timestamp));
+        }
+
+        public Task<bool> PExpireAtAsync(string key, long timestamp)
+        {
+            return MultiAsync(KeyCommands.PExpireAt(key, timestamp));
         }
 
         public long PTtl(string key)
         {
-            return Multi((client) => client.PTtl(key));
+            return Multi(KeyCommands.PTtl(key));
+        }
+
+        public Task<long> PTtlAsync(string key)
+        {
+            return MultiAsync(KeyCommands.PTtl(key));
         }
 
         public string RandomKey()
         {
-            return Multi((client) => client.RandomKey());
+            return Multi(KeyCommands.RandomKey());
+        }
+
+        public Task<string> RandomKeyAsync()
+        {
+            return MultiAsync(KeyCommands.RandomKey());
         }
 
         public string Rename(string key, string newKey)
         {
-            return Multi((client) => client.Rename(key, newKey));
+            return Multi(KeyCommands.Rename(key, newKey));
+        }
+
+        public Task<string> RenameAsync(string key, string newKey)
+        {
+            return MultiAsync(KeyCommands.Rename(key, newKey));
         }
 
         public bool RenameNx(string key, string newKey)
         {
-            return Multi((client) => client.RenameNx(key, newKey));
+            return Multi(KeyCommands.RenameNx(key, newKey));
+        }
+
+        public Task<bool> RenameNxAsync(string key, string newKey)
+        {
+            return MultiAsync(KeyCommands.RenameNx(key, newKey));
         }
 
         public string Restore(string key, long ttl, string serializedValue)
         {
-            return Multi((client) => client.Restore(key, ttl, serializedValue));
+            return Multi(KeyCommands.Restore(key, ttl, serializedValue));
         }
 
-        public string[] Sort(string key, long? offset = null, long? count = null, string by = null, RedisSortDir? dir = null, bool? isAlpha = null, params string[] get)
+        public Task<string> RestoreAsync(string key, long ttl, string serializedValue)
         {
-            return Multi((client) => client.Sort(key, offset, count, by, dir, isAlpha, get));
-        }
-
-        public long SortAndStore(string key, string destination, long? offset = null, long? count = null, string by = null, RedisSortDir? dir = null, bool? isAlpha = false, params string[] get)
-        {
-            return Multi((client) => client.SortAndStore(key, destination, offset, count, by, dir, isAlpha, get));
+            return MultiAsync(KeyCommands.Restore(key, ttl, serializedValue));
         }
 
         public long Ttl(string key)
         {
-            return Multi((client) => client.Ttl(key));
+            return Multi(KeyCommands.Ttl(key));
         }
 
-        public string Type(string key)
+        public Task<long> TtlAsync(string key)
         {
-            return Multi((client) => client.Type(key));
-        }
-
-        public RedisScan<string> Scan(long cursor, string pattern = null, long? count = null)
-        {
-            return Multi((client) => client.Scan(cursor, pattern, count));
+            return MultiAsync(KeyCommands.Ttl(key));
         }
 
         #endregion
@@ -286,47 +366,87 @@ namespace Sino.Extensions.Redis
         
         public long HDel(string key, params string[] fields)
         {
-            return Multi((client) => client.HDel(key, fields));
+            return Multi(HashCommands.HDel(key, fields));
+        }
+
+        public Task<long> HDelAsync(string key, params string[] fields)
+        {
+            return MultiAsync(HashCommands.HDel(key, fields));
         }
 
         public bool HExists(string key, string field)
         {
-            return Multi((client) => client.HExists(key, field));
+            return Multi(HashCommands.HExists(key, field));
+        }
+
+        public Task<bool> HExistsAsync(string key, string field)
+        {
+            return MultiAsync(HashCommands.HExists(key, field));
         }
 
         public string HGet(string key, string field)
         {
-            return Multi((client) => client.HGet(key, field));
+            return Multi(HashCommands.HGet(key, field));
+        }
+
+        public Task<string> HGetAsync(string key, string field)
+        {
+            return MultiAsync(HashCommands.HGet(key, field));
         }
 
         public Dictionary<string, string> HGetAll(string key)
         {
-            return Multi((client) => client.HGetAll(key));
+            return Multi(HashCommands.HGetAll(key));
+        }
+
+        public Task<Dictionary<string, string>> HGetAllAsync(string key)
+        {
+            return MultiAsync(HashCommands.HGetAll(key));
         }
 
         public long HIncrBy(string key, string field, long increment)
         {
-            return Multi((client) => client.HIncrBy(key, field, increment));
+            return Multi(HashCommands.HIncrBy(key, field, increment));
         }
 
-        public double HIncrByFloat(string key, string field, double increment)
+        public Task<long> HIncrByAsync(string key, string field, long increment)
         {
-            return Multi((client) => client.HIncrByFloat(key, field, increment));
+            return MultiAsync(HashCommands.HIncrBy(key, field, increment));
+        }
+
+        public double? HIncrByFloat(string key, string field, double increment)
+        {
+            return Multi(HashCommands.HIncrByFloat(key, field, increment));
+        }
+
+        public Task<double?> HIncrByFloatAsync(string key, string field, double increment)
+        {
+            return MultiAsync(HashCommands.HIncrByFloat(key, field, increment));
         }
 
         public string[] HKeys(string key)
         {
-            return Multi((client) => client.HKeys(key));
+            return Multi(HashCommands.HKeys(key));
+        }
+
+        public Task<string[]> HKeysAsync(string key)
+        {
+            return MultiAsync(HashCommands.HKeys(key));
         }
 
         public long HLen(string key)
         {
-            return Multi((client) => client.HLen(key));
+            return Multi(HashCommands.HLen(key));
+        }
+
+        public Task<long> HLenAsync(string key)
+        {
+            return MultiAsync(HashCommands.HLen(key));
         }
 
         public string[] HMGet(string key, params string[] fields)
         {
-            return Multi((client) => client.HMGet(key, fields));
+            return Multi(HashCommands.HMGet(key, fields));
         }
 
         public string HMSet(string key, Dictionary<string, string> dict)
