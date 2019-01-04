@@ -451,151 +451,226 @@ namespace Sino.Extensions.Redis
 
         public string HMSet(string key, Dictionary<string, string> dict)
         {
-            return Multi((client) => client.HMSet(key, dict));
+            return Multi(HashCommands.HMSet(key, dict));
         }
 
-        public string HMSet(string key, params string[] keyValues)
+        public Task<string> HMSetAsync(string key, Dictionary<string, string> dict)
         {
-            return Multi((client) => client.HMSet(key, keyValues));
+            return MultiAsync(HashCommands.HMSet(key, dict));
         }
 
         public bool HSet(string key, string field, object value)
         {
-            return Multi((client) => client.HSet(key, field, value));
+            return Multi(HashCommands.HSet(key, field, value));
+        }
+
+        public Task<bool> HSetAsync(string key, string field, object value)
+        {
+            return MultiAsync(HashCommands.HSet(key, field, value));
         }
 
         public bool HSetNx(string key, string field, object value)
         {
-            return Multi((client) => client.HSetNx(key, field, value));
+            return Multi(HashCommands.HSetNx(key, field, value));
         }
 
-        public string[] HVals(string key)
+        public Task<bool> HSetNxAsync(string key, string field, object value)
         {
-            return Multi((client) => client.HVals(key));
-        }
-
-        public RedisScan<Tuple<string, string>> HScan(string key, long cursor, string pattern = null, long? count = null)
-        {
-            return Multi((client) => client.HScan(key, cursor, pattern, count));
+            return MultiAsync(HashCommands.HSetNx(key, field, value));
         }
 
         #endregion
 
         #region Lists
         
-        public Tuple<string, string> BLPopWithKey(int timeout, params string[] keys)
+        public Tuple<string, string> BLPop(int timeout, params string[] keys)
         {
-            return Multi((client) => client.BLPopWithKey(timeout, keys));
+            return Multi(ListCommands.BLPop(timeout, keys));
         }
 
-        public Tuple<string, string> BLPopWithKey(TimeSpan timeout, params string[] keys)
+        public Task<Tuple<string, string>> BLPopAsync(int timeout, params string[] keys)
         {
-            return Multi((client) => client.BLPopWithKey(timeout, keys));
+            return MultiAsync(ListCommands.BLPop(timeout, keys));
         }
 
-        public string BLPop(int timeout, params string[] keys)
+        public Tuple<string, string> BLPop(TimeSpan timeout, params string[] keys)
         {
-            return Multi((client) => client.BLPop(timeout, keys));
+            return Multi(ListCommands.BLPop((int)timeout.TotalSeconds , keys));
         }
 
-        public string BLPop(TimeSpan timeout, params string[] keys)
+        public Task<Tuple<string, string>> BLPopAsync(TimeSpan timeout, params string[] keys)
         {
-            return Multi((client) => client.BLPop(timeout, keys));
+            return MultiAsync(ListCommands.BLPop((int)timeout.TotalSeconds, keys));
         }
 
-        public Tuple<string, string> BRPopWithKey(int timeout, params string[] keys)
+        public Tuple<string, string> BRPop(int timeout, params string[] keys)
         {
-            return Multi((client) => client.BRPopWithKey(timeout, keys));
+            return Multi(ListCommands.BRPop(timeout, keys));
         }
 
-        public Tuple<string, string> BRPopWithKey(TimeSpan timeout, params string[] keys)
+        public Task<Tuple<string, string>> BRPopAsync(int timeout, params string[] keys)
         {
-            return Multi((client) => client.BRPopWithKey(timeout, keys));
+            return MultiAsync(ListCommands.BRPop(timeout, keys));
         }
 
-        public string BRPop(int timeout, params string[] keys)
+        public Tuple<string, string> BRPop(TimeSpan timeout, params string[] keys)
         {
-            return Multi((client) => client.BRPop(timeout, keys));
+            return Multi(ListCommands.BRPop((int)timeout.TotalSeconds, keys));
         }
 
-        public string BRPop(TimeSpan timeout, params string[] keys)
+        public Task<Tuple<string, string>> BRPopAsync(TimeSpan timeout, params string[] keys)
         {
-            return Multi((client) => client.BRPop(timeout, keys));
+            return MultiAsync(ListCommands.BRPop((int)timeout.TotalSeconds, keys));
         }
 
         public string BRPopLPush(string source, string destination, int timeout)
         {
-            return Multi((client) => client.BRPopLPush(source, destination, timeout));
+            return Multi(ListCommands.BRPopLPush(source, destination, timeout));
+        }
+
+        public Task<string> BRPopLPushAsync(string source, string destination, int timeout)
+        {
+            return MultiAsync(ListCommands.BRPopLPush(source, destination, timeout));
         }
 
         public string LIndex(string key, long index)
         {
-            return Multi((client) => client.LIndex(key, index));
+            return Multi(ListCommands.LIndex(key, index));
+        }
+
+        public Task<string> LIndexAsync(string key, long index)
+        {
+            return MultiAsync(ListCommands.LIndex(key, index));
         }
 
         public long LInsert(string key, RedisInsert insertType, string pivot, object value)
         {
-            return Multi((client) => client.LInsert(key, insertType, pivot, value));
+            return Multi(ListCommands.LInsert(key, insertType, pivot, value));
+        }
+
+        public Task<long> LInsertAsync(string key, RedisInsert insertType, string pivot, object value)
+        {
+            return MultiAsync(ListCommands.LInsert(key, insertType, pivot, value));
         }
 
         public long LLen(string key)
         {
-            return Multi((client) => client.LLen(key));
+            return Multi(ListCommands.LLen(key));
+        }
+
+        public Task<long> LLenAsync(string key)
+        {
+            return MultiAsync(ListCommands.LLen(key));
         }
 
         public string LPop(string key)
         {
-            return Multi((client) => client.LPop(key));
+            return Multi(ListCommands.LPop(key));
+        }
+
+        public Task<string> LPopAsync(string key)
+        {
+            return MultiAsync(ListCommands.LPop(key));
         }
 
         public long LPush(string key, params object[] values)
         {
-            return Multi((client) => client.LPush(key, values));
+            return Multi(ListCommands.LPush(key, values));
+        }
+
+        public Task<long> LPushAsync(string key, params object[] values)
+        {
+            return MultiAsync(ListCommands.LPush(key, values));
         }
 
         public long LPushX(string key, object value)
         {
-            return Multi((client) => client.LPushX(key, value));
+            return Multi(ListCommands.LPushX(key, value));
+        }
+
+        public Task<long> LPushXAsync(string key, object value)
+        {
+            return MultiAsync(ListCommands.LPushX(key, value));
         }
 
         public string[] LRange(string key, long start, long stop)
         {
-            return Multi((client) => client.LRange(key, start, stop));
+            return Multi(ListCommands.LRange(key, start, stop));
+        }
+
+        public Task<string[]> LRangeAsync(string key, long start, long stop)
+        {
+            return MultiAsync(ListCommands.LRange(key, start, stop));
         }
 
         public long LRem(string key, long count, object value)
         {
-            return Multi((client) => client.LRem(key, count, value));
+            return Multi(ListCommands.LRem(key, count, value));
+        }
+
+        public Task<long> LRemAsync(string key, long count, object value)
+        {
+            return MultiAsync(ListCommands.LRem(key, count, value));
         }
 
         public string LSet(string key, long index, object value)
         {
-            return Multi((client) => client.LSet(key, index, value));
+            return Multi(ListCommands.LSet(key, index, value));
+        }
+
+        public Task<string> LSetAsync(string key, long index, object value)
+        {
+            return MultiAsync(ListCommands.LSet(key, index, value));
         }
 
         public string LTrim(string key, long start, long stop)
         {
-            return Multi((client) => client.LTrim(key, start, stop));
+            return Multi(ListCommands.LTrim(key, start, stop));
+        }
+
+        public Task<string> LTrimAsync(string key, long start, long stop)
+        {
+            return MultiAsync(ListCommands.LTrim(key, start, stop));
         }
 
         public string RPop(string key)
         {
-            return Multi((client) => client.RPop(key));
+            return Multi(ListCommands.RPop(key));
+        }
+
+        public Task<string> RPopAsync(string key)
+        {
+            return MultiAsync(ListCommands.RPop(key));
         }
 
         public string RPopLPush(string source, string destination)
         {
-            return Multi((client) => client.RPopLPush(source, destination));
+            return Multi(ListCommands.RPopLPush(source, destination));
+        }
+
+        public Task<string> RPopLPushAsync(string source, string destination)
+        {
+            return MultiAsync(ListCommands.RPopLPush(source, destination));
         }
 
         public long RPush(string key, params object[] values)
         {
-            return Multi((client) => client.RPush(key, values));
+            return Multi(ListCommands.RPush(key, values));
+        }
+
+        public Task<long> RPushAsync(string key, params object[] values)
+        {
+            return MultiAsync(ListCommands.RPush(key, values));
         }
 
         public long RPushX(string key, params object[] values)
         {
-            return Multi((client) => client.RPushX(key, values));
+            return Multi(ListCommands.RPushX(key, values));
+        }
+
+        public Task<long> RPushXAsync(string key, params object[] values)
+        {
+            return MultiAsync(ListCommands.RPushX(key, values));
         }
 
         #endregion
