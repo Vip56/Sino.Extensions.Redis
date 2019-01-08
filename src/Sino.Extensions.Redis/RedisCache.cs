@@ -62,7 +62,7 @@ namespace Sino.Extensions.Redis
 
         public void Refresh(string key)
         {
-            _pool.Expire(_instance + key, Expiry);
+            _pool.Expire(_instance + key, (int)Expiry.TotalSeconds);
         }
 
         public Task RefreshAsync(string key)

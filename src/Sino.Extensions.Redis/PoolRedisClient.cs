@@ -679,336 +679,409 @@ namespace Sino.Extensions.Redis
 
         public long SAdd(string key, params object[] members)
         {
-            return Multi((client) => client.SAdd(key, members));
+            return Multi(SetCommands.SAdd(key, members));
+        }
+
+        public Task<long> SAddAsync(string key, params object[] members)
+        {
+            return MultiAsync(SetCommands.SAdd(key, members));
         }
 
         public long SCard(string key)
         {
-            return Multi((client) => client.SCard(key));
+            return Multi(SetCommands.SCard(key));
+        }
+
+        public Task<long> SCardAsync(string key)
+        {
+            return MultiAsync(SetCommands.SCard(key));
         }
 
         public string[] SDiff(params string[] keys)
         {
-            return Multi((client) => client.SDiff(keys));
+            return Multi(SetCommands.SDiff(keys));
+        }
+
+        public Task<string[]> SDiffAsync(params string[] keys)
+        {
+            return MultiAsync(SetCommands.SDiff(keys));
         }
 
         public long SDiffStore(string destination, params string[] keys)
         {
-            return Multi((client) => client.SDiffStore(destination, keys));
+            return Multi(SetCommands.SDiffStore(destination, keys));
+        }
+
+        public Task<long> SDiffStoreAsync(string destination, params string[] keys)
+        {
+            return MultiAsync(SetCommands.SDiffStore(destination, keys));
         }
 
         public string[] SInter(params string[] keys)
         {
-            return Multi((client) => client.SInter(keys));
+            return Multi(SetCommands.SInter(keys));
+        }
+
+        public Task<string[]> SInterAsync(params string[] keys)
+        {
+            return MultiAsync(SetCommands.SInter(keys));
         }
 
         public long SInterStore(string destination, params string[] keys)
         {
-            return Multi((client) => client.SInterStore(destination, keys));
+            return Multi(SetCommands.SInterStore(destination, keys));
+        }
+
+        public Task<long> SInterStoreAsync(string destination, params string[] keys)
+        {
+            return MultiAsync(SetCommands.SInterStore(destination, keys));
         }
 
         public bool SIsMember(string key, object member)
         {
-            return Multi((client) => client.SIsMember(key, member));
+            return Multi(SetCommands.SIsMember(key, member));
+        }
+
+        public Task<bool> SIsMemberAsync(string key, object member)
+        {
+            return MultiAsync(SetCommands.SIsMember(key, member));
         }
 
         public string[] SMembers(string key)
         {
-            return Multi((client) => client.SMembers(key));
+            return Multi(SetCommands.SMembers(key));
+        }
+
+        public Task<string[]> SMembersAsync(string key)
+        {
+            return MultiAsync(SetCommands.SMembers(key));
         }
 
         public bool SMove(string source, string destination, object member)
         {
-            return Multi((client) => client.SMove(source, destination, member));
+            return Multi(SetCommands.SMove(source, destination, member));
+        }
+
+        public Task<bool> SMoveAsync(string source, string destination, object member)
+        {
+            return MultiAsync(SetCommands.SMove(source, destination, member));
         }
 
         public string SPop(string key)
         {
-            return Multi((client) => client.SPop(key));
+            return Multi(SetCommands.SPop(key));
+        }
+
+        public Task<string> SPopAsync(string key)
+        {
+            return MultiAsync(SetCommands.SPop(key));
         }
 
         public string SRandMember(string key)
         {
-            return Multi((client) => client.SRandMember(key));
+            return Multi(SetCommands.SRandMember(key));
+        }
+
+        public Task<string> SRandMemberAsync(string key)
+        {
+            return MultiAsync(SetCommands.SRandMember(key));
         }
 
         public string[] SRandMember(string key, long count)
         {
-            return Multi((client) => client.SRandMember(key, count));
+            return Multi(SetCommands.SRandMember(key, count));
+        }
+
+        public Task<string[]> SRandMemberAsync(string key, long count)
+        {
+            return MultiAsync(SetCommands.SRandMember(key, count));
         }
 
         public long SRem(string key, params object[] members)
         {
-            return Multi((client) => client.SRem(key, members));
+            return Multi(SetCommands.SRem(key, members));
+        }
+
+        public Task<long> SRemAsync(string key, params object[] members)
+        {
+            return MultiAsync(SetCommands.SRem(key, members));
         }
 
         public string[] SUnion(params string[] keys)
         {
-            return Multi((client) => client.SUnion(keys));
+            return Multi(SetCommands.SUnion(keys));
+        }
+
+        public Task<string[]> SUnionAsync(params string[] keys)
+        {
+            return MultiAsync(SetCommands.SUnion(keys));
         }
 
         public long SUnionStore(string destination, params string[] keys)
         {
-            return Multi((client) => client.SUnionStore(destination, keys));
+            return Multi(SetCommands.SUnionStore(destination, keys));
         }
 
-        public RedisScan<string> SScan(string key, long cursor, string pattern = null, long? count = null)
+        public Task<long> SUnionStoreAsync(string destination, params string[] keys)
         {
-            return Multi((client) => client.SScan(key, cursor, pattern, count));
-        }
-
-        #endregion
-
-        #region Sorted Sets
-        
-        public long ZAdd<TScore, TMember>(string key, params Tuple<TScore, TMember>[] memberScores)
-        {
-            return Multi((client) => client.ZAdd(key, memberScores));
-        }
-
-        public long ZAdd(string key, params string[] memberScores)
-        {
-            return Multi((client) => client.ZAdd(key, memberScores));
-        }
-
-        public long ZCard(string key)
-        {
-            return Multi((client) => client.ZCard(key));
-        }
-
-        public long ZCount(string key, double min, double max, bool exclusiveMin = false, bool exclusiveMax = false)
-        {
-            return Multi((client) => client.ZCount(key, min, max, exclusiveMin, exclusiveMax));
-        }
-
-        public long ZCount(string key, string min, string max)
-        {
-            return Multi((client) => client.ZCount(key, min, max));
-        }
-
-        public double ZIncrBy(string key, double increment, string member)
-        {
-            return Multi((client) => client.ZIncrBy(key, increment, member));
-        }
-
-        public long ZInterStore(string destination, double[] weights = null, RedisAggregate? aggregate = null, params string[] keys)
-        {
-            return Multi((client) => client.ZInterStore(destination, weights, aggregate, keys));
-        }
-
-        public long ZInterStore(string destination, params string[] keys)
-        {
-            return Multi((client) => client.ZInterStore(destination, keys));
-        }
-
-        public string[] ZRange(string key, long start, long stop, bool withScores = false)
-        {
-            return Multi((client) => client.ZRange(key, start, stop, withScores));
-        }
-
-        public Tuple<string, double>[] ZRangeWithScores(string key, long start, long stop)
-        {
-            return Multi((client) => client.ZRangeWithScores(key, start, stop));
-        }
-
-        public string[] ZRangeByScore(string key, double min, double max, bool withScores = false, bool exclusiveMin = false, bool exclusiveMax = false, long? offset = null, long? count = null)
-        {
-            return Multi((client) => client.ZRangeByScore(key, min, max, withScores, exclusiveMin, exclusiveMax, offset, count));
-        }
-
-        public Tuple<string, double>[] ZRangeByScoreWithScores(string key, double min, double max, bool exclusiveMin = false, bool exclusiveMax = false, long? offset = null, long? count = null)
-        {
-            return Multi((client) => client.ZRangeByScoreWithScores(key, min, max, exclusiveMin, exclusiveMax, offset, count));
-        }
-
-        public Tuple<string, double>[] ZRangeByScoreWithScores(string key, string min, string max, long? offset = null, long? count = null)
-        {
-            return Multi((client) => client.ZRangeByScoreWithScores(key, min, max, offset, count));
-        }
-
-        public long? ZRank(string key, string member)
-        {
-            return Multi((client) => client.ZRank(key, member));
-        }
-
-        public long ZRem(string key, params object[] members)
-        {
-            return Multi((client) => client.ZRem(key, members));
-        }
-
-        public long ZRemRangeByRank(string key, long start, long stop)
-        {
-            return Multi((client) => client.ZRemRangeByRank(key, start, stop));
-        }
-
-        public long ZRemRangeByScore(string key, double min, double max, bool exclusiveMin = false, bool exclusiveMax = false)
-        {
-            return Multi((client) => client.ZRemRangeByScore(key, min, max, exclusiveMin, exclusiveMax));
-        }
-
-        public string[] ZRevRange(string key, long start, long stop, bool withScores = false)
-        {
-            return Multi((client) => client.ZRevRange(key, start, stop, withScores));
-        }
-
-        public Tuple<string, double>[] ZRevRangeWithScores(string key, long start, long stop)
-        {
-            return Multi((client) => client.ZRevRangeWithScores(key, start, stop));
-        }
-
-        public string[] ZRevRangeByScore(string key, double max, double min, bool withScores = false, bool exclusiveMax = false, bool exclusiveMin = false, long? offset = null, long? count = null)
-        {
-            return Multi((client) => client.ZRevRangeByScore(key, max, min, withScores, exclusiveMax, exclusiveMin, offset, count));
-        }
-
-        public string[] ZRevRangeByScore(string key, string max, string min, bool withScores = false, long? offset = null, long? count = null)
-        {
-            return Multi((client) => client.ZRevRangeByScore(key, max, min, withScores, offset, count));
-        }
-
-        public Tuple<string, double>[] ZRevRangeByScoreWithScores(string key, double max, double min, bool exclusiveMax = false, bool exclusiveMin = false, long? offset = null, long? count = null)
-        {
-            return Multi((client) => client.ZRevRangeByScoreWithScores(key, max, min, exclusiveMax, exclusiveMin, offset, count));
-        }
-
-        public Tuple<string, double>[] ZRevRangeByScoreWithScores(string key, string max, string min, long? offset = null, long? count = null)
-        {
-            return Multi((client) => client.ZRevRangeByScoreWithScores(key, max, min, offset, count));
-        }
-
-        public long? ZRevRank(string key, string member)
-        {
-            return Multi((client) => client.ZRevRank(key, member));
-        }
-
-        public double? ZScore(string key, string member)
-        {
-            return Multi((client) => client.ZScore(key, member));
-        }
-
-        public long ZUnionStore(string destination, double[] weights = null, RedisAggregate? aggregate = null, params string[] keys)
-        {
-            return Multi((client) => client.ZUnionStore(destination, weights, aggregate, keys));
-        }
-
-        public long ZUnionStore(string destination, params string[] keys)
-        {
-            return Multi((client) => client.ZUnionStore(destination, keys));
-        }
-
-        public RedisScan<Tuple<string, double>> ZScan(string key, long cursor, string pattern = null, long? count = null)
-        {
-            return Multi((client) => client.ZScan(key, cursor, pattern, count));
-        }
-
-        public string[] ZRangeByLex(string key, string min, string max, long? offset = null, long? count = null)
-        {
-            return Multi((client) => client.ZRangeByLex(key, min, max, offset, count));
-        }
-
-        public long ZRemRangeByLex(string key, string min, string max)
-        {
-            return Multi((client) => client.ZRemRangeByLex(key, min, max));
-        }
-
-        public long ZLexCount(string key, string min, string max)
-        {
-            return Multi((client) => client.ZLexCount(key, min, max));
-        }
-
-        #endregion
-
-        #region Scripting
-        
-        public object Eval(string script, string[] keys, params string[] arguments)
-        {
-            return Multi((client) => client.Eval(script, keys, arguments));
-        }
-
-        public object EvalSHA(string sha1, string[] keys, params string[] arguments)
-        {
-            return Multi((client) => client.EvalSHA(sha1, keys, arguments));
-        }
-
-        public bool[] ScriptExists(params string[] scripts)
-        {
-            return Multi((client) => client.ScriptExists(scripts));
-        }
-
-        public string ScriptFlush()
-        {
-            return Multi((client) => client.ScriptFlush());
-        }
-
-        public string ScriptKill()
-        {
-            return Multi((client) => client.ScriptKill());
-        }
-
-        public string ScriptLoad(string script)
-        {
-            return Multi((client) => client.ScriptLoad(script));
+            return MultiAsync(SetCommands.SUnionStore(destination, keys));
         }
 
         #endregion
 
         #region Strings
 
-        public long Append(string key, object value) => Multi((client) => client.Append(key, value));
+        public long Append(string key, string value)
+        {
+            return Multi(StringCommands.Append(key, value));
+        }
 
-        public long BitCount(string key, long? start = null, long? end = null) => Multi((client) => client.BitCount(key, start, end));
+        public Task<long> AppendAsync(string key, string value)
+        {
+            return MultiAsync(StringCommands.Append(key, value));
+        }
 
-        public long BitOp(RedisBitOp operation, string destKey, params string[] keys) => Multi((client) => client.BitOp(operation, destKey, keys));
+        public long BitCount(string key, long? start = null, long? end = null)
+        {
+            return Multi(StringCommands.BitCount(key, start, end));
+        }
 
-        public long BitPos(string key, bool bit, long? start = null, long? end = null) => Multi((client) => client.BitPos(key, bit, start, end));
+        public Task<long> BitCountAsync(string key, long? start = null, long? end = null)
+        {
+            return MultiAsync(StringCommands.BitCount(key, start, end));
+        }
 
-        public long Decr(string key) => Multi((client) => client.Decr(key));
+        public long BitOp(RedisBitOp operation, string destKey, params string[] keys)
+        {
+            return Multi(StringCommands.BitOp(operation, destKey, keys));
+        }
 
-        public long DecrBy(string key, long decrement) => Multi((client) => client.DecrBy(key, decrement));
+        public Task<long> BitOpAsync(RedisBitOp operation, string destKey, params string[] keys)
+        {
+            return MultiAsync(StringCommands.BitOp(operation, destKey, keys));
+        }
 
-        public string Get(string key) => Multi((client) => client.Get(key));
+        public long Decr(string key)
+        {
+            return Multi(StringCommands.Decr(key));
+        }
 
-        public bool GetBit(string key, uint offset) => Multi((client) => client.GetBit(key, offset));
+        public Task<long> DecrAsync(string key)
+        {
+            return MultiAsync(StringCommands.Decr(key));
+        }
 
-        public string GetRange(string key, long start, long end) => Multi((client) => client.GetRange(key, start, end));
+        public long DecrBy(string key, long decrement)
+        {
+            return Multi(StringCommands.DecrBy(key, decrement));
+        }
 
-        public string GetSet(string key, object value) => Multi((client) => client.GetSet(key, value));
+        public Task<long> DecrByAsync(string key, long decrement)
+        {
+            return MultiAsync(StringCommands.DecrBy(key, decrement));
+        }
 
-        public long Incr(string key) => Multi((client) => client.Incr(key));
+        public string Get(string key)
+        {
+            return Multi(StringCommands.Get(key));
+        }
 
-        public long IncrBy(string key, long increment) => Multi((client) => client.IncrBy(key, increment));
+        public Task<string> GetAsync(string key)
+        {
+            return MultiAsync(StringCommands.Get(key));
+        }
 
-        public double IncrByFloat(string key, double increment) => Multi((client) => client.IncrByFloat(key, increment));
+        public bool GetBit(string key, uint offset)
+        {
+            return Multi(StringCommands.GetBit(key, offset));
+        }
 
-        public string[] MGet(params string[] keys) => Multi((client) => client.MGet(keys));
+        public Task<bool> GetBitAsync(string key, uint offset)
+        {
+            return MultiAsync(StringCommands.GetBit(key, offset));
+        }
 
-        public string MSet(params Tuple<string, string>[] keyValues) => Multi((client) => client.MSet(keyValues));
+        public string GetRange(string key, long start, long end)
+        {
+            return Multi(StringCommands.GetRange(key, start, end));
+        }
 
-        public string MSet(params string[] keyValues) => Multi((client) => client.MSet(keyValues));
+        public Task<string> GetRangeAsync(string key, long start, long end)
+        {
+            return MultiAsync(StringCommands.GetRange(key, start, end));
+        }
 
-        public bool MSetNx(params Tuple<string, string>[] keyValues) => Multi((client) => client.MSetNx(keyValues));
+        public string GetSet(string key, object value)
+        {
+            return Multi(StringCommands.GetSet(key, value));
+        }
 
-        public bool MSetNx(params string[] keyValues) => Multi((client) => client.MSetNx(keyValues));
+        public Task<string> GetSetAsync(string key, object value)
+        {
+            return MultiAsync(StringCommands.GetSet(key, value));
+        }
 
-        public string PSetEx(string key, long milliseconds, object value) => Multi((client) => client.PSetEx(key, milliseconds, value));
+        public long Incr(string key)
+        {
+            return Multi(StringCommands.Incr(key));
+        }
 
-        public string Set(string key, object value) => Multi((client) => client.Set(key, value));
+        public Task<long> IncrAsync(string key)
+        {
+            return MultiAsync(StringCommands.Incr(key));
+        }
 
-        public string Set(string key, object value, TimeSpan expiration, RedisExistence? condition = null) => Multi((client) => client.Set(key, value, expiration, condition));
+        public long IncrBy(string key, long increment)
+        {
+            return Multi(StringCommands.IncrBy(key, increment));
+        }
 
-        public string Set(string key, object value, int? expirationSeconds = null, RedisExistence? condition = null) => Multi((client) => client.Set(key, value, expirationSeconds, condition));
+        public Task<long> IncrByAsync(string key, long increment)
+        {
+            return MultiAsync(StringCommands.IncrBy(key, increment));
+        }
 
-        public string Set(string key, object value, long? expirationMilliseconds = null, RedisExistence? condition = null) => Multi((client) => client.Set(key, value, expirationMilliseconds, condition));
+        public double? IncrByFloat(string key, double increment)
+        {
+            return Multi(StringCommands.IncrByFloat(key, increment));
 
-        public bool SetBit(string key, uint offset, bool value) => Multi((client) => client.SetBit(key, offset, value));
 
-        public string SetEx(string key, long seconds, object value) => Multi((client) => client.SetEx(key, seconds, value));
+        }
 
-        public bool SetNx(string key, object value) => Multi((client) => client.SetNx(key, value));
+        public Task<double?> IncrByFloatAsync(string key, double increment)
+        {
+            return MultiAsync(StringCommands.IncrByFloat(key, increment));
+        }
 
-        public long SetRange(string key, uint offset, object value) => Multi((client) => client.SetRange(key, offset, value));
+        public string[] MGet(params string[] keys)
+        {
+            return Multi(StringCommands.MGet(keys));
+        }
 
-        public long StrLen(string key) => Multi((client) => client.StrLen(key));
+        public Task<string[]> MGetAsync(params string[] keys)
+        {
+            return MultiAsync(StringCommands.MGet(keys));
+        }
+
+        public string MSet(params string[] keyValues)
+        {
+            return Multi(StringCommands.MSet(keyValues));
+        }
+
+        public Task<string> MSetAsync(params string[] keyValues)
+        {
+            return MultiAsync(StringCommands.MSet(keyValues));
+        }
+
+        public bool MSetNx(params string[] keyValues)
+        {
+            return Multi(StringCommands.MSetNx(keyValues));
+        }
+
+        public Task<bool> MSetNxAsync(params string[] keyValues)
+        {
+            return MultiAsync(StringCommands.MSetNx(keyValues));
+        }
+
+        public string PSetEx(string key, long milliseconds, object value)
+        {
+            return Multi(StringCommands.PSetEx(key, milliseconds, value));
+        }
+
+        public Task<string> PSetExAsync(string key, long milliseconds, object value)
+        {
+            return MultiAsync(StringCommands.PSetEx(key, milliseconds, value));
+        }
+
+        public string Set(string key, object value)
+        {
+            return Multi(StringCommands.Set(key, value));
+        }
+
+        public Task<string> SetAsync(string key, object value)
+        {
+            return MultiAsync(StringCommands.Set(key, value));
+        }
+
+        public string Set(string key, object value, TimeSpan expiration, RedisExistence? condition = null)
+        {
+            return Multi(StringCommands.Set(key, value, (int)expiration.TotalSeconds, null, condition));
+        }
+
+        public Task<string> SetAsync(string key, object value, TimeSpan expiration, RedisExistence? condition = null)
+        {
+            return MultiAsync(StringCommands.Set(key, value, (int)expiration.TotalSeconds, null, condition));
+        }
+
+        public string Set(string key, object value, int? expirationSeconds = null, RedisExistence? condition = null)
+        {
+            return Multi(StringCommands.Set(key, value, expirationSeconds, null, condition));
+        }
+
+        public Task<string> SetAsync(string key, object value, int? expirationSeconds = null, RedisExistence? condition = null)
+        {
+            return MultiAsync(StringCommands.Set(key, value, expirationSeconds, null, condition));
+        }
+
+        public string Set(string key, object value, long? expirationMilliseconds = null, RedisExistence? condition = null)
+        {
+            return Multi(StringCommands.Set(key, value, null, expirationMilliseconds, condition));
+        }
+
+        public Task<string> SetAsync(string key, object value, long? expirationMilliseconds = null, RedisExistence? condition = null)
+        {
+            return MultiAsync(StringCommands.Set(key, value, null, expirationMilliseconds, condition));
+        }
+
+        public bool SetBit(string key, uint offset, bool value)
+        {
+            return Multi(StringCommands.SetBit(key, offset, value));
+        }
+
+        public Task<bool> SetBitAsync(string key, uint offset, bool value)
+        {
+            return MultiAsync(StringCommands.SetBit(key, offset, value));
+        }
+
+        public string SetEx(string key, long seconds, object value)
+        {
+            return Multi(StringCommands.SetEx(key, seconds, value));
+        }
+
+        public Task<string> SetExAsync(string key, long seconds, object value)
+        {
+            return MultiAsync(StringCommands.SetEx(key, seconds, value));
+        }
+
+        public bool SetNx(string key, object value)
+        {
+            return Multi(StringCommands.SetNx(key, value));
+        }
+
+        public Task<bool> SetNxAsync(string key, object value)
+        {
+            return MultiAsync(StringCommands.SetNx(key, value));
+        }
+
+        public long SetRange(string key, uint offset, object value)
+        {
+            return Multi(StringCommands.SetRange(key, offset, value));
+        }
+
+        public Task<long> SetRangeAsync(string key, uint offset, object value)
+        {
+            return MultiAsync(StringCommands.SetRange(key, offset, value));
+        }
+
+        public long StrLen(string key)
+        {
+            return Multi(StringCommands.StrLen(key));
+        }
+
+        public Task<long> StrLenAsync(string key)
+        {
+            return MultiAsync(StringCommands.StrLen(key));
+        }
 
         #endregion
 
