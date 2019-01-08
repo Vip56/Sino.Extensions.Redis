@@ -14,10 +14,10 @@ namespace RedisUnitTest
             public const string Host = "fakehost";
             public const int Port = 9999;
 
-            public static void Test<T>(string reply, Func<IRedisClientSync, T> syncFunc, Func<IRedisClientAsync, Task<T>> asyncFunc, Action<FakeRedisSocket, T> test)
+            public static void Test<T>(string reply, Func<PoolRedisClient, T> syncFunc, Func<PoolRedisClient, Task<T>> asyncFunc, Action<FakeRedisSocket, T> test)
             {
                 using (var mock = new FakeRedisSocket(reply, reply))
-                using (var redis = new RedisClient(mock, new DnsEndPoint(Host, Port)))
+                using (var redis = new PoolRedisClient(mock, new DnsEndPoint(Host, Port)))
                 {
                     if (syncFunc != null)
                     {
@@ -32,20 +32,6 @@ namespace RedisUnitTest
                     }
                 }
             }
-        }
-
-        [Fact]
-        public void AuthTest()
-        {
-            TestHelper.Test(
-                "+OK\r\n",
-                x => x.Auth("my password"),
-                x => x.AuthAsync("my password"),
-                (x, r) =>
-                {
-                    Assert.Equal("OK", r);
-                    Assert.Equal("*2\r\n$4\r\nAUTH\r\n$11\r\nmy password\r\n", x.GetMessage());
-                });
         }
 
         [Fact]

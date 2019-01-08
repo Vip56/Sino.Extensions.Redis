@@ -1,4 +1,5 @@
 ﻿using Sino.Extensions.Redis.Commands;
+using Sino.Extensions.Redis.Internal.IO;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace Sino.Extensions.Redis
     {
         private EndPoint _endpoint;
         private string _password;
+        private IRedisSocket _socket;
 
         private readonly ConcurrentQueue<RedisClient> _pool;
         private SemaphoreSlim _semaphore;
@@ -28,6 +30,14 @@ namespace Sino.Extensions.Redis
             _semaphore = new SemaphoreSlim(max, max);
         }
 
+        public PoolRedisClient(IRedisSocket socket, EndPoint endpoint, int max = 100)
+        {
+            _socket = socket;
+            _endpoint = endpoint;
+            _pool = new ConcurrentQueue<RedisClient>();
+            _semaphore = new SemaphoreSlim(max, max);
+        }
+
         public T Multi<T>(RedisCommand<T> cmd)
         {
             _semaphore.Wait(30000);
@@ -37,7 +47,14 @@ namespace Sino.Extensions.Redis
             {
                 if (!_pool.TryDequeue(out client))
                 {
-                    client = new RedisClient(_endpoint);
+                    if (_socket == null)
+                    {
+                        client = new RedisClient(_endpoint);
+                    }
+                    else
+                    {
+                        client = new RedisClient(_socket, _endpoint);
+                    }
                     if (!string.IsNullOrEmpty(_password))
                         client.Auth(_password);
                 }
@@ -70,7 +87,14 @@ namespace Sino.Extensions.Redis
             {
                 if (!_pool.TryDequeue(out client))
                 {
-                    client = new RedisClient(_endpoint);
+                    if (_socket == null)
+                    {
+                        client = new RedisClient(_endpoint);
+                    }
+                    else
+                    {
+                        client = new RedisClient(_socket, _endpoint);
+                    }
                     if (!string.IsNullOrEmpty(_password))
                         client.Auth(_password);
                 }
