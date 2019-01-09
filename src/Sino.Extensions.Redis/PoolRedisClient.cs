@@ -206,15 +206,15 @@ namespace Sino.Extensions.Redis
 
         public bool ExpireAt(string key, DateTime expirationDate)
         {
-            return Multi(KeyCommands.ExpireAt(key, expirationDate.GetUnixTime()));
+            return Multi(KeyCommands.ExpireAt(key, expirationDate.GetUnixTime() / 1000));
         }
 
         public Task<bool> ExpireAtAsync(string key, DateTime expirationDate)
         {
-            return MultiAsync(KeyCommands.ExpireAt(key, expirationDate.GetUnixTime()));
+            return MultiAsync(KeyCommands.ExpireAt(key, expirationDate.GetUnixTime() / 1000));
         }
 
-        public bool ExpireAt(string key, int timestamp)
+        public bool ExpireAt(string key, long timestamp)
         {
             return Multi(KeyCommands.ExpireAt(key, timestamp));
         }

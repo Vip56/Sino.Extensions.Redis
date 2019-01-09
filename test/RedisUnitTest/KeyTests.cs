@@ -64,7 +64,7 @@ namespace RedisUnitTest
             using (var redis = new PoolRedisClient(mock, new DnsEndPoint("fakehost", 9999)))
             {
                 Assert.True(redis.ExpireAt("test1", new DateTime(2014, 6, 13, 7, 6, 48)));
-                Assert.Equal("*3\r\n$8\r\nEXPIREAT\r\n$5\r\ntest1\r\n$10\r\n1402643208\r\n", mock.GetMessage());
+                Assert.Equal("*3\r\n$8\r\nEXPIREAT\r\n$5\r\ntest1\r\n$10\r\n1402614408\r\n", mock.GetMessage());
                 Assert.False(redis.ExpireAt("test2", 1402643208));
                 Assert.Equal("*3\r\n$8\r\nEXPIREAT\r\n$5\r\ntest2\r\n$10\r\n1402643208\r\n", mock.GetMessage());
             }
@@ -111,7 +111,7 @@ namespace RedisUnitTest
         [Fact]
         public void TestObject()
         {
-            using (var mock = new FakeRedisSocket(":5555\r\n", ":9999\r\n"))
+            using (var mock = new FakeRedisSocket(":9999\r\n"))
             using (var redis = new PoolRedisClient(mock, new DnsEndPoint("fakehost", 9999)))
             {
                 Assert.Equal(9999, redis.ObjectIdleTime("test2"));
@@ -152,7 +152,7 @@ namespace RedisUnitTest
             using (var redis = new PoolRedisClient(mock, new DnsEndPoint("fakehost", 9999)))
             {
                 Assert.True(redis.PExpireAt("test1", new DateTime(2014, 6, 13, 7, 6, 48, 123)));
-                Assert.Equal("*3\r\n$9\r\nPEXPIREAT\r\n$5\r\ntest1\r\n$13\r\n1402643208123\r\n", mock.GetMessage());
+                Assert.Equal("*3\r\n$9\r\nPEXPIREAT\r\n$5\r\ntest1\r\n$13\r\n1402614408123\r\n", mock.GetMessage());
                 Assert.False(redis.PExpireAt("test2", 1402643208123));
                 Assert.Equal("*3\r\n$9\r\nPEXPIREAT\r\n$5\r\ntest2\r\n$13\r\n1402643208123\r\n", mock.GetMessage());
             }
