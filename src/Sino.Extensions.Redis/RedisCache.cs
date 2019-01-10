@@ -55,9 +55,16 @@ namespace Sino.Extensions.Redis
             return null;
         }
 
-        public Task<byte[]> GetAsync(string key)
+        public async Task<byte[]> GetAsync(string key)
         {
-            return Task.FromResult(Get(key));
+            try
+            {
+                var cacheItem = await _pool.GetAsync(_instance + key);
+                if (!string.IsNullOrEmpty(cacheItem))
+                    return Encoding.UTF8.GetBytes(cacheItem);
+            }
+            catch (Exception) { }
+            return null;
         }
 
         public void Refresh(string key)
@@ -65,10 +72,9 @@ namespace Sino.Extensions.Redis
             _pool.Expire(_instance + key, (int)Expiry.TotalSeconds);
         }
 
-        public Task RefreshAsync(string key)
+        public async Task RefreshAsync(string key)
         {
-            Refresh(key);
-            return Task.CompletedTask;
+            await _pool.ExpireAsync(_instance + key, (int)Expiry.TotalSeconds);
         }
 
         public void Remove(string key)
@@ -76,10 +82,9 @@ namespace Sino.Extensions.Redis
             _pool.Del(_instance + key);
         }
 
-        public Task RemoveAsync(string key)
+        public async Task RemoveAsync(string key)
         {
-            Remove(key);
-            return Task.CompletedTask;
+            await _pool.DelAsync(_instance + key);
         }
 
         public void Set(string key, byte[] value, DistributedCacheEntryOptions options)
@@ -95,10 +100,17 @@ namespace Sino.Extensions.Redis
             }
         }
 
-        public Task SetAsync(string key, byte[] value, DistributedCacheEntryOptions options)
+        public async Task SetAsync(string key, byte[] value, DistributedCacheEntryOptions options)
         {
-            Set(key, value, options);
-            return Task.CompletedTask;
+            string val = Encoding.UTF8.GetString(value);
+            if (options.AbsoluteExpirationRelativeToNow != null)
+            {
+                await _pool.SetAsync(_instance + key, val, options.AbsoluteExpirationRelativeToNow.Value);
+            }
+            else
+            {
+                await _pool.GetSetAsync(_instance + key, val);
+            }
         }
 
         public void Dispose()
