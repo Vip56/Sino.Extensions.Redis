@@ -30,6 +30,19 @@ namespace Sino.Extensions.Redis
         }
 
         /// <summary>
+        /// 添加一个新的元素到末尾
+        /// </summary>
+        /// <param name="element">新元素</param>
+        /// <returns>添加新元素后的数组</returns>
+        public static IEnumerable<TSource> Append<TSource>(this IEnumerable<TSource> source, TSource element)
+        {
+            var list = new List<TSource>();
+            list.AddRange(source);
+            list.Add(element);
+            return list;
+        }
+
+        /// <summary>
         /// 将字典生成为key、value数组
         /// </summary>
         /// <returns>生成的数组</returns>

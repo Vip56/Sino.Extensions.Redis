@@ -9,7 +9,7 @@ namespace RedisUnitTest
     public class ListTests
     {
         [Fact]
-        public void TestBLPopWithKey()
+        public void TestBLPop()
         {
             string reply = "*2\r\n$4\r\ntest\r\n$5\r\ntest1\r\n";
             using (var mock = new FakeRedisSocket(reply, reply))
@@ -26,7 +26,7 @@ namespace RedisUnitTest
         }
 
         [Fact]
-        public void TestBRPopWithKey()
+        public void TestBRPop()
         {
             string reply = "*2\r\n$4\r\ntest\r\n$5\r\ntest1\r\n";
             using (var mock = new FakeRedisSocket(reply, reply))
