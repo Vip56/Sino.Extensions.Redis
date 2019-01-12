@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using System;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,15 +6,15 @@ using System.Threading.Tasks;
 namespace Sino.Extensions.Redis
 {
     /// <summary>
-    /// IDistributedCache接口实现
+    /// IRedisCache接口实现
     /// </summary>
-    public class RedisCache : IDistributedCache, IDisposable
+    public class RedisCache : IRedisCache, IDisposable
     {
-        public TimeSpan Expiry { get; set; } = TimeSpan.FromDays(7);
-
         private readonly RedisCacheOptions _options;
         private readonly string _instance;
         private readonly PoolRedisClient _pool;
+
+        public PoolRedisClient Client { get { return _pool; } }
 
         public RedisCache(IOptions<RedisCacheOptions> optionsAccessor)
         {
@@ -43,75 +42,35 @@ namespace Sino.Extensions.Redis
             }
         }
 
-        public byte[] Get(string key)
+        public string Get(string key)
         {
-            try
-            {
-                var cacheItem = _pool.Get(_instance + key);
-                if (!string.IsNullOrEmpty(cacheItem))
-                    return Encoding.UTF8.GetBytes(cacheItem);
-            }
-            catch (Exception) { }
-            return null;
+            var cacheItem = _pool.Get(_instance + key);
+            return cacheItem;
         }
 
-        public async Task<byte[]> GetAsync(string key)
+        public async Task<string> GetAsync(string key)
         {
-            try
-            {
-                var cacheItem = await _pool.GetAsync(_instance + key);
-                if (!string.IsNullOrEmpty(cacheItem))
-                    return Encoding.UTF8.GetBytes(cacheItem);
-            }
-            catch (Exception) { }
-            return null;
+            var cacheItem = await _pool.GetAsync(_instance + key);
+            return cacheItem;
         }
 
-        public void Refresh(string key)
+        public void Refresh(string key, int timeout)
         {
-            _pool.Expire(_instance + key, (int)Expiry.TotalSeconds);
+            _pool.Expire(_instance + key, timeout);
         }
 
-        public async Task RefreshAsync(string key)
+        public async Task RefreshAsync(string key, int timeout)
         {
-            await _pool.ExpireAsync(_instance + key, (int)Expiry.TotalSeconds);
+            await _pool.ExpireAsync(_instance + key, timeout);
         }
 
-        public void Remove(string key)
-        {
-            _pool.Del(_instance + key);
-        }
+        public void Remove(string key) => _pool.Del(_instance + key);
 
-        public async Task RemoveAsync(string key)
-        {
-            await _pool.DelAsync(_instance + key);
-        }
+        public async Task RemoveAsync(string key) => await _pool.DelAsync(_instance + key);
 
-        public void Set(string key, byte[] value, DistributedCacheEntryOptions options)
-        {
-            string val = Encoding.UTF8.GetString(value);
-            if (options.AbsoluteExpirationRelativeToNow != null)
-            {
-                _pool.Set(_instance + key, val, options.AbsoluteExpirationRelativeToNow.Value);
-            }
-            else
-            {
-                _pool.GetSet(_instance + key, val);
-            }
-        }
+        public void Set(string key, string value, int? timeout = null) => _pool.Set(_instance + key, value, timeout);
 
-        public async Task SetAsync(string key, byte[] value, DistributedCacheEntryOptions options)
-        {
-            string val = Encoding.UTF8.GetString(value);
-            if (options.AbsoluteExpirationRelativeToNow != null)
-            {
-                await _pool.SetAsync(_instance + key, val, options.AbsoluteExpirationRelativeToNow.Value);
-            }
-            else
-            {
-                await _pool.GetSetAsync(_instance + key, val);
-            }
-        }
+        public async Task SetAsync(string key, string value, int? timeout = null) => await _pool.SetAsync(_instance + key, value, timeout);
 
         public void Dispose()
         {

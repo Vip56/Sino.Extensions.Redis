@@ -9,30 +9,9 @@ namespace Sino.Extensions.Redis
     public interface IRedisClient : IDisposable
     {
         /// <summary>
-        /// Occurs when a subscription message is received
-        /// </summary>
-        event EventHandler<RedisSubscriptionReceivedEventArgs> SubscriptionReceived;
-
-        /// <summary>
-        /// Occurs when a subscription channel is added or removed
-        /// </summary>
-        event EventHandler<RedisSubscriptionChangedEventArgs> SubscriptionChanged;
-
-        /// <summary>
-        /// Occurs when a transaction command is acknowledged by the server
-        /// </summary>
-        event EventHandler<RedisTransactionQueuedEventArgs> TransactionQueued;
-
-        /// <summary>
-        /// Occurs when a monitor message is received
-        /// </summary>
-        event EventHandler<RedisMonitorEventArgs> MonitorReceived;
-
-        /// <summary>
         /// Occurs when the connection has sucessfully reconnected
         /// </summary>
         event EventHandler Connected;
-
 
         /// <summary>
         /// Get the Redis server hostname

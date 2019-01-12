@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Caching.Distributed;
-using Sino.Extensions.Redis;
+﻿using Sino.Extensions.Redis;
 using System;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -24,7 +23,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             services.AddOptions();
             services.Configure(setupAction);
-            services.Add(ServiceDescriptor.Singleton<IDistributedCache, RedisCache>());
+            services.Add(ServiceDescriptor.Singleton<IRedisCache, RedisCache>());
 
             return services;
         }

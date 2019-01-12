@@ -968,8 +968,6 @@ namespace Sino.Extensions.Redis
         public double? IncrByFloat(string key, double increment)
         {
             return Multi(StringCommands.IncrByFloat(key, increment));
-
-
         }
 
         public Task<double?> IncrByFloatAsync(string key, double increment)

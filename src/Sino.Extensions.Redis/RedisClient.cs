@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Sino.Extensions.Redis
 {
-    public partial class RedisClient
+    public class RedisClient : IRedisClient
     {
         const int DEFAULT_PORT = 6379;
         const bool DEFAULT_SSL = false;

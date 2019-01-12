@@ -24,6 +24,12 @@ namespace TestWeb
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvcCore();
+            services.AddDistributedRedisCache(x =>
+            {
+                x.Host = "127.0.0.1";
+                x.Port = 6379;
+                x.InstanceName = "test";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
