@@ -278,6 +278,104 @@ namespace Sino.Extensions.Redis
         /// </summary>
         Task<string> LIndexAsync(string key, long index);
 
+        /// <summary>
+        /// 返回列表Key的长度
+        /// </summary>
+        long LLen(string key);
 
+        /// <summary>
+        /// 返回列表Key的长度
+        /// </summary>
+        Task<long> LLenAsync(string key);
+
+        /// <summary>
+        /// 将一个或多个值插入到列表key的表头
+        /// </summary>
+        long LPush(string key, params object[] values);
+
+        /// <summary>
+        /// 将一个或多个值插入到列表key的表头
+        /// </summary>
+        Task<long> LPushAsync(string key, params object[] values);
+
+        /// <summary>
+        /// 仅当key存在且为列表则将value插入表头
+        /// </summary>
+        long LPushX(string key, object value);
+
+        /// <summary>
+        /// 仅当key存在且为列表则将value插入表头
+        /// </summary>
+        Task<long> LPushXAsync(string key, object value);
+
+        /// <summary>
+        /// 移除并返回列表key的尾元素
+        /// </summary>
+        Tuple<string, string> RPop(string key);
+
+        /// <summary>
+        /// 移除并返回列表key的尾元素
+        /// </summary>
+        Task<Tuple<string, string>> RPopAsync(string key);
+
+        /// <summary>
+        /// 将一个或多个值插入到列表尾巴
+        /// </summary>
+        long RPush(string key, params object[] values);
+
+        /// <summary>
+        /// 将一个或多个值插入到列表尾巴
+        /// </summary>
+        Task<long> RPushAsync(string key, params object[] values);
+
+        /// <summary>
+        /// 仅当key存在且为列表则将值插入到表尾巴
+        /// </summary>
+        long RPushX(string key, params object[] values);
+
+        /// <summary>
+        /// 仅当key存在且为列表则将值插入到表尾巴
+        /// </summary>
+        Task<long> RPushXAsync(string key, params object[] values);
+
+        /// <summary>
+        /// 采用阻塞模式获取source列表中的末尾元素，返回
+        /// 的同时将其添加到destination的头部，如果source
+        /// 不存在任何数据则等待，直到指定的timeout超时。
+        /// </summary>
+        string BRPopLPush(string source, string destination, int timeout);
+
+        /// <summary>
+        /// 采用阻塞模式获取source列表中的末尾元素，返回
+        /// 的同时将其添加到destination的头部，如果source
+        /// 不存在任何数据则等待，直到指定的timeout超时。
+        /// </summary>
+        Task<string> BRPopLPushAsync(string source, string destination, int timeout);
+
+        /// <summary>
+        /// 将列表source的最后一个元素弹出并返回，同时将
+        /// 这个元素添加到destination列表的头元素。
+        /// </summary>
+        string RPopLPush(string source, string destination, int timeout);
+
+        /// <summary>
+        /// 将列表source的最后一个元素弹出并返回，同时将
+        /// 这个元素添加到destination列表的头元素。
+        /// </summary>
+        Task<string> RPopLPushAsync(string source, string destination, int timeout);
+
+        /// <summary>
+        /// 移除列表key中count个与参数value相等的元素，如果
+        /// count大于0则从表头开始向表尾搜索，如果count小于0
+        /// 则从表尾向表头搜索，count为0则移除所有。
+        /// </summary>
+        long LRem(string key, long count, object value);
+
+        /// <summary>
+        /// 移除列表key中count个与参数value相等的元素，如果
+        /// count大于0则从表头开始向表尾搜索，如果count小于0
+        /// 则从表尾向表头搜索，count为0则移除所有。
+        /// </summary>
+        Task<long> LRemAsync(string key, long count, object value);
     }
 }
