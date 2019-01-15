@@ -69,12 +69,12 @@ namespace Sino.Extensions.Redis
         /// <summary>
         /// 仅当Key不存在则设置其值
         /// </summary>
-        bool SetNx(string key, object value);
+        bool SetNx(string key, string value);
 
         /// <summary>
         /// 仅当Key不存在则设置其值
         /// </summary>
-        Task<bool> SetNxAsync(string key, object value);
+        Task<bool> SetNxAsync(string key, string value);
 
         /// <summary>
         /// 将value追加到key值后，不存在则等同set
@@ -141,12 +141,12 @@ namespace Sino.Extensions.Redis
         /// <summary>
         /// 获取Key存储的字符串上指定偏移量的位
         /// </summary>
-        bool GetBit(string key);
+        bool GetBit(string key, uint offset);
 
         /// <summary>
         /// 获取Key存储的字符串上指定偏移量的位
         /// </summary>
-        Task<bool> GetBitAsync(string key);
+        Task<bool> GetBitAsync(string key, uint offset);
 
         /// <summary>
         /// 将Key中储存的数字值减一
@@ -179,14 +179,14 @@ namespace Sino.Extensions.Redis
         Task<long> IncrAsync(string key);
 
         /// <summary>
-        /// 将Key中储存的数字增加一
+        /// 将Key中储存的数字增加值
         /// </summary>
-        long IncrBy(string key);
+        long IncrBy(string key, long increment);
 
         /// <summary>
-        /// 将Key中储存的数组增加一
+        /// 将Key中储存的数组增加值
         /// </summary>
-        Task<long> IncrByAsync(string key);
+        Task<long> IncrByAsync(string key, long increment);
 
         /// <summary>
         /// 删除哈希表Key中的一个或多个指定域
@@ -231,22 +231,22 @@ namespace Sino.Extensions.Redis
         /// <summary>
         /// 将哈希表Key中的域的值设置为value
         /// </summary>
-        bool HSet(string key, string field, object value);
+        bool HSet(string key, string field, string value);
 
         /// <summary>
         /// 将哈希表Key中的域的值设置为value
         /// </summary>
-        Task<bool> HSetAsync(string key, string field, object value);
+        Task<bool> HSetAsync(string key, string field, string value);
 
         /// <summary>
         /// 将哈希Key中的域的值设置为Value，当且仅当域field不存在
         /// </summary>
-        bool HSetNx(string key, string field, object value);
+        bool HSetNx(string key, string field, string value);
 
         /// <summary>
         /// 将哈希Key中的域的值设置为Value，当且仅当域field不存在
         /// </summary>
-        Task<bool> HSetNxAsync(string key, string field, object value);
+        Task<bool> HSetNxAsync(string key, string field, string value);
 
         /// <summary>
         /// 采用阻塞模式获取指定Key数组中任意值
@@ -291,52 +291,52 @@ namespace Sino.Extensions.Redis
         /// <summary>
         /// 将一个或多个值插入到列表key的表头
         /// </summary>
-        long LPush(string key, params object[] values);
+        long LPush(string key, params string[] values);
 
         /// <summary>
         /// 将一个或多个值插入到列表key的表头
         /// </summary>
-        Task<long> LPushAsync(string key, params object[] values);
+        Task<long> LPushAsync(string key, params string[] values);
 
         /// <summary>
         /// 仅当key存在且为列表则将value插入表头
         /// </summary>
-        long LPushX(string key, object value);
+        long LPushX(string key, string value);
 
         /// <summary>
         /// 仅当key存在且为列表则将value插入表头
         /// </summary>
-        Task<long> LPushXAsync(string key, object value);
+        Task<long> LPushXAsync(string key, string value);
 
         /// <summary>
         /// 移除并返回列表key的尾元素
         /// </summary>
-        Tuple<string, string> RPop(string key);
+        string RPop(string key);
 
         /// <summary>
         /// 移除并返回列表key的尾元素
         /// </summary>
-        Task<Tuple<string, string>> RPopAsync(string key);
+        Task<string> RPopAsync(string key);
 
         /// <summary>
         /// 将一个或多个值插入到列表尾巴
         /// </summary>
-        long RPush(string key, params object[] values);
+        long RPush(string key, params string[] values);
 
         /// <summary>
         /// 将一个或多个值插入到列表尾巴
         /// </summary>
-        Task<long> RPushAsync(string key, params object[] values);
+        Task<long> RPushAsync(string key, params string[] values);
 
         /// <summary>
         /// 仅当key存在且为列表则将值插入到表尾巴
         /// </summary>
-        long RPushX(string key, params object[] values);
+        long RPushX(string key, params string[] values);
 
         /// <summary>
         /// 仅当key存在且为列表则将值插入到表尾巴
         /// </summary>
-        Task<long> RPushXAsync(string key, params object[] values);
+        Task<long> RPushXAsync(string key, params string[] values);
 
         /// <summary>
         /// 采用阻塞模式获取source列表中的末尾元素，返回
@@ -356,26 +356,26 @@ namespace Sino.Extensions.Redis
         /// 将列表source的最后一个元素弹出并返回，同时将
         /// 这个元素添加到destination列表的头元素。
         /// </summary>
-        string RPopLPush(string source, string destination, int timeout);
+        string RPopLPush(string source, string destination);
 
         /// <summary>
         /// 将列表source的最后一个元素弹出并返回，同时将
         /// 这个元素添加到destination列表的头元素。
         /// </summary>
-        Task<string> RPopLPushAsync(string source, string destination, int timeout);
+        Task<string> RPopLPushAsync(string source, string destination);
 
         /// <summary>
         /// 移除列表key中count个与参数value相等的元素，如果
         /// count大于0则从表头开始向表尾搜索，如果count小于0
         /// 则从表尾向表头搜索，count为0则移除所有。
         /// </summary>
-        long LRem(string key, long count, object value);
+        long LRem(string key, long count, string value);
 
         /// <summary>
         /// 移除列表key中count个与参数value相等的元素，如果
         /// count大于0则从表头开始向表尾搜索，如果count小于0
         /// 则从表尾向表头搜索，count为0则移除所有。
         /// </summary>
-        Task<long> LRemAsync(string key, long count, object value);
+        Task<long> LRemAsync(string key, long count, string value);
     }
 }
