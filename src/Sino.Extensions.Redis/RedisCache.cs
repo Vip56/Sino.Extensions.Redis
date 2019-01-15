@@ -495,6 +495,22 @@ namespace Sino.Extensions.Redis
             return _pool.BLPopAsync(timeout, keys.AddPrefix(_instance).ToArray());
         }
 
+        public string LPop(string key)
+        {
+            if (string.IsNullOrEmpty(key))
+                throw new ArgumentNullException(nameof(key));
+
+            return _pool.LPop(_instance + key);
+        }
+
+        public Task<string> LPopAsync(string key)
+        {
+            if (string.IsNullOrEmpty(key))
+                throw new ArgumentNullException(nameof(key));
+
+            return _pool.LPopAsync(_instance + key);
+        }
+
         public Tuple<string, string> BRPop(int timeout, params string[] keys)
         {
             if (keys == null)

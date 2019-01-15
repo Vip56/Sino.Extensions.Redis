@@ -279,7 +279,17 @@ namespace Sino.Extensions.Redis
         Task<Tuple<string, string>> BLPopAsync(int timeout, params string[] keys);
 
         /// <summary>
-        /// 采用阻塞模式获取指定Key数组中任意值
+        /// 移除并返回列表key的头元素
+        /// </summary>
+        string LPop(string key);
+
+        /// <summary>
+        /// 移除并返回列表key的头元素
+        /// </summary>
+        Task<string> LPopAsync(string key);
+
+        /// <summary>
+        /// 采用阻塞模式获取指定Key数组中任意值，如果超时则返回RedisProtocolException异常。
         /// </summary>
         Tuple<string, string> BRPop(int timeout, params string[] keys);
 
