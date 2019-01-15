@@ -43,6 +43,19 @@ namespace Sino.Extensions.Redis
         }
 
         /// <summary>
+        /// 数据中的字符串增加前缀
+        /// </summary>
+        public static IEnumerable<string> AddPrefix(this IEnumerable<string> source, string prefix)
+        {
+            var list = new List<string>();
+            foreach(string val in source)
+            {
+                list.Add(prefix + val);
+            }
+            return list;
+        }
+
+        /// <summary>
         /// 将字典生成为key、value数组
         /// </summary>
         /// <returns>生成的数组</returns>
