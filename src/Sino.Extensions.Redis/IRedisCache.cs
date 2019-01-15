@@ -43,6 +43,26 @@ namespace Sino.Extensions.Redis
         Task RefreshAsync(string key, int timeout);
 
         /// <summary>
+        /// 设置Key的超时时间，单位秒
+        /// </summary>
+        bool Expire(string key, int seconds);
+
+        /// <summary>
+        /// 设置Key的超时时间，单位秒
+        /// </summary>
+        Task<bool> ExpireAsync(string key, int seconds);
+
+        /// <summary>
+        /// 设置Key的超时时间，单位毫秒
+        /// </summary>
+        bool PExpire(string key, long milliseconds);
+
+        /// <summary>
+        /// 设置Key的超时时间，单位毫秒
+        /// </summary>
+        Task<bool> PExpireAsync(string key, long milliseconds);
+
+        /// <summary>
         /// 移除Key
         /// </summary>
         void Remove(string key);
