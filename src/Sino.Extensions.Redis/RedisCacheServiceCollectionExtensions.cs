@@ -9,7 +9,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// 增加Redis扩展
         /// </summary>
         /// <param name="setupAction">配置</param>
-        public static IServiceCollection AddDistributedRedisCache(this IServiceCollection services, Action<RedisCacheOptions> setupAction)
+        public static IServiceCollection AddRedisCache(this IServiceCollection services, Action<RedisCacheOptions> setupAction)
         {
             if (services == null)
             {
