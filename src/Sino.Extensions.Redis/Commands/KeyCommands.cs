@@ -61,7 +61,7 @@ namespace Sino.Extensions.Redis.Commands
         /// <param name="key">需要设置的key</param>
         /// <param name="timestamp">指定超时日期的UNIX时间戳，精确到秒</param>
         /// <returns>命令对象</returns>
-        public static ReturnTypeWithBool ExpireAt(string key, int timestamp)
+        public static ReturnTypeWithBool ExpireAt(string key, long timestamp)
         {
             return new ReturnTypeWithBool("EXPIREAT", key, timestamp);
         }
@@ -102,7 +102,7 @@ namespace Sino.Extensions.Redis.Commands
         }
 
         /// <summary>
-        /// 获取给定key自储存以来的空闲时间，没有呗读取也没有被写入，以秒为单位。
+        /// 获取给定key自储存以来的空闲时间，没有被读取也没有被写入，以秒为单位。
         /// </summary>
         /// <param name="key">需要查找的key</param>
         /// <returns>命令对象</returns>

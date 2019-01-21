@@ -12,7 +12,7 @@ namespace RedisUnitTest
         public void AppendTest()
         {
             using (var mock = new FakeRedisSocket(":10\r\n"))
-            using (var redis = new RedisClient(mock, new DnsEndPoint("fakehost", 9999)))
+            using (var redis = new PoolRedisClient(mock, new DnsEndPoint("fakehost", 9999)))
             {
                 Assert.Equal(10, redis.Append("key", "x"));
                 Assert.Equal("*3\r\n$6\r\nAPPEND\r\n$3\r\nkey\r\n$1\r\nx\r\n", mock.GetMessage());
@@ -23,7 +23,7 @@ namespace RedisUnitTest
         public void BitCountTest()
         {
             using (var mock = new FakeRedisSocket(":10\r\n", ":4\r\n"))
-            using (var redis = new RedisClient(mock, new DnsEndPoint("fakehost", 9999)))
+            using (var redis = new PoolRedisClient(mock, new DnsEndPoint("fakehost", 9999)))
             {
                 Assert.Equal(10, redis.BitCount("key"));
                 Assert.Equal("*2\r\n$8\r\nBITCOUNT\r\n$3\r\nkey\r\n", mock.GetMessage());
@@ -37,7 +37,7 @@ namespace RedisUnitTest
         public void BitOpTest()
         {
             using (var mock = new FakeRedisSocket(":10\r\n", ":10\r\n", ":10\r\n", ":10\r\n"))
-            using (var redis = new RedisClient(mock, new DnsEndPoint("fakehost", 9999)))
+            using (var redis = new PoolRedisClient(mock, new DnsEndPoint("fakehost", 9999)))
             {
                 Assert.Equal(10, redis.BitOp(RedisBitOp.And, "dest", "key1", "key2"));
                 Assert.Equal("*5\r\n$5\r\nBITOP\r\n$3\r\nAND\r\n$4\r\ndest\r\n$4\r\nkey1\r\n$4\r\nkey2\r\n", mock.GetMessage());
@@ -54,27 +54,10 @@ namespace RedisUnitTest
         }
 
         [Fact]
-        public void BitPosTest()
-        {
-            using (var mock = new FakeRedisSocket(":10\r\n", ":10\r\n", ":10\r\n"))
-            using (var redis = new RedisClient(mock, new DnsEndPoint("fakehost", 9999)))
-            {
-                Assert.Equal(10, redis.BitPos("key", true));
-                Assert.Equal("*3\r\n$6\r\nBITPOS\r\n$3\r\nkey\r\n$1\r\n1\r\n", mock.GetMessage());
-
-                Assert.Equal(10, redis.BitPos("key", true, start: 0));
-                Assert.Equal("*4\r\n$6\r\nBITPOS\r\n$3\r\nkey\r\n$1\r\n1\r\n$1\r\n0\r\n", mock.GetMessage());
-
-                Assert.Equal(10, redis.BitPos("key", true, start: 0, end: 1));
-                Assert.Equal("*5\r\n$6\r\nBITPOS\r\n$3\r\nkey\r\n$1\r\n1\r\n$1\r\n0\r\n$1\r\n1\r\n", mock.GetMessage());
-            }
-        }
-
-        [Fact]
         public void DecrTest()
         {
             using (var mock = new FakeRedisSocket(":10\r\n"))
-            using (var redis = new RedisClient(mock, new DnsEndPoint("fakehost", 9999)))
+            using (var redis = new PoolRedisClient(mock, new DnsEndPoint("fakehost", 9999)))
             {
                 Assert.Equal(10, redis.Decr("key"));
                 Assert.Equal("*2\r\n$4\r\nDECR\r\n$3\r\nkey\r\n", mock.GetMessage());
@@ -85,7 +68,7 @@ namespace RedisUnitTest
         public void DecrByTest()
         {
             using (var mock = new FakeRedisSocket(":10\r\n"))
-            using (var redis = new RedisClient(mock, new DnsEndPoint("fakehost", 9999)))
+            using (var redis = new PoolRedisClient(mock, new DnsEndPoint("fakehost", 9999)))
             {
                 Assert.Equal(10, redis.DecrBy("key", 5));
                 Assert.Equal("*3\r\n$6\r\nDECRBY\r\n$3\r\nkey\r\n$1\r\n5\r\n", mock.GetMessage());
@@ -96,7 +79,7 @@ namespace RedisUnitTest
         public void GetTest()
         {
             using (var mock = new FakeRedisSocket("$5\r\nhello\r\n"))
-            using (var redis = new RedisClient(mock, new DnsEndPoint("fakehost", 9999)))
+            using (var redis = new PoolRedisClient(mock, new DnsEndPoint("fakehost", 9999)))
             {
                 Assert.Equal("hello", redis.Get("key"));
                 Assert.Equal("*2\r\n$3\r\nGET\r\n$3\r\nkey\r\n", mock.GetMessage());
@@ -107,7 +90,7 @@ namespace RedisUnitTest
         public void GetBitTest()
         {
             using (var mock = new FakeRedisSocket(":1\r\n"))
-            using (var redis = new RedisClient(mock, new DnsEndPoint("fakehost", 9999)))
+            using (var redis = new PoolRedisClient(mock, new DnsEndPoint("fakehost", 9999)))
             {
                 Assert.True(redis.GetBit("key", 10));
                 Assert.Equal("*3\r\n$6\r\nGETBIT\r\n$3\r\nkey\r\n$2\r\n10\r\n", mock.GetMessage());
@@ -118,7 +101,7 @@ namespace RedisUnitTest
         public void GetRangeTest()
         {
             using (var mock = new FakeRedisSocket("$5\r\nhello\r\n"))
-            using (var redis = new RedisClient(mock, new DnsEndPoint("fakehost", 9999)))
+            using (var redis = new PoolRedisClient(mock, new DnsEndPoint("fakehost", 9999)))
             {
                 Assert.Equal("hello", redis.GetRange("key", 0, 10));
                 Assert.Equal("*4\r\n$8\r\nGETRANGE\r\n$3\r\nkey\r\n$1\r\n0\r\n$2\r\n10\r\n", mock.GetMessage());
@@ -129,7 +112,7 @@ namespace RedisUnitTest
         public void GetSetTest()
         {
             using (var mock = new FakeRedisSocket("$5\r\nhello\r\n"))
-            using (var redis = new RedisClient(mock, new DnsEndPoint("fakehost", 9999)))
+            using (var redis = new PoolRedisClient(mock, new DnsEndPoint("fakehost", 9999)))
             {
                 Assert.Equal("hello", redis.GetSet("key", "new"));
                 Assert.Equal("*3\r\n$6\r\nGETSET\r\n$3\r\nkey\r\n$3\r\nnew\r\n", mock.GetMessage());
@@ -140,7 +123,7 @@ namespace RedisUnitTest
         public void IncrTest()
         {
             using (var mock = new FakeRedisSocket(":5\r\n"))
-            using (var redis = new RedisClient(mock, new DnsEndPoint("fakehost", 9999)))
+            using (var redis = new PoolRedisClient(mock, new DnsEndPoint("fakehost", 9999)))
             {
                 Assert.Equal(5, redis.Incr("key"));
                 Assert.Equal("*2\r\n$4\r\nINCR\r\n$3\r\nkey\r\n", mock.GetMessage());
@@ -151,7 +134,7 @@ namespace RedisUnitTest
         public void IncrByTest()
         {
             using (var mock = new FakeRedisSocket(":5\r\n"))
-            using (var redis = new RedisClient(mock, new DnsEndPoint("fakehost", 9999)))
+            using (var redis = new PoolRedisClient(mock, new DnsEndPoint("fakehost", 9999)))
             {
                 Assert.Equal(5, redis.IncrBy("key", 2));
                 Assert.Equal("*3\r\n$6\r\nINCRBY\r\n$3\r\nkey\r\n$1\r\n2\r\n", mock.GetMessage());
@@ -162,7 +145,7 @@ namespace RedisUnitTest
         public void IncrByFloatTest()
         {
             using (var mock = new FakeRedisSocket("$4\r\n4.14\r\n"))
-            using (var redis = new RedisClient(mock, new DnsEndPoint("fakehost", 9999)))
+            using (var redis = new PoolRedisClient(mock, new DnsEndPoint("fakehost", 9999)))
             {
                 Assert.Equal(4.14, redis.IncrByFloat("key", 3.14));
                 Assert.Equal("*3\r\n$11\r\nINCRBYFLOAT\r\n$3\r\nkey\r\n$4\r\n3.14\r\n", mock.GetMessage());
@@ -173,7 +156,7 @@ namespace RedisUnitTest
         public void MGetTest()
         {
             using (var mock = new FakeRedisSocket("*2\r\n$4\r\nval1\r\n$4\r\nval2\r\n"))
-            using (var redis = new RedisClient(mock, new DnsEndPoint("fakehost", 9999)))
+            using (var redis = new PoolRedisClient(mock, new DnsEndPoint("fakehost", 9999)))
             {
                 var response = redis.MGet("key1", "key2");
                 Assert.Equal(2, response.Length);
@@ -187,12 +170,9 @@ namespace RedisUnitTest
         public void MSetTest()
         {
             using (var mock = new FakeRedisSocket("+OK\r\n", "+OK\r\n"))
-            using (var redis = new RedisClient(mock, new DnsEndPoint("fakehost", 9999)))
+            using (var redis = new PoolRedisClient(mock, new DnsEndPoint("fakehost", 9999)))
             {
                 Assert.Equal("OK", redis.MSet("key1", "val1", "key2", "val2"));
-                Assert.Equal("*5\r\n$4\r\nMSET\r\n$4\r\nkey1\r\n$4\r\nval1\r\n$4\r\nkey2\r\n$4\r\nval2\r\n", mock.GetMessage());
-
-                Assert.Equal("OK", redis.MSet(Tuple.Create("key1", "val1"), Tuple.Create("key2", "val2")));
                 Assert.Equal("*5\r\n$4\r\nMSET\r\n$4\r\nkey1\r\n$4\r\nval1\r\n$4\r\nkey2\r\n$4\r\nval2\r\n", mock.GetMessage());
             }
         }
@@ -201,12 +181,9 @@ namespace RedisUnitTest
         public void MSetNxTest()
         {
             using (var mock = new FakeRedisSocket(":1\r\n", ":0\r\n"))
-            using (var redis = new RedisClient(mock, new DnsEndPoint("fakehost", 9999)))
+            using (var redis = new PoolRedisClient(mock, new DnsEndPoint("fakehost", 9999)))
             {
                 Assert.True(redis.MSetNx("key1", "val1", "key2", "val2"));
-                Assert.Equal("*5\r\n$6\r\nMSETNX\r\n$4\r\nkey1\r\n$4\r\nval1\r\n$4\r\nkey2\r\n$4\r\nval2\r\n", mock.GetMessage());
-
-                Assert.False(redis.MSetNx(Tuple.Create("key1", "val1"), Tuple.Create("key2", "val2")));
                 Assert.Equal("*5\r\n$6\r\nMSETNX\r\n$4\r\nkey1\r\n$4\r\nval1\r\n$4\r\nkey2\r\n$4\r\nval2\r\n", mock.GetMessage());
             }
         }
@@ -215,7 +192,7 @@ namespace RedisUnitTest
         public void PSetExTest()
         {
             using (var mock = new FakeRedisSocket("+OK\r\n"))
-            using (var redis = new RedisClient(mock, new DnsEndPoint("fakehost", 9999)))
+            using (var redis = new PoolRedisClient(mock, new DnsEndPoint("fakehost", 9999)))
             {
                 Assert.Equal("OK", redis.PSetEx("key", 1000, "value"));
                 Assert.Equal("*4\r\n$6\r\nPSETEX\r\n$3\r\nkey\r\n$4\r\n1000\r\n$5\r\nvalue\r\n", mock.GetMessage());
@@ -226,7 +203,7 @@ namespace RedisUnitTest
         public void SetTest()
         {
             using (var mock = new FakeRedisSocket("+OK\r\n", "+OK\r\n", "+OK\r\n", "+OK\r\n", "$-1\r\n", "$-1\r\n", "$-1\r\n"))
-            using (var redis = new RedisClient(mock, new DnsEndPoint("fakehost", 9999)))
+            using (var redis = new PoolRedisClient(mock, new DnsEndPoint("fakehost", 9999)))
             {
                 Assert.Equal("OK", redis.Set("key", "value"));
                 Assert.Equal("*3\r\n$3\r\nSET\r\n$3\r\nkey\r\n$5\r\nvalue\r\n", mock.GetMessage());
@@ -255,7 +232,7 @@ namespace RedisUnitTest
         public void SetBitTest()
         {
             using (var mock = new FakeRedisSocket(":1\r\n", ":0\r\n"))
-            using (var redis = new RedisClient(mock, new DnsEndPoint("fakehost", 9999)))
+            using (var redis = new PoolRedisClient(mock, new DnsEndPoint("fakehost", 9999)))
             {
                 Assert.True(redis.SetBit("key", 5, true));
                 Assert.Equal("*4\r\n$6\r\nSETBIT\r\n$3\r\nkey\r\n$1\r\n5\r\n$1\r\n1\r\n", mock.GetMessage());
@@ -269,7 +246,7 @@ namespace RedisUnitTest
         public void SetExTest()
         {
             using (var mock = new FakeRedisSocket("+OK\r\n"))
-            using (var redis = new RedisClient(mock, new DnsEndPoint("fakehost", 9999)))
+            using (var redis = new PoolRedisClient(mock, new DnsEndPoint("fakehost", 9999)))
             {
                 Assert.Equal("OK", redis.SetEx("key", 100, "value"));
                 Assert.Equal("*4\r\n$5\r\nSETEX\r\n$3\r\nkey\r\n$3\r\n100\r\n$5\r\nvalue\r\n", mock.GetMessage());
@@ -280,7 +257,7 @@ namespace RedisUnitTest
         public void SetNxTest()
         {
             using (var mock = new FakeRedisSocket(":1\r\n"))
-            using (var redis = new RedisClient(mock, new DnsEndPoint("fakehost", 9999)))
+            using (var redis = new PoolRedisClient(mock, new DnsEndPoint("fakehost", 9999)))
             {
                 Assert.True(redis.SetNx("key", "value"));
                 Assert.Equal("*3\r\n$5\r\nSETNX\r\n$3\r\nkey\r\n$5\r\nvalue\r\n", mock.GetMessage());
@@ -291,7 +268,7 @@ namespace RedisUnitTest
         public void SetRangeTest()
         {
             using (var mock = new FakeRedisSocket(":10\r\n"))
-            using (var redis = new RedisClient(mock, new DnsEndPoint("fakehost", 9999)))
+            using (var redis = new PoolRedisClient(mock, new DnsEndPoint("fakehost", 9999)))
             {
                 Assert.Equal(10, redis.SetRange("key", 4, "value"));
                 Assert.Equal("*4\r\n$8\r\nSETRANGE\r\n$3\r\nkey\r\n$1\r\n4\r\n$5\r\nvalue\r\n", mock.GetMessage());
@@ -302,7 +279,7 @@ namespace RedisUnitTest
         public void StrLenTest()
         {
             using (var mock = new FakeRedisSocket(":10\r\n"))
-            using (var redis = new RedisClient(mock, new DnsEndPoint("fakehost", 9999)))
+            using (var redis = new PoolRedisClient(mock, new DnsEndPoint("fakehost", 9999)))
             {
                 Assert.Equal(10, redis.StrLen("key"));
                 Assert.Equal("*2\r\n$6\r\nSTRLEN\r\n$3\r\nkey\r\n", mock.GetMessage());

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace Sino.Extensions.Redis.Commands
 {
@@ -44,7 +45,7 @@ namespace Sino.Extensions.Redis.Commands
         /// <returns>命令对象</returns>
         public static ReturnTypeWithInt BitOp(RedisBitOp operation, string destKey, params string[] keys)
         {
-            return new ReturnTypeWithInt("BITOP", operation.ToString().ToUpperInvariant(), destKey, keys);
+            return new ReturnTypeWithInt("BITOP", keys.Insert(destKey).Insert(operation.ToString().ToUpperInvariant()).ToArray());
         }
 
         /// <summary>

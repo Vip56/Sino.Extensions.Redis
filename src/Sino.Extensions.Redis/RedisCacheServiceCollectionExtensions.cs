@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Caching.Distributed;
-using Sino.Extensions.Redis;
+﻿using Sino.Extensions.Redis;
 using System;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -10,7 +9,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// 增加Redis扩展
         /// </summary>
         /// <param name="setupAction">配置</param>
-        public static IServiceCollection AddDistributedRedisCache(this IServiceCollection services, Action<RedisCacheOptions> setupAction)
+        public static IServiceCollection AddRedisCache(this IServiceCollection services, Action<RedisCacheOptions> setupAction)
         {
             if (services == null)
             {
@@ -24,7 +23,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             services.AddOptions();
             services.Configure(setupAction);
-            services.Add(ServiceDescriptor.Singleton<IDistributedCache, RedisCache>());
+            services.Add(ServiceDescriptor.Singleton<IRedisCache, RedisCache>());
 
             return services;
         }

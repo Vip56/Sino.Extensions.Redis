@@ -18,7 +18,7 @@ namespace Sino.Extensions.Redis.Commands
         /// <returns>命令对象</returns>
         public static ReturnTypeWithInt HDel(string key, params string[] fields)
         {
-            return new ReturnTypeWithInt("HDEL", key, fields);
+            return new ReturnTypeWithInt("HDEL", fields.Insert(key).ToArray());
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace Sino.Extensions.Redis.Commands
         /// <returns>命令对象</returns>
         public static ReturnTypeWithStringArray HMGet(string key, params string[] fields)
         {
-            return new ReturnTypeWithStringArray("HMGET", key, fields);
+            return new ReturnTypeWithStringArray("HMGET", fields.Insert(key).ToArray());
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace Sino.Extensions.Redis.Commands
         public static ReturnTypeWithStatus HMSet(string key, Dictionary<string, string> dict)
         {
             var args = dict.Select(x => string.Concat(x.Key, " ", x.Value));
-            return new ReturnTypeWithStatus("HMSET", key, args.ToArray());
+            return new ReturnTypeWithStatus("HMSET", dict.ToKVArray().Insert(key).ToArray());
         }
 
         /// <summary>

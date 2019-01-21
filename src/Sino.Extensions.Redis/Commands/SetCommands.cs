@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace Sino.Extensions.Redis.Commands
 {
@@ -17,7 +18,7 @@ namespace Sino.Extensions.Redis.Commands
         /// <returns>命令对象</returns>
         public static ReturnTypeWithInt SAdd(string key, params object[] members)
         {
-            return new ReturnTypeWithInt("SADD", key, members);
+            return new ReturnTypeWithInt("SADD", members.Insert(key).ToArray());
         }
 
         /// <summary>
@@ -49,7 +50,7 @@ namespace Sino.Extensions.Redis.Commands
         /// <returns>命令对象</returns>
         public static ReturnTypeWithInt SDiffStore(string destination, params string[] keys)
         {
-            return new ReturnTypeWithInt("SDIFFSTORE", destination, keys);
+            return new ReturnTypeWithInt("SDIFFSTORE", keys.Insert(destination).ToArray());
         }
 
         /// <summary>
@@ -71,7 +72,7 @@ namespace Sino.Extensions.Redis.Commands
         /// <returns>命令对象</returns>
         public static ReturnTypeWithInt SInterStore(string destination, params string[] keys)
         {
-            return new ReturnTypeWithInt("SINTERSTORE", destination, keys);
+            return new ReturnTypeWithInt("SINTERSTORE", keys.Insert(destination).ToArray());
         }
 
         /// <summary>
@@ -148,7 +149,7 @@ namespace Sino.Extensions.Redis.Commands
         /// <returns>命令对象</returns>
         public static ReturnTypeWithInt SRem(string key, params object[] members)
         {
-            return new ReturnTypeWithInt("SREM", key, members);
+            return new ReturnTypeWithInt("SREM", members.Insert(key).ToArray());
         }
 
         /// <summary>
@@ -169,7 +170,7 @@ namespace Sino.Extensions.Redis.Commands
         /// <returns>命令对象</returns>
         public static ReturnTypeWithInt SUnionStore(string destination, params string[] keys)
         {
-            return new ReturnTypeWithInt("SUNIONSTORE", destination, keys);
+            return new ReturnTypeWithInt("SUNIONSTORE", keys.Insert(destination).ToArray());
         }
     }
 }

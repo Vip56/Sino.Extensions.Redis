@@ -32,8 +32,6 @@ namespace Sino.Extensions.Redis.Internal
 
         public EndPoint EndPoint { get { return _endPoint; } }
 
-        public bool IsPipelined { get { return _io.IsPipelined; } }
-
         public int ReconnectAttempts { get; set; }
 
         public int ReconnectWait { get; set; }
@@ -105,9 +103,6 @@ namespace Sino.Extensions.Redis.Internal
 
             try
             {
-                if (IsPipelined)
-                    return _io.Pipeline.Write(command);
-
                 _io.Writer.Write(command, _io.Stream);
                 return command.Parse(_io.Reader);
             }
@@ -174,29 +169,6 @@ namespace Sino.Extensions.Redis.Internal
                     throw;
                 Reconnect();
                 Read(destination, bufferSize);
-            }
-        }
-
-        public void BeginPipe()
-        {
-            ConnectIfNotConnected();
-            _io.Pipeline.Begin();
-        }
-
-        public object[] EndPipe()
-        {
-            ExpectConnected();
-
-            try
-            {
-                return _io.Pipeline.Flush();
-            }
-            catch(IOException)
-            {
-                if (ReconnectAttempts == 0)
-                    throw;
-                Reconnect();
-                return EndPipe();
             }
         }
 

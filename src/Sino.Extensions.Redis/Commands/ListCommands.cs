@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Linq;
 
 namespace Sino.Extensions.Redis.Commands
 {
@@ -18,7 +16,7 @@ namespace Sino.Extensions.Redis.Commands
         /// <returns>命令对象</returns>
         public static ReturnTypeWithTuple BLPop(int timeout, params string[] keys)
         {
-            return new ReturnTypeWithTuple("BLPOP", keys, timeout);
+            return new ReturnTypeWithTuple("BLPOP", keys.Append(timeout.ToString()).ToArray());
         }
 
         /// <summary>
@@ -30,7 +28,7 @@ namespace Sino.Extensions.Redis.Commands
         /// <returns>命令对象</returns>
         public static ReturnTypeWithTuple BRPop(int timeout, params string[] keys)
         {
-            return new ReturnTypeWithTuple("BRPOP", keys, timeout);
+            return new ReturnTypeWithTuple("BRPOP", keys.Append(timeout.ToString()).ToArray());
         }
 
         /// <summary>
@@ -102,7 +100,7 @@ namespace Sino.Extensions.Redis.Commands
         /// <returns>命令对象</returns>
         public static ReturnTypeWithInt LPush(string key, params object[] values)
         {
-            return new ReturnTypeWithInt("LPUSH", key, values);
+            return new ReturnTypeWithInt("LPUSH", values.Insert(key).ToArray());
         }
 
         /// <summary>
@@ -197,7 +195,7 @@ namespace Sino.Extensions.Redis.Commands
         /// <returns>命令对象</returns>
         public static ReturnTypeWithInt RPush(string key, params object[] values)
         {
-            return new ReturnTypeWithInt("RPUSH", key, values);
+            return new ReturnTypeWithInt("RPUSH", values.Insert(key).ToArray());
         }
 
         /// <summary>
@@ -206,9 +204,9 @@ namespace Sino.Extensions.Redis.Commands
         /// <param name="key">列表key</param>
         /// <param name="value">添加的值</param>
         /// <returns>命令对象</returns>
-        public static ReturnTypeWithInt RPushX(string key, object value)
+        public static ReturnTypeWithInt RPushX(string key, params object[] value)
         {
-            return new ReturnTypeWithInt("RPUSHX", key, value);
+            return new ReturnTypeWithInt("RPUSHX", value.Insert(key).ToArray());
         }
     }
 }
