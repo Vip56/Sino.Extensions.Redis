@@ -3,7 +3,7 @@
 `Microsoft.Extensions.Caching.Abstractions`库，从而提升该SDK能够覆盖的`.Net Core`环境，从而避免因不同`.Net Core`
 环境需要进行调整，从而统一版本。   
 
-[![Build status](https://ci.appveyor.com/api/projects/status/9an7h8nk47eeod05/branch/master?svg=true)](https://ci.appveyor.com/project/vip56/sino-extensions-redis/branch/master)  
+[![Build status](https://ci.appveyor.com/api/projects/status/9an7h8nk47eeod05/branch/master?svg=true)](https://ci.appveyor.com/project/vip56/sino-extensions-redis/branch/master)
 [![NuGet](https://img.shields.io/nuget/v/Nuget.Core.svg?style=plastic)](https://www.nuget.org/packages/Sino.Extensions.Redis)
   
 ## 如何使用
