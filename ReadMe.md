@@ -4,6 +4,7 @@
 环境需要进行调整，从而统一版本。   
 
 [![Build status](https://ci.appveyor.com/api/projects/status/9an7h8nk47eeod05/branch/master?svg=true)](https://ci.appveyor.com/project/vip56/sino-extensions-redis/branch/master)  
+[![NuGet](https://img.shields.io/nuget/v/Nuget.Core.svg?style=plastic)](https://www.nuget.org/packages/Sino.Extensions.Redis)
   
 ## 如何使用
 如果开发者需要在`Asp.Net Core`环境中进行使用，该库已经内置的IOC注入，开发者仅需要通过如下方式进行注入即可：
