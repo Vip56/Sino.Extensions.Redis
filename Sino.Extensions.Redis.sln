@@ -7,6 +7,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{3911992B-C37
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".global", ".global", "{DC0CC981-C1FC-47FE-BCA4-9F2291AB6FE7}"
 	ProjectSection(SolutionItems) = preProject
+		appveyor.yml = appveyor.yml
+		Build.ps1 = Build.ps1
+		LICENSE = LICENSE
 		ReadMe.md = ReadMe.md
 	EndProjectSection
 EndProject
@@ -16,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sino.Extensions.Redis", "sr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RedisUnitTest", "test\RedisUnitTest\RedisUnitTest.csproj", "{44D741FB-67B8-4A65-A7F8-ADEDB7845B00}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedisConsole", "test\RedisConsole\RedisConsole.csproj", "{86F7A7FF-0250-42BB-9644-EFB5E1B570BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RedisConsole", "test\RedisConsole\RedisConsole.csproj", "{86F7A7FF-0250-42BB-9644-EFB5E1B570BF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
