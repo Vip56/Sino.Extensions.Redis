@@ -20,4 +20,4 @@ $revision = [convert]::ToInt32($revision, 10)
 
 exec { & dotnet pack .\src\Sino.Extensions.Redis -c Release -o .\artifacts --version-suffix=$revision }
 
-exec { & dotnet nuget push .\src\Sino.Extensions.Redis\artifacts\*.nupkg -k oy2cot56vuo55mma3w7qxjt3l2pcga2uji7m6ocltd4oeu5 -s https://api.nuget.org/v3/index.json }
+exec { & dotnet nuget push .\src\Sino.Extensions.Redis\artifacts\*.nupkg -k oy2cot56vuo55mma3w7qxjt3l2pcga2uji7m6ocltd4oeu }
