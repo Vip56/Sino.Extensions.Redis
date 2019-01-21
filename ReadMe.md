@@ -254,6 +254,10 @@ public long Del(params string[] keys) => Multi(KeyCommands.Del(keys));
 5. 通过`HDel`、`HExists`、`HGet`、`HLen`、`HSet`和`HSetNx`可以实现内存字典；
 6. 通过`BLPop`、`BRPop`、`LIndex`、`LLen`、`LPush`、`LPushX`、`RPop`、`RPush`和`RPushX`可以实现事件处理；
 7. 通过`BRPOPLPUSH`、`RPOPLPUSH`和`LRem`可以实现安全队列和循环列表；
+
+#### 相关经验文档
+1. [如何优雅地用Redis实现分布式锁](http://www.redis.cn/articles/20181020004.html)   
+
    
 ### 注意
 * 已经使用老版本的注意，当前新版已经采用了独立的`IRedisCache`接口，而不在实现`Asp.Net Core`的接口。

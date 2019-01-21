@@ -17,7 +17,7 @@
     <PackageProjectUrl>https://github.com/Vip56/Sino.Extensions.Redis</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Vip56/Sino.Extensions.Redis</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <ItemGroup>
