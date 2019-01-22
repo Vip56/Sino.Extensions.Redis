@@ -257,7 +257,12 @@ public long Del(params string[] keys) => Multi(KeyCommands.Del(keys));
 7. 通过`BRPOPLPUSH`、`RPOPLPUSH`和`LRem`可以实现安全队列和循环列表；
 
 #### 相关经验文档
-1. [如何优雅地用Redis实现分布式锁](http://www.redis.cn/articles/20181020004.html)   
+1. [综合文章](http://www.redis.cn/articles.html)   
+2. [如何优雅地用Redis实现分布式锁](http://www.redis.cn/articles/20181020004.html)   
+3. [知乎Redis平台发展与演进之路](https://mp.weixin.qq.com/s/YKJ-Y6EZevvMK8MX38xE3w)   
+4. [Session一致性架构设计实践](https://mp.weixin.qq.com/s/iTdHyODJ12RvTbe6MILg6Q)   
+5. [Redis开发设计规范及案例分析](https://mp.weixin.qq.com/s/gw1X34vtiwRcEYgLbWp23w)   
+6. [大规模codis集群的治理与实践](https://mp.weixin.qq.com/s/O4AqVdibJWs2ivs6dhdClQ)   
 
    
 ### 注意
