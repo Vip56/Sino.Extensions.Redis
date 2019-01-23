@@ -9,7 +9,7 @@ namespace RedisConsole
         {
             var client = new RedisCache(new RedisCacheOptions
             {
-                Host = "127.0.0.1",
+                Host = "192.168.1.235",
                 Port = 6379,
                 InstanceName = "console_"
             });
@@ -26,9 +26,16 @@ namespace RedisConsole
             //list.Test();
             //list.TestAsync().Wait();
 
-            var str = new StringTests(client);
+            //var str = new StringTests(client);
             //str.Test();
-            str.TestAsync().Wait();
+            //str.TestAsync().Wait();
+
+            var load = new LoadTest(client);
+            //load.Test();
+            //load.TestAsync().Wait();
+            load.TestParallel();
+
+            Console.ReadLine();
         }
     }
 }
