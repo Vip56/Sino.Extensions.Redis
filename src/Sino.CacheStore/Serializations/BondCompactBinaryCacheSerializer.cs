@@ -12,19 +12,19 @@ namespace Sino.CacheStore.Serializations
     /// </summary>
     public class BondCompactBinaryCacheSerializer : BondSerializer
     {
-        public override T Deserialize<T>(byte[] data)
-        {
-            var input = new InputBuffer(data);
-            var reader = new CompactReader(input);
-            return DeserializeInternal<CompactReader, T>(reader);
-        }
-
         public override byte[] Serialize<T>(T value)
         {
             var output = new OutputBuffer();
             var writer = new CompactWriter(output);
             SerializeInternal<CompactWriter, T>(value, writer);
             return output.Data.Array;
+        }
+
+        public override T Deserialize<T>(byte[] data)
+        {
+            var input = new InputBuffer(data);
+            var reader = new CompactReader(input);
+            return DeserializeInternal<CompactReader, T>(reader);
         }
     }
 }

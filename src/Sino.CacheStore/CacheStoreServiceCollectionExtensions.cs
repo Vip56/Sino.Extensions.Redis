@@ -57,5 +57,19 @@ namespace Microsoft.Extensions.DependencyInjection
 
             return services;
         }
+
+        /// <summary>
+        /// 对缓存进行设置
+        /// </summary>
+        public static IServiceCollection ConfigCacheStore(this IServiceCollection services, Action<CacheStoreSettings> settings = null)
+        {
+            if (services == null)
+                throw new ArgumentNullException(nameof(services));
+
+            var defaultSettings = new CacheStoreSettings();
+            settings?.Invoke(defaultSettings);
+
+            return services;
+        }
     }
 }
