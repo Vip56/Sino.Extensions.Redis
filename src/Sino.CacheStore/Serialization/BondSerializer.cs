@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Sino.CacheStore.Serializations
+namespace Sino.CacheStore.Serialization
 {
     /// <summary>
     /// Bond序列化基类

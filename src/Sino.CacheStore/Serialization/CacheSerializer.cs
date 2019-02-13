@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Sino.CacheStore.Serializations
+namespace Sino.CacheStore.Serialization
 {
     /// <summary>
     /// 序列化抽象类

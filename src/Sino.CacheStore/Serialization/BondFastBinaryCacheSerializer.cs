@@ -5,7 +5,7 @@ using FastWriter = Bond.Protocols.FastBinaryWriter<Bond.IO.Safe.OutputBuffer>;
 using FastReader = Bond.Protocols.FastBinaryReader<Bond.IO.Safe.InputBuffer>;
 using Bond.IO.Safe;
 
-namespace Sino.CacheStore.Serializations
+namespace Sino.CacheStore.Serialization
 {
     /// <summary>
     /// Bond序列化

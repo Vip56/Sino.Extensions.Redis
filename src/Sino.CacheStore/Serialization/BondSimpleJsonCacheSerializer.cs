@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Sino.CacheStore.Serializations
+namespace Sino.CacheStore.Serialization
 {
     public class BondSimpleJsonCacheSerializer : BondSerializer
     {

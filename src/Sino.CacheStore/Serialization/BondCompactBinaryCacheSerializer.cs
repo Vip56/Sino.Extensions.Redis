@@ -5,7 +5,7 @@ using System.Text;
 using CompactWriter = Bond.Protocols.CompactBinaryWriter<Bond.IO.Safe.OutputBuffer>;
 using CompactReader = Bond.Protocols.CompactBinaryReader<Bond.IO.Safe.InputBuffer>;
 
-namespace Sino.CacheStore.Serializations
+namespace Sino.CacheStore.Serialization
 {
     /// <summary>
     /// Bond序列化

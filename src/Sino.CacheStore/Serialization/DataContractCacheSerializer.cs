@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Sino.CacheStore.Serialization
 {
-    public class GzJsonCacheSerializer : JsonCacheSerializer
+    public class DataContractCacheSerializer
     {
 
     }
