@@ -1,16 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
 using System.Text;
 
 namespace Sino.CacheStore.Serialization
 {
-    public class DataContractCacheSerializer : CacheSerializer
+    public class DataContractGzJsonCacheSerializer : CacheSerializer
     {
-        public DataContractSerializerSettings SerializerSettings { get; private set; }
+        public DataContractJsonSerializerSettings SerializerSettings { get; private set; }
 
-        public DataContractCacheSerializer()
+        public DataContractGzJsonCacheSerializer()
         {
 
         }
@@ -23,7 +24,10 @@ namespace Sino.CacheStore.Serialization
             var serializer = GetSerializer(typeof(T));
             using (var ms = new MemoryStream(data))
             {
-                return serializer.ReadObject(ms) as T;
+                using (var gs = new GZipStream(ms, CompressionMode.Decompress))
+                {
+                    return serializer.ReadObject(gs) as T;
+                }
             }
         }
 
@@ -35,7 +39,11 @@ namespace Sino.CacheStore.Serialization
             var serializer = GetSerializer(typeof(T));
             using (var ms = new MemoryStream())
             {
-                serializer.WriteObject(ms, value);
+                using (var gs = new GZipStream(ms, CompressionMode.Compress, true))
+                {
+                    serializer.WriteObject(gs, value);
+                    gs.Flush();
+                }
                 return ms.ToArray();
             }
         }
@@ -44,11 +52,11 @@ namespace Sino.CacheStore.Serialization
         {
             if (SerializerSettings == null)
             {
-                return new DataContractSerializer(target);
+                return new DataContractJsonSerializer(target);
             }
             else
             {
-                return new DataContractSerializer(target, SerializerSettings);
+                return new DataContractJsonSerializer(target, SerializerSettings);
             }
         }
     }

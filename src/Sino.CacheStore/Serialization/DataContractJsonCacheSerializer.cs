@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
 using System.Text;
-using System.Xml;
 
 namespace Sino.CacheStore.Serialization
 {
-    public class DataContractBinaryCacheSerializer : CacheSerializer
+    public class DataContractJsonCacheSerializer : CacheSerializer
     {
-        public DataContractSerializerSettings SerializerSettings { get; private set; }
+        public DataContractJsonSerializerSettings SerializerSettings { get; private set; }
 
-        public DataContractBinaryCacheSerializer()
+        public DataContractJsonCacheSerializer()
         {
 
         }
@@ -22,10 +22,9 @@ namespace Sino.CacheStore.Serialization
                 throw new ArgumentNullException(nameof(data));
 
             var serializer = GetSerializer(typeof(T));
-            using (var stream = new MemoryStream(data))
+            using (var ms = new MemoryStream(data))
             {
-                var binaryReader = XmlDictionaryReader.CreateBinaryReader(stream, new XmlDictionaryReaderQuotas());
-                return serializer.ReadObject(binaryReader) as T;
+                return serializer.ReadObject(ms) as T;
             }
         }
 
@@ -35,12 +34,10 @@ namespace Sino.CacheStore.Serialization
                 throw new ArgumentNullException(nameof(value));
 
             var serializer = GetSerializer(typeof(T));
-            using (var stream = new MemoryStream())
+            using (var ms = new MemoryStream())
             {
-                var binaryWriter = XmlDictionaryWriter.CreateBinaryWriter(stream);
-                serializer.WriteObject(binaryWriter, value);
-                binaryWriter.Flush();
-                return stream.ToArray();
+                serializer.WriteObject(ms, value);
+                return ms.ToArray();
             }
         }
 
@@ -48,11 +45,11 @@ namespace Sino.CacheStore.Serialization
         {
             if (SerializerSettings == null)
             {
-                return new DataContractSerializer(target);
+                return new DataContractJsonSerializer(target);
             }
             else
             {
-                return new DataContractSerializer(target, SerializerSettings);
+                return new DataContractJsonSerializer(target, SerializerSettings);
             }
         }
     }
