@@ -35,8 +35,8 @@ namespace Sino.Serializer.Abstractions
 
         public abstract Task<string> SerializeAsync<T>(T obj, Encoding encoding = null) where T : class;
 
-        public abstract byte[] SerializeByte<T>(T obj) where T : class;
+        public abstract byte[] SerializeByte<T>(T obj, Encoding encoding = null) where T : class;
 
-        public abstract Task<byte[]> SerializeByteAsync<T>(T obj) where T : class;
+        public abstract Task<byte[]> SerializeByteAsync<T>(T obj, Encoding encoding = null) where T : class;
     }
 }

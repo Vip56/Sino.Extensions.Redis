@@ -32,32 +32,38 @@ namespace Sino.Serializer.Bond
 
         public override T DeserializeByte<T>(byte[] obj, Encoding encoding = null)
         {
-            throw new NotImplementedException();
+            var input = new InputBuffer(obj);
+            var reader = new FastReader(input);
+            return DeserializeInternal<FastReader, T>(reader);
         }
 
         public override Task<T> DeserializeByteAsync<T>(byte[] obj, Encoding encoding = null)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(DeserializeByte<T>(obj, encoding));
         }
 
         public override string Serialize<T>(T obj, Encoding encoding = null)
         {
-            throw new NotImplementedException();
+            encoding = encoding ?? DefaultEncoding;
+            return encoding.GetString(SerializeByte<T>(obj));
         }
 
         public override Task<string> SerializeAsync<T>(T obj, Encoding encoding = null)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(Serialize<T>(obj, encoding));
         }
 
         public override byte[] SerializeByte<T>(T obj)
         {
-            throw new NotImplementedException();
+            var output = new OutputBuffer();
+            var writer = new FastWriter(output);
+            SerializeInternal<FastWriter, T>(obj, writer);
+            return output.Data.Array;
         }
 
         public override Task<byte[]> SerializeByteAsync<T>(T obj)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(SerializeByte<T>(obj));
         }
     }
 }

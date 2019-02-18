@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
 using System.Threading.Tasks;
 
 namespace Sino.Serializer.Abstractions
@@ -31,7 +29,7 @@ namespace Sino.Serializer.Abstractions
         /// <typeparam name="T">对象的类型</typeparam>
         /// <param name="obj">实际对象</param>
         /// <returns>序列化后的字节</returns>
-        byte[] SerializeByte<T>(T obj) where T : class;
+        byte[] SerializeByte<T>(T obj, Encoding encoding = null) where T : class;
 
         /// <summary>
         /// 序列化对象
@@ -39,7 +37,7 @@ namespace Sino.Serializer.Abstractions
         /// <typeparam name="T">对象的类型</typeparam>
         /// <param name="obj">实际对象</param>
         /// <returns>序列化后的字节</returns>
-        Task<byte[]> SerializeByteAsync<T>(T obj) where T : class;
+        Task<byte[]> SerializeByteAsync<T>(T obj, Encoding encoding = null) where T : class;
 
         /// <summary>
         /// 反序列化对象

@@ -1,7 +1,5 @@
 ﻿using Bond;
 using Sino.Serializer.Abstractions;
-using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace Sino.Serializer.Bond
