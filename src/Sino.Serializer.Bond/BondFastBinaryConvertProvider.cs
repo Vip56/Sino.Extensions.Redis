@@ -53,7 +53,7 @@ namespace Sino.Serializer.Bond
             return Task.FromResult(Serialize<T>(obj, encoding));
         }
 
-        public override byte[] SerializeByte<T>(T obj)
+        public override byte[] SerializeByte<T>(T obj, Encoding encoding = null)
         {
             var output = new OutputBuffer();
             var writer = new FastWriter(output);
@@ -61,7 +61,7 @@ namespace Sino.Serializer.Bond
             return output.Data.Array;
         }
 
-        public override Task<byte[]> SerializeByteAsync<T>(T obj)
+        public override Task<byte[]> SerializeByteAsync<T>(T obj, Encoding encoding = null)
         {
             return Task.FromResult(SerializeByte<T>(obj));
         }

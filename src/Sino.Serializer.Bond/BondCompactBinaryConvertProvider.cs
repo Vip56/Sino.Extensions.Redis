@@ -27,11 +27,7 @@ namespace Sino.Serializer.Bond
 
         public override Task<T> DeserializeAsync<T>(string obj, Encoding encoding = null)
         {
-            encoding = encoding ?? DefaultEncoding;
-            var value = encoding.GetBytes(obj);
-            var input = new InputBuffer(value);
-            var reader = new CompactReader(input);
-            return Task.FromResult(DeserializeInternal<CompactReader, T>(reader));
+            return Task.FromResult(Deserialize<T>(obj, encoding));
         }
 
         public override T DeserializeByte<T>(byte[] obj, Encoding encoding = null)
@@ -43,9 +39,7 @@ namespace Sino.Serializer.Bond
 
         public override Task<T> DeserializeByteAsync<T>(byte[] obj, Encoding encoding = null)
         {
-            var input = new InputBuffer(obj);
-            var reader = new CompactReader(input);
-            return Task.FromResult(DeserializeInternal<CompactReader, T>(reader));
+            return Task.FromResult(DeserializeByte<T>(obj, encoding));
         }
 
         public override string Serialize<T>(T obj, Encoding encoding = null)
@@ -59,14 +53,10 @@ namespace Sino.Serializer.Bond
 
         public override Task<string> SerializeAsync<T>(T obj, Encoding encoding = null)
         {
-            encoding = encoding ?? Encoding.UTF8;
-            var output = new OutputBuffer();
-            var writer = new CompactWriter(output);
-            SerializeInternal<CompactWriter, T>(obj, writer);
-            return Task.FromResult(encoding.GetString(output.Data.Array));
+            return Task.FromResult(Serialize<T>(obj, encoding));
         }
 
-        public override byte[] SerializeByte<T>(T obj)
+        public override byte[] SerializeByte<T>(T obj, Encoding encoding = null)
         {
             var output = new OutputBuffer();
             var writer = new CompactWriter(output);
@@ -74,12 +64,9 @@ namespace Sino.Serializer.Bond
             return output.Data.Array;
         }
 
-        public override Task<byte[]> SerializeByteAsync<T>(T obj)
+        public override Task<byte[]> SerializeByteAsync<T>(T obj, Encoding encoding = null)
         {
-            var output = new OutputBuffer();
-            var writer = new CompactWriter(output);
-            SerializeInternal<CompactWriter, T>(obj, writer);
-            return Task.FromResult(output.Data.Array);
+            return Task.FromResult(SerializeByte<T>(obj, encoding));
         }
     }
 }
