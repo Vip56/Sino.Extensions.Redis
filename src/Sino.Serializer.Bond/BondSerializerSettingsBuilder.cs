@@ -11,7 +11,10 @@ namespace Sino.Serializer.Bond
 
         public static SerializerSettingsBuilder AddBondSerializer(this SerializerSettingsBuilder settings)
         {
-            return settings;
+            return settings.AddBondCompactBinarySerializer()
+                .AddBondFastBinarySerializer()
+                .AddBondSerializer()
+                .AddBondSimpleJsonSerializer();
         }
 
         /// <summary>
