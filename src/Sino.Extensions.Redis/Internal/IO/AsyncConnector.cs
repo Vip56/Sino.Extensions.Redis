@@ -113,7 +113,7 @@ namespace Sino.Extensions.Redis.Internal.IO
                     throw new RedisClientException($"Could not write command '{token.Command.Command}'. Argument size exceeds buffer allocation of {args.Count}.");
                 }
 
-                args.SetBuffer(args.Offset, bytes);
+                args.SetBuffer(args.Offset- bytes, bytes);
 
                 if (!_redisSocket.SendAsync(args))
                     OnSocketSent(args);

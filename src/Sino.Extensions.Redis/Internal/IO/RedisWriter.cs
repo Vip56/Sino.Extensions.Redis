@@ -28,7 +28,8 @@ namespace Sino.Extensions.Redis.Internal.IO
         public int Write(RedisCommand command, byte[] buffer, int offset)
         {
             string prepared = Prepare(command);
-            return _io.Encoding.GetBytes(prepared, 0, prepared.Length, buffer, offset);
+            int bcount = _io.Encoding.GetByteCount(prepared);
+            return _io.Encoding.GetBytes(prepared, 0, prepared.Length, buffer, offset- bcount);
         }
 
         string Prepare(RedisCommand command)
