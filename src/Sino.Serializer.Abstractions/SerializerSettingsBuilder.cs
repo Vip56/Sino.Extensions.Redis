@@ -12,7 +12,7 @@ namespace Sino.Serializer.Abstractions
     /// </summary>
     public class SerializerSettingsBuilder : IOptions<SerializerSettingsBuilder>
     {
-        private ConcurrentDictionary<string, Func<IConvertProvider>> _convertProviders;
+        private ConcurrentDictionary<string, Lazy<IConvertProvider>> _convertProviders;
 
         public Encoding GlobalEncoding = Encoding.UTF8;
 
@@ -22,7 +22,7 @@ namespace Sino.Serializer.Abstractions
 
         public SerializerSettingsBuilder()
         {
-            _convertProviders = new ConcurrentDictionary<string, Func<IConvertProvider>>();
+            _convertProviders = new ConcurrentDictionary<string, Lazy<IConvertProvider>>();
         }
 
         /// <summary>
@@ -35,16 +35,19 @@ namespace Sino.Serializer.Abstractions
             if (_convertProviders.ContainsKey(name))
                 throw new ConvertProviderExistedException($"The {name} ConvertProvider is exited");
 
-            _convertProviders.AddOrUpdate(name, convertProvider, (x, y) =>
+            var provider = new Lazy<IConvertProvider>(convertProvider);
+
+            _convertProviders.AddOrUpdate(name, provider, (x, y) =>
             {
-                return convertProvider;
+                return provider;
             });
         }
 
         /// <summary>
         /// 移除序列化提供器
         /// </summary>
-        /// <param name="name"></param>
+        /// <param name="name">需要删除的序列化提供器名称</param>
+        /// <returns>是否成功删除</returns>
         public bool RemoveProvider(string name)
         {
             if (!_convertProviders.ContainsKey(name))
@@ -52,7 +55,7 @@ namespace Sino.Serializer.Abstractions
             if (name == DefaultConvertProviderName)
                 return false;
 
-            Func<IConvertProvider> provider = null;
+            Lazy<IConvertProvider> provider = null;
             _convertProviders.TryRemove(name, out provider);
             return true;
         }
@@ -64,7 +67,7 @@ namespace Sino.Serializer.Abstractions
         public void SetDefaultConvertProvider(string name)
         {
             if (!_convertProviders.ContainsKey(name))
-                throw new KeyNotFoundException($"The {name} ConvertProvider is not existed");
+                throw new KeyNotFoundException($"The {name} ConvertProvider is not existed.");
             DefaultConvertProviderName = name;
         }
 
@@ -72,7 +75,7 @@ namespace Sino.Serializer.Abstractions
         /// 将对象复制到新目标
         /// </summary>
         /// <param name="destination">复制到的对象</param>
-        public void CopyTo(IDictionary<string, Func<IConvertProvider>> destination)
+        public void CopyTo(IDictionary<string, Lazy<IConvertProvider>> destination)
         {
             if (destination == null)
                 throw new ArgumentNullException(nameof(destination));

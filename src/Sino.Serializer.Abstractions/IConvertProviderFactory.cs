@@ -27,18 +27,18 @@ namespace Sino.Serializer.Abstractions
         /// </summary>
         /// <param name="groupName">组别名称</param>
         /// <returns>序列化提供器组</returns>
-        IList<IConvertProvider> GetConvertProviders(string groupName);
+        IEnumerable<IConvertProvider> GetConvertProviders(string groupName);
 
         /// <summary>
         /// 获取所有序列化提供器名称
         /// </summary>
         /// <returns>名称数组</returns>
-        IList<string> GetConvertProviderNames();
+        IEnumerable<string> GetConvertProviderNames();
 
         /// <summary>
         /// 获取所有序列化提供器组名
         /// </summary>
         /// <returns>组名数组</returns>
-        IList<string> GetConvertProviderGroupNames();
+        IEnumerable<string> GetConvertProviderGroupNames();
     }
 }
