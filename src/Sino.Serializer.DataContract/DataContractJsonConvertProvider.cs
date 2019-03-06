@@ -11,6 +11,8 @@ namespace Sino.Serializer.DataContract
 {
     public class DataContractJsonConvertProvider : ConvertProvider
     {
+        public const string PROVIDER_NAME = "json";
+
         public DataContractJsonSerializerSettings SerializerSettings { get; private set; }
 
         public DataContractJsonConvertProvider(Encoding encoding, DataContractJsonSerializerSettings serializerSettings)

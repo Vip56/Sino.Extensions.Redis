@@ -14,6 +14,8 @@ namespace Sino.Serializer.DataContract
     /// </summary>
     public class DataContractBinaryConvertProvider : ConvertProvider
     {
+        public const string PROVIDER_NAME = "binary";
+
         public DataContractSerializerSettings SerializerSettings { get; private set; }
 
         public DataContractBinaryConvertProvider(Encoding encoding, DataContractSerializerSettings serializerSettings)

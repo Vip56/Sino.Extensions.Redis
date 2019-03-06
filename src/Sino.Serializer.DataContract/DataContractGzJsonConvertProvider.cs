@@ -12,6 +12,8 @@ namespace Sino.Serializer.DataContract
 {
     public class DataContractGzJsonConvertProvider : ConvertProvider
     {
+        public const string PROVIDER_NAME = "gzjson";
+
         public DataContractJsonSerializerSettings SerializerSettings { get; private set; }
 
         public DataContractGzJsonConvertProvider(Encoding encoding, DataContractJsonSerializerSettings serializerSettings)
