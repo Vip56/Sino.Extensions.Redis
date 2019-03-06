@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SerializerUnitTest.Entity
+namespace SerializerUnitTest
 {
     public class TestResponse
     {
