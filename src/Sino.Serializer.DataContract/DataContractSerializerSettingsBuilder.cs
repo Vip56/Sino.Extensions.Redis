@@ -1,11 +1,12 @@
 ﻿using Sino.Serializer.Abstractions;
+using Sino.Serializer.DataContract;
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
 
-namespace Sino.Serializer.DataContract
+namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
     /// 序列化注入

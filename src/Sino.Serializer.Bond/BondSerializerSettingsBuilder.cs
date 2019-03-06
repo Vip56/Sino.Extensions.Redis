@@ -1,17 +1,16 @@
 ﻿using Sino.Serializer.Abstractions;
+using Sino.Serializer.Bond;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Sino.Serializer.Bond
+namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
     /// 序列化注入
     /// </summary>
     public static class BondSerializerSettingsBuilder
     {
-        public const string PROVIDER_GROUP = "bond_";
-
         public static SerializerSettingsBuilder AddBondSerializer(this SerializerSettingsBuilder settings)
         {
             return settings.AddBondCompactBinarySerializer()
@@ -27,7 +26,7 @@ namespace Sino.Serializer.Bond
         public static SerializerSettingsBuilder AddBondCompactBinarySerializer(this SerializerSettingsBuilder settings, Encoding encoding = null)
         {
             encoding = encoding ?? settings.GlobalEncoding;
-            settings.AddProvider(PROVIDER_GROUP + BondCompactBinaryConvertProvider.PROVIDER_NAME, () =>
+            settings.AddProvider(BondCompactBinaryConvertProvider.PROVIDER_NAME, () =>
             {
                 return new BondCompactBinaryConvertProvider(encoding);
             });
@@ -41,7 +40,7 @@ namespace Sino.Serializer.Bond
         public static SerializerSettingsBuilder AddBondFastBinarySerializer(this SerializerSettingsBuilder settings, Encoding encoding = null)
         {
             encoding = encoding ?? settings.GlobalEncoding;
-            settings.AddProvider(PROVIDER_GROUP + BondFastBinaryConvertProvider.PROVIDER_NAME, () =>
+            settings.AddProvider(BondFastBinaryConvertProvider.PROVIDER_NAME, () =>
             {
                 return new BondFastBinaryConvertProvider(encoding);
             });
@@ -55,7 +54,7 @@ namespace Sino.Serializer.Bond
         public static SerializerSettingsBuilder AddBondSimpleJsonSerializer(this SerializerSettingsBuilder settings, Encoding encoding = null)
         {
             encoding = encoding ?? settings.GlobalEncoding;
-            settings.AddProvider(PROVIDER_GROUP + BondSimpleJsonConvertProvider.PROVIDER_NAME, () =>
+            settings.AddProvider(BondSimpleJsonConvertProvider.PROVIDER_NAME, () =>
             {
                 return new BondSimpleJsonConvertProvider(encoding);
             });

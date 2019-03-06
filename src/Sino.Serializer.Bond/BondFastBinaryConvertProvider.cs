@@ -13,7 +13,7 @@ namespace Sino.Serializer.Bond
     /// </summary>
     public class BondFastBinaryConvertProvider : BondConvertProvider
     {
-        public const string PROVIDER_NAME = "fb";
+        public const string PROVIDER_NAME = "bond_fb";
 
         public BondFastBinaryConvertProvider(Encoding encoding)
             : base(encoding) { }

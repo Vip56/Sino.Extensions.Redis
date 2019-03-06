@@ -12,7 +12,7 @@ namespace Sino.Serializer.Bond
     /// </summary>
     public class BondSimpleJsonConvertProvider : BondConvertProvider
     {
-        public const string PROVIDER_NAME = "sj";
+        public const string PROVIDER_NAME = "bond_sj";
 
         public BondSimpleJsonConvertProvider(Encoding encoding)
             : base(encoding) { }

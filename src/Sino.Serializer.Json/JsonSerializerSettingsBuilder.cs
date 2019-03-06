@@ -1,10 +1,11 @@
 ﻿using Newtonsoft.Json;
 using Sino.Serializer.Abstractions;
+using Sino.Serializer.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Sino.Serializer.Json
+namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
     /// 序列化注入

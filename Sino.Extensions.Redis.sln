@@ -33,6 +33,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sino.Serializer.Json", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sino.Serializer.DataContract", "src\Sino.Serializer.DataContract\Sino.Serializer.DataContract.csproj", "{B48FEF6C-2B58-4AA4-A6B1-52134E76BBCA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SerializerUnitTest", "test\SerializerUnitTest\SerializerUnitTest.csproj", "{884A5E23-EDCC-4D74-8732-BE4922563AA7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,10 @@ Global
 		{B48FEF6C-2B58-4AA4-A6B1-52134E76BBCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B48FEF6C-2B58-4AA4-A6B1-52134E76BBCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B48FEF6C-2B58-4AA4-A6B1-52134E76BBCA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{884A5E23-EDCC-4D74-8732-BE4922563AA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{884A5E23-EDCC-4D74-8732-BE4922563AA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{884A5E23-EDCC-4D74-8732-BE4922563AA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{884A5E23-EDCC-4D74-8732-BE4922563AA7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -85,6 +91,7 @@ Global
 		{F1FF076F-7EEE-4C37-98DD-4A54E51218F1} = {0C6D0694-FC38-4D89-ABD3-F63DE2D41880}
 		{23E4E8F8-E6BC-4FE1-AA26-A1F922BCF914} = {0C6D0694-FC38-4D89-ABD3-F63DE2D41880}
 		{B48FEF6C-2B58-4AA4-A6B1-52134E76BBCA} = {0C6D0694-FC38-4D89-ABD3-F63DE2D41880}
+		{884A5E23-EDCC-4D74-8732-BE4922563AA7} = {4FE56CA1-DFBC-4FD1-9715-9505E1E8244A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {32494E31-6B76-4454-8050-11BFCF0CD6F6}
