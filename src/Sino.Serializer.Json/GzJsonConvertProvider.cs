@@ -12,6 +12,8 @@ namespace Sino.Serializer.Json
 {
     public class GzJsonConvertProvider : ConvertProvider
     {
+        public const string PROVIDER_NAME = "gzjson";
+
         private readonly JsonSerializerSettings _serializerSettings;
 
         public GzJsonConvertProvider(Encoding encoding, JsonSerializerSettings settings)
