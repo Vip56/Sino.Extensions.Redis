@@ -52,7 +52,7 @@ namespace Sino.Serializer.Bond
             var output = new OutputBuffer();
             var writer = new CompactBinaryWriter<OutputBuffer>(output);
             SerializeInternal(obj, writer);
-            return encoding.GetString(output.Data.Array.Take(output.Data.Count).ToArray());
+            return encoding.GetString(GetArray(output.Data));
         }
 
         public override Task<string> SerializeAsync<T>(T obj, Encoding encoding = null)
@@ -65,12 +65,17 @@ namespace Sino.Serializer.Bond
             var output = new OutputBuffer();
             var writer = new CompactBinaryWriter<OutputBuffer>(output);
             SerializeInternal(obj, writer);
-            return output.Data.Array.Take(output.Data.Count).ToArray();
+            return GetArray(output.Data);
         }
 
         public override Task<byte[]> SerializeByteAsync<T>(T obj, Encoding encoding = null)
         {
             return Task.FromResult(SerializeByte<T>(obj, encoding));
+        }
+
+        private byte[] GetArray(ArraySegment<byte> seggment)
+        {
+            return seggment.Array.Take(seggment.Count).ToArray();
         }
     }
 }
