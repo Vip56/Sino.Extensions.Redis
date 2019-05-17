@@ -19,13 +19,11 @@ namespace Sino.Serializer.Abstractions
         protected ILogger<ConvertProviderFactory> Logger { get; set; }
 
         public ConvertProviderFactory(IOptions<SerializerSettingsBuilder> optionsAccessor, ILogger<ConvertProviderFactory> logger)
-            : this(optionsAccessor?.Value)
+            : this(optionsAccessor?.Value, logger) { }
+
+        public ConvertProviderFactory(SerializerSettingsBuilder options, ILogger<ConvertProviderFactory> logger)
         {
             Logger = logger;
-        }
-
-        public ConvertProviderFactory(SerializerSettingsBuilder options)
-        {
             options = options ?? throw new ArgumentNullException(nameof(options));
 
             options.CopyTo(ConvertProviders);

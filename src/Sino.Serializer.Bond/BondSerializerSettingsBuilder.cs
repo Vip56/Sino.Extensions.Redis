@@ -15,7 +15,6 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             return settings.AddBondCompactBinarySerializer()
                 .AddBondFastBinarySerializer()
-                .AddBondSerializer()
                 .AddBondSimpleJsonSerializer();
         }
 

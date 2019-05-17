@@ -1,6 +1,4 @@
 ﻿using Bond.Protocols;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -48,7 +46,7 @@ namespace Sino.Serializer.Bond
             using (var writer = new StringWriter())
             {
                 var jsonWriter = new SimpleJsonWriter(writer);
-                SerializeInternal<SimpleJsonWriter, T>(obj, jsonWriter);
+                SerializeInternal(obj, jsonWriter);
                 var sb = writer.GetStringBuilder();
                 return sb.ToString();
             }
@@ -65,7 +63,7 @@ namespace Sino.Serializer.Bond
             using (var writer = new StringWriter())
             {
                 var jsonWriter = new SimpleJsonWriter(writer);
-                SerializeInternal<SimpleJsonWriter, T>(obj, jsonWriter);
+                SerializeInternal(obj, jsonWriter);
                 var sb = writer.GetStringBuilder();
                 return encoding.GetBytes(sb.ToString());
             }

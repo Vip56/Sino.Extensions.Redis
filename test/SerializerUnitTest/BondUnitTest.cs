@@ -22,35 +22,11 @@ namespace SerializerUnitTest
         {
             var convert = Factory.GetConvertProvider(BondCompactBinaryConvertProvider.PROVIDER_NAME);
 
-            var t = DateTime.Now;
-            TestResponse res = new TestResponse
+            var res = new BondCacheItem
             {
-                Field = "test",
-                Field2 = int.MaxValue,
-                Fiedl3 = long.MaxValue,
-                Field4 = 0xFF,
-                Field5 = t,
-                Field6 = float.MaxValue,
-                Field7 = double.MaxValue,
-                Field8 = new List<string>
-                {
-                    "test1",
-                    "test2",
-                    "test3"
-                },
-                Field9 = new List<int>
-                {
-                    1,
-                    2,
-                    3,
-                    4
-                },
-                Field10 = new Child
-                {
-                    Field = "childtest"
-                }
+                Key = "test",
+                Value = "value"
             };
-
             var str = convert.Serialize(res);
 
             Assert.NotNull(str);
