@@ -1,6 +1,5 @@
 ﻿using Sino.Serializer.Abstractions;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
@@ -11,7 +10,7 @@ namespace Sino.Serializer.DataContract
 {
     public class DataContractJsonConvertProvider : ConvertProvider
     {
-        public const string PROVIDER_NAME = "json";
+        public const string PROVIDER_NAME = "datacontract_json";
 
         public DataContractJsonSerializerSettings SerializerSettings { get; private set; }
 

@@ -13,8 +13,6 @@ namespace Microsoft.Extensions.DependencyInjection
     /// </summary>
     public static class DataContractSerializerSettingsBuilder
     {
-        public const string PROVIDER_GROUP = "datacontract_";
-
         public static SerializerSettingsBuilder AddDataContractSerializer(this SerializerSettingsBuilder settings)
         {
             return settings.AddDataContractBinarySerializer()
@@ -32,7 +30,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             encoding = encoding ?? settings.GlobalEncoding;
 
-            settings.AddProvider(PROVIDER_GROUP + DataContractBinaryConvertProvider.PROVIDER_NAME, () =>
+            settings.AddProvider(DataContractBinaryConvertProvider.PROVIDER_NAME, () =>
             {
                 return new DataContractBinaryConvertProvider(encoding, dcSettings);
             });
@@ -48,7 +46,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             encoding = encoding ?? settings.GlobalEncoding;
 
-            settings.AddProvider(PROVIDER_GROUP + DataContractConvertProvider.PROVIDER_NAME, () =>
+            settings.AddProvider(DataContractConvertProvider.PROVIDER_NAME, () =>
             {
                 return new DataContractConvertProvider(encoding, dcSettings);
             });
@@ -64,7 +62,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             encoding = encoding ?? settings.GlobalEncoding;
 
-            settings.AddProvider(PROVIDER_GROUP + DataContractGzJsonConvertProvider.PROVIDER_NAME, () =>
+            settings.AddProvider(DataContractGzJsonConvertProvider.PROVIDER_NAME, () =>
             {
                 return new DataContractGzJsonConvertProvider(encoding, dcSettings);
             });
@@ -80,7 +78,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             encoding = encoding ?? settings.GlobalEncoding;
 
-            settings.AddProvider(PROVIDER_GROUP + DataContractJsonConvertProvider.PROVIDER_NAME, () =>
+            settings.AddProvider(DataContractJsonConvertProvider.PROVIDER_NAME, () =>
             {
                 return new DataContractJsonConvertProvider(encoding, dcSettings);
             });

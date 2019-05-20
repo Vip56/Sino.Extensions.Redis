@@ -14,7 +14,7 @@ namespace Sino.Serializer.DataContract
     /// </summary>
     public class DataContractBinaryConvertProvider : ConvertProvider
     {
-        public const string PROVIDER_NAME = "binary";
+        public const string PROVIDER_NAME = "datacontract_binary";
 
         public DataContractSerializerSettings SerializerSettings { get; private set; }
 
@@ -38,14 +38,12 @@ namespace Sino.Serializer.DataContract
 
         public override T Deserialize<T>(string obj, Encoding encoding = null)
         {
-            encoding = encoding ?? DefaultEncoding;
-            var data = encoding.GetBytes(obj);
-            return DeserializeByte<T>(data, encoding);
+            throw new NotImplementedException();
         }
 
         public override Task<T> DeserializeAsync<T>(string obj, Encoding encoding = null)
         {
-            return Task.FromResult(Deserialize<T>(obj, encoding));
+            throw new NotImplementedException();
         }
 
         public override T DeserializeByte<T>(byte[] obj, Encoding encoding = null)
@@ -65,14 +63,12 @@ namespace Sino.Serializer.DataContract
 
         public override string Serialize<T>(T obj, Encoding encoding = null)
         {
-            encoding = encoding ?? DefaultEncoding;
-            var data = SerializeByte<T>(obj, encoding);
-            return encoding.GetString(data);
+            throw new NotImplementedException();
         }
 
         public override Task<string> SerializeAsync<T>(T obj, Encoding encoding = null)
         {
-            return Task.FromResult(Serialize<T>(obj, encoding));
+            throw new NotImplementedException();
         }
 
         public override byte[] SerializeByte<T>(T obj, Encoding encoding = null)
@@ -83,6 +79,7 @@ namespace Sino.Serializer.DataContract
                 var binaryWriter = XmlDictionaryWriter.CreateBinaryWriter(stream);
                 serializer.WriteObject(binaryWriter, obj);
                 binaryWriter.Flush();
+                stream.Flush();
                 return stream.ToArray();
             }
         }

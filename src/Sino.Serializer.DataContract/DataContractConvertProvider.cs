@@ -10,7 +10,7 @@ namespace Sino.Serializer.DataContract
 {
     public class DataContractConvertProvider : ConvertProvider
     {
-        public const string PROVIDER_NAME = "normal";
+        public const string PROVIDER_NAME = "datacontract_normal";
 
         public DataContractSerializerSettings SerializerSettings { get; private set; }
 
