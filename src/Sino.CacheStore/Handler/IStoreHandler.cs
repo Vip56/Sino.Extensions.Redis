@@ -6,5 +6,6 @@ namespace Sino.CacheStore.Handler
 {
     interface IStoreHandler
     {
+
     }
 }

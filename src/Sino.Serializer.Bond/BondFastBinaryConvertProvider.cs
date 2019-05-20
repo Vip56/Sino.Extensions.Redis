@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FastWriter = Bond.Protocols.FastBinaryWriter<Bond.IO.Safe.OutputBuffer>;
 using FastReader = Bond.Protocols.FastBinaryReader<Bond.IO.Safe.InputBuffer>;
+using System.Linq;
 
 namespace Sino.Serializer.Bond
 {
@@ -52,20 +53,25 @@ namespace Sino.Serializer.Bond
 
         public override Task<string> SerializeAsync<T>(T obj, Encoding encoding = null)
         {
-            return Task.FromResult(Serialize<T>(obj, encoding));
+            return Task.FromResult(Serialize(obj, encoding));
         }
 
         public override byte[] SerializeByte<T>(T obj, Encoding encoding = null)
         {
             var output = new OutputBuffer();
             var writer = new FastWriter(output);
-            SerializeInternal<FastWriter, T>(obj, writer);
-            return output.Data.Array;
+            SerializeInternal(obj, writer);
+            return GetArray(output.Data);
         }
 
         public override Task<byte[]> SerializeByteAsync<T>(T obj, Encoding encoding = null)
         {
             return Task.FromResult(SerializeByte<T>(obj));
+        }
+
+        private byte[] GetArray(ArraySegment<byte> seggment)
+        {
+            return seggment.Array.Take(seggment.Count).ToArray();
         }
     }
 }

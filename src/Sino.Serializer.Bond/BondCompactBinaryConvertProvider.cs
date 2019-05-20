@@ -1,12 +1,10 @@
 ﻿using Bond.IO.Safe;
 using System;
-using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using System.Threading.Tasks;
 using CompactWriter = Bond.Protocols.CompactBinaryWriter<Bond.IO.Safe.OutputBuffer>;
 using CompactReader = Bond.Protocols.CompactBinaryReader<Bond.IO.Safe.InputBuffer>;
-using Bond.Protocols;
 
 namespace Sino.Serializer.Bond
 {
@@ -50,7 +48,7 @@ namespace Sino.Serializer.Bond
         {
             encoding = encoding ?? Encoding.UTF8;
             var output = new OutputBuffer();
-            var writer = new CompactBinaryWriter<OutputBuffer>(output);
+            var writer = new CompactWriter(output);
             SerializeInternal(obj, writer);
             return encoding.GetString(GetArray(output.Data));
         }
@@ -63,7 +61,7 @@ namespace Sino.Serializer.Bond
         public override byte[] SerializeByte<T>(T obj, Encoding encoding = null)
         {
             var output = new OutputBuffer();
-            var writer = new CompactBinaryWriter<OutputBuffer>(output);
+            var writer = new CompactWriter(output);
             SerializeInternal(obj, writer);
             return GetArray(output.Data);
         }
