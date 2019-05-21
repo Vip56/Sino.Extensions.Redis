@@ -9,7 +9,7 @@ namespace Sino.Serializer.Json
 {
     public class JsonConvertProvider : ConvertProvider
     {
-        public const string PROVIDER_NAME = "normal";
+        public const string PROVIDER_NAME = "json_normal";
 
         private readonly JsonSerializerSettings _serializerSettings;
 

@@ -12,11 +12,10 @@ namespace Microsoft.Extensions.DependencyInjection
     /// </summary>
     public static class JsonSerializerSettingsBuilder
     {
-        public const string PROVIDER_GROUP = "json_";
-
         public static SerializerSettingsBuilder AddJsonSerializer(this SerializerSettingsBuilder settings)
         {
-            return settings;
+            return settings.AddJsonNormalSerializer()
+                .AddJsonGzSerializer();
         }
 
         /// <summary>
@@ -28,7 +27,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             encoding = encoding ?? settings.GlobalEncoding;
 
-            settings.AddProvider(PROVIDER_GROUP + JsonConvertProvider.PROVIDER_NAME, () =>
+            settings.AddProvider(JsonConvertProvider.PROVIDER_NAME, () =>
             {
                 return new JsonConvertProvider(encoding, jsSettings);
             });
@@ -44,7 +43,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             encoding = encoding ?? settings.GlobalEncoding;
 
-            settings.AddProvider(PROVIDER_GROUP + GzJsonConvertProvider.PROVIDER_NAME, () =>
+            settings.AddProvider(GzJsonConvertProvider.PROVIDER_NAME, () =>
             {
                 return new GzJsonConvertProvider(encoding, jsSettings);
             });
