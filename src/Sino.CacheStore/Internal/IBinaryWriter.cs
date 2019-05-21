@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Sino.CacheStore.Handler
+namespace Sino.CacheStore.Internal
 {
-    class StorePipeline
+    public interface IBinaryWriter
     {
 
     }
