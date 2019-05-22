@@ -196,5 +196,61 @@ namespace Sino.CacheStore.Internal
         /// <param name="values">添加的值</param>
         /// <returns>命令对象</returns>
         public virtual IntCommand CreateRPushCommand(string key, params object[] values) => throw new NotImplementedException();
+
+        /// <summary>
+        /// 计算给定字符串中被设置为1的比特位数量。
+        /// </summary>
+        /// <param name="key">需要计算的key</param>
+        /// <param name="start">起始位，可选</param>
+        /// <param name="end">结束位，可选</param>
+        /// <returns>命令对象</returns>
+        public virtual IntCommand CreateBitCountCommand(string key, long? start = null, long? end = null) => throw new NotImplementedException();
+
+        /// <summary>
+        /// 对key所储存的字符串值设置或清除指定偏移量上的位
+        /// </summary>
+        /// <param name="key">需要设置的key</param>
+        /// <param name="offset">偏移量</param>
+        /// <param name="value">设置的值</param>
+        /// <returns>命令对象</returns>
+        public virtual BoolCommand CreateSetBitCommand(string key, uint offset, bool value) => throw new NotImplementedException();
+
+        /// <summary>
+        /// 获取key存储的字符串上指定偏移量上的位
+        /// </summary>
+        /// <param name="key">需要获取的key</param>
+        /// <param name="offset">偏移量</param>
+        /// <returns>命令对象</returns>
+        public virtual BoolCommand CreateGetBitCommand(string key, uint offset) => throw new NotImplementedException();
+
+        /// <summary>
+        /// 将key中储存的数字值减一。
+        /// </summary>
+        /// <param name="key">需要计算的key</param>
+        /// <returns>命令对象</returns>
+        public virtual IntCommand CreateDecrCommand(string key) => throw new NotImplementedException();
+
+        /// <summary>
+        /// 将key中储存的数字减decrement。
+        /// </summary>
+        /// <param name="key">需要计算的key</param>
+        /// <param name="decrement">需要减去的值</param>
+        /// <returns>命令对象</returns>
+        public virtual IntCommand CreateDecrByCommand(string key, long decrement) => throw new NotImplementedException();
+
+        /// <summary>
+        /// 将key中存储的数字值增一。
+        /// </summary>
+        /// <param name="key">需要计算的key</param>
+        /// <returns>命令对象</returns>
+        public virtual IntCommand CreateIncrCommand(string key) => throw new NotImplementedException();
+
+        /// <summary>
+        /// 将key所存储的值加上increment。
+        /// </summary>
+        /// <param name="key">需要计算的key</param>
+        /// <param name="increment">需要增加的值</param>
+        /// <returns>命令对象</returns>
+        public virtual IntCommand CreateIncrByCommand(string key, long increment) => throw new NotImplementedException();
     }
 }

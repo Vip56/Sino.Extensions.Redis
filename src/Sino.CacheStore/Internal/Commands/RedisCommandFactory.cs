@@ -209,5 +209,47 @@ namespace Sino.CacheStore.Internal
         }
 
         #endregion
+
+        #region BitAndNumber
+
+        public override IntCommand CreateBitCountCommand(string key, long? start = null, long? end = null)
+        {
+            string[] args = start.HasValue && end.HasValue
+                ? new[] { key, start.Value.ToString(), end.Value.ToString() }
+                new[] { key };
+            return new IntCommand("BITCOUNT", args);
+        }
+
+        public override BoolCommand CreateSetBitCommand(string key, uint offset, bool value)
+        {
+            return new BoolCommand("SETBIT", key, offset, value ? "1" : "0");
+        }
+
+        public override BoolCommand CreateGetBitCommand(string key, uint offset)
+        {
+            return new BoolCommand("GETBIT", key, offset);
+        }
+
+        public override IntCommand CreateDecrCommand(string key)
+        {
+            return new IntCommand("DECR", key);
+        }
+
+        public override IntCommand CreateDecrByCommand(string key, long decrement)
+        {
+            return new IntCommand("DECRBY", key, decrement);
+        }
+
+        public override IntCommand CreateIncrCommand(string key)
+        {
+            return new IntCommand("INCR", key);
+        }
+
+        public override IntCommand CreateIncrByCommand(string key, long increment)
+        {
+            return new IntCommand("INCRBY", key, increment);
+        }
+
+        #endregion
     }
 }
