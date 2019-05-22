@@ -10,25 +10,14 @@ using System.Threading;
 
 namespace Sino.CacheStore.Handler
 {
-    public class RedisStorePipeline
+    public class RedisStorePipeline : StorePipeline
     {
         private SocketConnection _connection;
 
         /// <summary>
-        /// 连接成功事件
-        /// </summary>
-        public event EventHandler Connected;
-
-        public EndPoint EndPoint
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
         /// 是否连接
         /// </summary>
-        public bool IsConnected
+        public override bool IsConnected
         {
             get
             {
@@ -54,22 +43,14 @@ namespace Sino.CacheStore.Handler
         /// <summary>
         /// 发起连接
         /// </summary>
-        public async Task<bool> ConnectAsync()
+        public override async Task<bool> ConnectAsync()
         {
             _connection = await SocketConnection.ConnectAsync(EndPoint);
-
-            if (_connection.Socket.Connected)
-                OnConnected();
 
             return _connection.Socket.Connected;
         }
 
-        void OnConnected()
-        {
-            Connected?.Invoke(this, new EventArgs());
-        }
-
-        public async Task<byte[]> SendAsnyc(byte[] write)
+        public override async Task<byte[]> SendAsnyc(byte[] write)
         {
             var wresult = await _connection.Output.WriteAsync(write).ConfigureAwait(false);
             _connection.Output.Complete();

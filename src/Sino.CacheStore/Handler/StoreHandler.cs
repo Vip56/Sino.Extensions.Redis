@@ -8,6 +8,6 @@ namespace Sino.CacheStore.Handler
 {
     public abstract class StoreHandler : IStoreHandler
     {
-        public abstract Task<T> Process<T>(CacheStoreCommand<T> command);
+        public abstract Task<CacheStoreCommand<T>> Process<T>(CacheStoreCommand<T> command);
     }
 }

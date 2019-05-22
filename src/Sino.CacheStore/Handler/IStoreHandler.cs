@@ -8,6 +8,6 @@ namespace Sino.CacheStore.Handler
 {
     public interface IStoreHandler
     {
-        Task<T> Process<T>(CacheStoreCommand<T> command);
+        Task<CacheStoreCommand<T>> Process<T>(CacheStoreCommand<T> command);
     }
 }

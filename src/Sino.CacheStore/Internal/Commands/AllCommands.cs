@@ -5,11 +5,53 @@ using System.Text;
 namespace Sino.CacheStore.Internal
 {
     /// <summary>
-    /// reader.ReadInt() == 1;
+    /// 返回类型为Bool的命令
     /// </summary>
     public class BoolCommand : CacheStoreCommand<bool>
     {
         public BoolCommand(string command, params object[] args)
+            : base(command, args) { }
+    }
+
+    /// <summary>
+    /// 返回类型为Int的命令
+    /// </summary>
+    public class IntCommand : CacheStoreCommand<long>
+    {
+        public IntCommand(string command, params object[] args)
+            : base(command, args) { }
+    }
+
+    /// <summary>
+    /// 返回类型为状态的命令
+    /// </summary>
+    public class StatusCommand : CacheStoreCommand<string>
+    {
+        public bool IsEmpty { get; set; } = false;
+
+        public bool IsNullable { get; set; } = false;
+
+        public StatusCommand(string command, params object[] args)
+            : base(command, args) { }
+    }
+
+    /// <summary>
+    /// 返回类型为字符串的命令
+    /// </summary>
+    public class StringCommand : CacheStoreCommand<string>
+    {
+        public bool IsNullable { get; set; } = false;
+
+        public StringCommand(string command, params object[] args)
+            : base(command, args) { }
+    }
+
+    /// <summary>
+    /// 返回类型为元组的命令
+    /// </summary>
+    public class TupleCommand : CacheStoreCommand<Tuple<string, string>>
+    {
+        public TupleCommand(string command, params object[] args)
             : base(command, args) { }
     }
 
@@ -54,77 +96,6 @@ namespace Sino.CacheStore.Internal
             : base(command, args) { }
     }
 
-    /// <summary>
-    /// reader.ReadInt();
-    /// </summary>
-    public class IntCommand : CacheStoreCommand<long>
-    {
-        public IntCommand(string command, params object[] args)
-            : base(command, args) { }
-    }
-
-    public class StatusCommand : CacheStoreCommand<string>
-    {
-        public bool IsEmpty { get; set; } = false;
-
-        public bool IsNullable { get; set; } = false;
-
-        public StatusCommand(string command, params object[] args)
-            : base(command, args) { }
-
-        public string Parse(IBinaryReader reader)
-        {
-            if (IsEmpty)
-            {
-                RedisMessage type = reader.ReadType();
-                if ((int)type == -1)
-                    return string.Empty;
-                else if (type == RedisMessage.Error)
-                    throw new CacheStoreException(reader.ReadStatus(false));
-
-                throw new CacheStoreProtocolException($"Unexpected type: {type}");
-            }
-            else if (IsNullable)
-            {
-                RedisMessage type = reader.ReadType();
-                if (type == RedisMessage.Status)
-                    return reader.ReadStatus(false);
-
-                object[] result = reader.ReadMultiBulk(false);
-                if (result != null)
-                    throw new CacheStoreProtocolException($"Expecting null MULTI BULK response. Received: {result.ToString()}");
-
-                return null;
-            }
-            else
-                return reader.ReadStatus();
-        }
-    }
-
-    public class StringCommand : CacheStoreCommand<string>
-    {
-        public bool IsNullable { get; set; } = false;
-
-        public StringCommand(string command, params object[] args)
-            : base(command, args) { }
-
-        public string Parse(IBinaryReader reader)
-        {
-            if (IsNullable)
-            {
-                RedisMessage type = reader.ReadType();
-                if (type == RedisMessage.Bulk)
-                    return reader.ReadBulkString(false);
-                reader.ReadMultiBulk(false);
-                return null;
-            }
-            else
-            {
-                return reader.ReadBulkString();
-            }
-        }
-    }
-
     public class ResultWithStringArray : CacheStoreCommand<string[]>
     {
         readonly StringCommand _memberCommand;
@@ -148,19 +119,6 @@ namespace Sino.CacheStore.Internal
             for (int i = 0; i < array.Length; i++)
                 array[i] = _memberCommand.Parse(reader);
             return array;
-        }
-    }
-
-    public class TupleCommand : CacheStoreCommand<Tuple<string, string>>
-    {
-        public TupleCommand(string command, params object[] args)
-            : base(command, args) { }
-
-        public Tuple<string, string> Parse(IBinaryReader reader)
-        {
-            reader.ExpectType(RedisMessage.MultiBulk);
-            reader.ExpectSize(2);
-            return Tuple.Create(reader.ReadBulkString(), reader.ReadBulkString());
         }
     }
 }
