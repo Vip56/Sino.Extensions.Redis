@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Sino.CacheStore.Internal
+﻿namespace Sino.CacheStore.Internal
 {
     public class CacheStoreCommand
     {
@@ -22,7 +18,7 @@ namespace Sino.CacheStore.Internal
         protected CacheStoreCommand(string command, params object[] args)
             : base(command, args) { }
 
-        public abstract T Parse(IBinaryReader reader);
+        public T Result { get; set; }
 
         public override string ToString()
         {

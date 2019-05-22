@@ -1,11 +1,13 @@
-﻿using System;
+﻿using Sino.CacheStore.Internal;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Sino.CacheStore.Handler
 {
-    interface IStoreHandler
+    public interface IStoreHandler
     {
-
+        Task<T> Process<T>(CacheStoreCommand<T> command);
     }
 }

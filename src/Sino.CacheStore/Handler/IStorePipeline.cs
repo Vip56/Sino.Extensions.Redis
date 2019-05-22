@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace Sino.CacheStore.Handler
 {
-    public class StorePipeline
+    public interface IStorePipeline
     {
-        
+        Task<byte[]> SendAsnyc(byte[] write);
     }
 }

@@ -1,11 +1,13 @@
-﻿using System;
+﻿using Sino.CacheStore.Internal;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Sino.CacheStore.Handler
 {
-    public class StoreHandler
+    public abstract class StoreHandler : IStoreHandler
     {
-
+        public abstract Task<T> Process<T>(CacheStoreCommand<T> command);
     }
 }

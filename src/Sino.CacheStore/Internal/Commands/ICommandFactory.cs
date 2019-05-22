@@ -5,18 +5,18 @@ using System.Text;
 namespace Sino.CacheStore.Internal
 {
     /// <summary>
-    /// Redis existence specification for SET command
+    /// 命令创建工厂接口
     /// </summary>
-    public enum RedisExistence
+    public interface ICommandFactory
     {
         /// <summary>
-        /// Only set the key if it does not already exist
+        /// 存储方式名称
         /// </summary>
-        Nx,
+        string Name { get; set; }
 
         /// <summary>
-        /// Only set the key if it already exists
+        /// 命令创建事件
         /// </summary>
-        Xx,
+        event EventHandler<CacheStoreCommand> OnCreateCommand;
     }
 }
