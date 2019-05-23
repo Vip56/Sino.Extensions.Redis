@@ -157,7 +157,7 @@ namespace Sino.CacheStore.Internal
         /// </summary>
         /// <param name="key">列表key</param>
         /// <returns>命令对象</returns>
-        public virtual StringCommand CreateLPopCommand(string key) => throw new NotImplementedException();
+        public virtual BytesCommand CreateLPopCommand(string key) => throw new NotImplementedException();
 
         /// <summary>
         /// 返回列表key中指定下标的元素。
@@ -165,7 +165,7 @@ namespace Sino.CacheStore.Internal
         /// <param name="key">需要查询的列表key</param>
         /// <param name="index">下标，从0开始</param>
         /// <returns>命令对象</returns>
-        public virtual StringCommand CreateLIndexCommand(string key, long index) => throw new NotImplementedException();
+        public virtual BytesCommand CreateLIndexCommand(string key, long index) => throw new NotImplementedException();
 
         /// <summary>
         /// 返回列表key的长度。
@@ -187,7 +187,7 @@ namespace Sino.CacheStore.Internal
         /// </summary>
         /// <param name="key">列表key</param>
         /// <returns>命令对象</returns>
-        public virtual StringCommand CreateRPopCommand(string key) => throw new NotImplementedException();
+        public virtual BytesCommand CreateRPopCommand(string key) => throw new NotImplementedException();
 
         /// <summary>
         /// 将一个或多个值value插入到列表key的尾巴。

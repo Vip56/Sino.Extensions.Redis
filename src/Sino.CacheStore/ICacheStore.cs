@@ -41,9 +41,9 @@ namespace Sino.CacheStore
         /// <param name="key">需要保存的Key</param>
         /// <param name="value">需要保存的值</param>
         /// <param name="timeout">超时时间，单位秒</param>
-        void Set<T>(string key, T value, int? timeout = null);
+        string Set<T>(string key, T value, int? timeout = null);
 
-        Task SetAsync<T>(string key, T value, int? timeout = null);
+        Task<string> SetAsync<T>(string key, T value, int? timeout = null);
 
         /// <summary>
         /// 仅当Key不存在时设置其值
@@ -51,9 +51,9 @@ namespace Sino.CacheStore
         /// <param name="key">需要保存的Key</param>
         /// <param name="value">需要保存的值</param>
         /// <returns>是否成功设置</returns>
-        bool SetWithNoExisted<T>(string key, T value);
+        string SetWithNoExisted<T>(string key, T value);
 
-        Task<bool> SetWithNoExistedAsync<T>(string key, T value);
+        Task<string> SetWithNoExistedAsync<T>(string key, T value);
 
         /// <summary>
         /// 设置Key的超时时间

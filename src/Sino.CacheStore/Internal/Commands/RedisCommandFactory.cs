@@ -160,17 +160,17 @@ namespace Sino.CacheStore.Internal
 
         #region List
 
-        public override StringCommand CreateLPopCommand(string key)
+        public override BytesCommand CreateLPopCommand(string key)
         {
-            var cmd = new StringCommand("LPOP", key);
+            var cmd = new BytesCommand("LPOP", key);
             OnCommand(cmd);
 
             return cmd;
         }
 
-        public override StringCommand CreateLIndexCommand(string key, long index)
+        public override BytesCommand CreateLIndexCommand(string key, long index)
         {
-            var cmd = new StringCommand("LINDEX", key, index);
+            var cmd = new BytesCommand("LINDEX", key, index);
             OnCommand(cmd);
 
             return cmd;
@@ -192,9 +192,9 @@ namespace Sino.CacheStore.Internal
             return cmd;
         }
 
-        public override StringCommand CreateRPopCommand(string key)
+        public override BytesCommand CreateRPopCommand(string key)
         {
-            var cmd = new StringCommand("RPOP", key);
+            var cmd = new BytesCommand("RPOP", key);
             OnCommand(cmd);
 
             return cmd;

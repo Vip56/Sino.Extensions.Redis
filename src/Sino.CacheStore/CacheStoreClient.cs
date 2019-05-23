@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 using System.Threading.Tasks;
 using Sino.CacheStore.Events;
 using Sino.CacheStore.Handler;
@@ -315,122 +316,222 @@ namespace Sino.CacheStore
 
         public long Incr(string key)
         {
-            throw new NotImplementedException();
+            return IncrAsync(key).Result;
         }
 
-        public Task<long> IncrAsync(string key)
+        public async Task<long> IncrAsync(string key)
         {
+            if (string.IsNullOrEmpty(key))
+                throw new ArgumentNullException(nameof(key));
 
+            ChangeEvent(key, OperatorType.BitAndNumber, nameof(IncrAsync));
+            var cmd = _cmdFactory.CreateIncrCommand(key);
+            var result = await _handler.ProcessAsync(cmd);
+
+            return result.Result;
         }
 
         public long IncrBy(string key, long increment)
         {
-            throw new NotImplementedException();
+            return IncrByAsync(key, increment).Result;
         }
 
-        public Task<long> IncrByAsync(string key, long increment)
+        public async Task<long> IncrByAsync(string key, long increment)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(key))
+                throw new ArgumentNullException(nameof(key));
+
+            ChangeEvent(key, OperatorType.BitAndNumber, nameof(IncrByAsync));
+            var cmd = _cmdFactory.CreateIncrByCommand(key, increment);
+            var result = await _handler.ProcessAsync(cmd);
+
+            return result.Result;
         }
 
         public T LIndex<T>(string key, long index)
         {
-            throw new NotImplementedException();
+            return LIndexAsync<T>(key, index).Result;
         }
 
-        public Task<T> LIndexAsync<T>(string key, long index)
+        public async Task<T> LIndexAsync<T>(string key, long index)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(key))
+                throw new ArgumentNullException(nameof(key));
+
+            QueryEvent(key, OperatorType.List, nameof(LIndexAsync));
+            var cmd = _cmdFactory.CreateLIndexCommand(key, index);
+            var result = await _handler.ProcessAsync(cmd);
+            var obj = _convertProvider.DeserializeByte<T>(result.Result);
+
+            return obj;
         }
 
         public long LLen(string key)
         {
-            throw new NotImplementedException();
+            return LLenAsync(key).Result;
         }
 
-        public Task<long> LLenAsync(string key)
+        public async Task<long> LLenAsync(string key)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(key))
+                throw new ArgumentNullException(nameof(key));
+
+            QueryEvent(key, OperatorType.List, nameof(LLenAsync));
+            var cmd = _cmdFactory.CreateLLenCommand(key);
+            var result = await _handler.ProcessAsync(cmd);
+
+            return result.Result;
         }
 
         public T LPop<T>(string key)
         {
-            throw new NotImplementedException();
+            return LPopAsync<T>(key).Result;
         }
 
-        public Task<T> LPopAsync<T>(string key)
+        public async Task<T> LPopAsync<T>(string key)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(key))
+                throw new ArgumentNullException(nameof(key));
+
+            QueryEvent(key, OperatorType.List, nameof(LPopAsync));
+            var cmd = _cmdFactory.CreateLPopCommand(key);
+            var result = await _handler.ProcessAsync(cmd);
+            var obj = _convertProvider.DeserializeByte<T>(result.Result);
+
+            return obj;
         }
 
         public long LPush<T>(string key, params T[] values)
         {
-            throw new NotImplementedException();
+            return LPushAsync<T>(key, values.ToArray()).Result;
         }
 
-        public Task<long> LPushAsync<T>(string key, params T[] values)
+        public async Task<long> LPushAsync<T>(string key, params T[] values)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(key))
+                throw new ArgumentNullException(nameof(key));
+            if (values == null || values?.Length <= 0)
+                throw new ArgumentNullException(nameof(values));
+
+            ChangeEvent(key, OperatorType.List, nameof(LPushAsync));
+            var bytes = values.Select(x => _convertProvider.SerializeByte(x));
+            var cmd = _cmdFactory.CreateLPushCommand(key, values.ToArray());
+            var result = await _handler.ProcessAsync(cmd);
+
+            return result.Result;
         }
 
-        public void Remove(string key)
+        public long Remove(string key)
         {
-            throw new NotImplementedException();
+            return RemoveAsync(key).Result;
         }
 
-        public Task RemoveAsync(string key)
+        public async Task<long> RemoveAsync(string key)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(key))
+                throw new ArgumentNullException(nameof(key));
+
+            RemoveEvent(key, OperatorType.Normal, nameof(RemoveAsync));
+            var cmd = _cmdFactory.CreateRemoveCommand(key);
+            var result = await _handler.ProcessAsync(cmd);
+
+            return result.Result;
         }
 
         public T RPop<T>(string key)
         {
-            throw new NotImplementedException();
+            return RPopAsync<T>(key).Result;
         }
 
-        public Task<T> RPopAsync<T>(string key)
+        public async Task<T> RPopAsync<T>(string key)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(key))
+                throw new ArgumentNullException(nameof(key));
+
+            ChangeEvent(key, OperatorType.List, nameof(RPopAsync));
+            var cmd = _cmdFactory.CreateRPopCommand(key);
+            var result = await _handler.ProcessAsync(cmd);
+
+            var obj = _convertProvider.DeserializeByte<T>(result.Result);
+
+            return obj;
         }
 
         public long RPush<T>(string key, params T[] values)
         {
-            throw new NotImplementedException();
+            return RPushAsync<T>(key, values.ToArray()).Result;
         }
 
-        public Task<long> RPushAsync<T>(string key, params T[] values)
+        public async Task<long> RPushAsync<T>(string key, params T[] values)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(key))
+                throw new ArgumentNullException(nameof(key));
+            if (values == null || values?.Length <= 0)
+                throw new ArgumentNullException(nameof(values));
+
+            ChangeEvent(key, OperatorType.List, nameof(RPushAsync));
+            var bytes = values.Select(x => _convertProvider.SerializeByte(x));
+            var cmd = _cmdFactory.CreateRPushCommand(key, bytes.ToArray());
+            var result = await _handler.ProcessAsync(cmd);
+
+            return result.Result;
         }
 
-        public void Set<T>(string key, T value, int? timeout = null)
+        public string Set<T>(string key, T value, int? timeout = null)
         {
-            throw new NotImplementedException();
+            return SetAsync(key, value, timeout).Result;
         }
 
-        public Task SetAsync<T>(string key, T value, int? timeout = null)
+        public async Task<string> SetAsync<T>(string key, T value, int? timeout = null)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(key))
+                throw new ArgumentNullException(nameof(key));
+            if (value == null)
+                throw new ArgumentNullException(nameof(value));
+
+            ChangeEvent(key, OperatorType.Normal, nameof(SetAsync));
+            var bytes = _convertProvider.SerializeByte(value);
+            var cmd = _cmdFactory.CreateSetCommand(key, bytes, timeout);
+            var result = await _handler.ProcessAsync(cmd);
+
+            return result.Result;
         }
 
         public bool SetBit(string key, uint offset, bool value)
         {
-            throw new NotImplementedException();
+            return SetBitAsync(key, offset, value).Result;
         }
 
-        public Task<bool> SetBitAsync(string key, uint offset, bool value)
+        public async Task<bool> SetBitAsync(string key, uint offset, bool value)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(key))
+                throw new ArgumentNullException(nameof(key));
+
+            ChangeEvent(key, OperatorType.BitAndNumber, nameof(SetBitAsync));
+            var cmd = _cmdFactory.CreateSetBitCommand(key, offset, value);
+            var result = await _handler.ProcessAsync(cmd);
+
+            return result.Result;
         }
 
-        public bool SetWithNoExisted<T>(string key, T value)
+        public string SetWithNoExisted<T>(string key, T value)
         {
-            throw new NotImplementedException();
+            return SetWithNoExistedAsync(key, value).Result;
         }
 
-        public Task<bool> SetWithNoExistedAsync<T>(string key, T value)
+        public async Task<string> SetWithNoExistedAsync<T>(string key, T value)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(key))
+                throw new ArgumentNullException(nameof(key));
+            if (value == null)
+                throw new ArgumentNullException(nameof(value));
+
+            ChangeEvent(key, OperatorType.Normal, nameof(SetWithNoExistedAsync));
+            var bytes = _convertProvider.SerializeByte(value);
+            var cmd = _cmdFactory.CreateSetCommand(key, bytes, null, null, CacheStoreExistence.Nx);
+            var result = await _handler.ProcessAsync(cmd);
+
+            return result.Result;
         }
     }
 }
