@@ -61,7 +61,7 @@ namespace Sino.CacheStore.Internal
         /// </summary>
         /// <param name="key">需要获取的key</param>
         /// <returns>命令对象</returns>
-        public virtual StringCommand CreateGetCommand(string key) => throw new NotImplementedException();
+        public virtual BytesCommand CreateGetCommand(string key) => throw new NotImplementedException();
 
         /// <summary>
         /// 设置指定key的值
@@ -124,7 +124,7 @@ namespace Sino.CacheStore.Internal
         /// <param name="key">需要查询的key</param>
         /// <param name="field">需要查询的域</param>
         /// <returns>命令对象</returns>
-        public virtual StringCommand CreateHGetCommand(string key, string field) => throw new NotImplementedException();
+        public virtual BytesCommand CreateHGetCommand(string key, string field) => throw new NotImplementedException();
 
         /// <summary>
         /// 返回哈希表key中域的数量。
@@ -141,7 +141,7 @@ namespace Sino.CacheStore.Internal
         /// <param name="field">需要保存的域</param>
         /// <param name="value">需要保存的值</param>
         /// <returns>命令对象</returns>
-        public virtual BoolCommand CreateHSetCommand(string key, string field, object value) => throw new NotImplementedException();
+        public virtual BoolCommand CreateHSetCommand(string key, string field, byte[] value) => throw new NotImplementedException();
 
         /// <summary>
         /// 将哈希表key中的域的值设置为value,当且仅当域field不存在。
@@ -150,7 +150,7 @@ namespace Sino.CacheStore.Internal
         /// <param name="field">需要保存的域</param>
         /// <param name="value">需要保存的值</param>
         /// <returns>命令对象</returns>
-        public virtual BoolCommand CreateHSetWithNoExistCommand(string key, string field, object value) => throw new NotImplementedException();
+        public virtual BoolCommand CreateHSetWithNoExistCommand(string key, string field, byte[] value) => throw new NotImplementedException();
 
         /// <summary>
         /// 移除并返回列表key的头元素

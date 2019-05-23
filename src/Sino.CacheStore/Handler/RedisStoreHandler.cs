@@ -1,4 +1,6 @@
-﻿using Sino.CacheStore.Internal;
+﻿using Microsoft.Extensions.Options;
+using Sino.CacheStore.Configuration;
+using Sino.CacheStore.Internal;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -10,17 +12,42 @@ namespace Sino.CacheStore.Handler
 {
     public class RedisStoreHandler : StoreHandler
     {
+        private readonly RedisCacheStoreOptions _options;
+        private readonly string _instance;
+        private readonly string _password;
+
         public Encoding Encoding { get; set; }
 
         public IStorePipeline Pipeline { get; set; }
 
-        public RedisStoreHandler(IStorePipeline pipeline)
+        public RedisStoreHandler(IOptions<CacheStoreOptions> optionsAccessor)
+            : this(optionsAccessor?.Value) { }
+
+        public RedisStoreHandler(CacheStoreOptions options)
         {
+            _options = options.Redis ?? throw new ArgumentNullException(nameof(options.Redis));
+
+            _instance = options.Redis.InstanceName ?? string.Empty;
+
+            if (string.IsNullOrEmpty(_options.Host))
+                throw new ArgumentNullException(nameof(_options.Host));
+
+            _password = _options.Password;
+
             Encoding = new UTF8Encoding(false);
-            Pipeline = pipeline;
+            Pipeline = new RedisStorePipeline(_options.Host, _options.Port);
         }
 
-        public override async Task<CacheStoreCommand<T>> Process<T>(CacheStoreCommand<T> command)
+        public override async Task Init()
+        {
+            if (!string.IsNullOrEmpty(_password))
+            {
+                var cmd = new StatusCommand("AUTH", _password);
+                await ProcessAsync(cmd);
+            }
+        }
+
+        public override async Task<CacheStoreCommand<T>> ProcessAsync<T>(CacheStoreCommand<T> command)
         {
             if (!Pipeline.IsConnected)
                 await Pipeline.ConnectAsync();
@@ -102,6 +129,11 @@ namespace Sino.CacheStore.Handler
                         reader.ExpectType(RedisMessage.MultiBulk);
                         reader.ExpectSize(2);
                         tuplecmd.Result = Tuple.Create(reader.ReadBulkString(), reader.ReadBulkString());
+                    }
+                    break;
+                case BytesCommand bytescmd:
+                    {
+                        bytescmd.Result = reader.ReadBulkBytes(true);
                     }
                     break;
                 default:

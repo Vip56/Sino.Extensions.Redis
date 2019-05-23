@@ -35,9 +35,9 @@ namespace Sino.CacheStore.Handler
         /// </summary>
         public int ReconnectWait { get; set; }
 
-        public RedisStorePipeline(EndPoint endPoint)
+        public RedisStorePipeline(string host, int port)
         {
-            EndPoint = endPoint;
+            EndPoint = new IPEndPoint(IPAddress.Parse(host), port);
         }
 
         /// <summary>

@@ -29,7 +29,7 @@ namespace Sino.Serializer.Abstractions
         /// <typeparam name="T">对象的类型</typeparam>
         /// <param name="obj">实际对象</param>
         /// <returns>序列化后的字节</returns>
-        byte[] SerializeByte<T>(T obj, Encoding encoding = null) where T : class;
+        byte[] SerializeByte<T>(T obj, Encoding encoding = null);
 
         /// <summary>
         /// 序列化对象
@@ -62,7 +62,7 @@ namespace Sino.Serializer.Abstractions
         /// <param name="obj">实际对象</param>
         /// <param name="encoding">编码格式，默认为UTF-8</param>
         /// <returns>反序列化后的对象</returns>
-        T DeserializeByte<T>(byte[] obj, Encoding encoding = null) where T : class;
+        T DeserializeByte<T>(byte[] obj, Encoding encoding = null);
 
         /// <summary>
         /// 反序列化对象

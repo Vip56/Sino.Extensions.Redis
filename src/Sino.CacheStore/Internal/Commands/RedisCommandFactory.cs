@@ -56,9 +56,9 @@ namespace Sino.CacheStore.Internal
             return cmd;
         }
 
-        public override StringCommand CreateGetCommand(string key)
+        public override BytesCommand CreateGetCommand(string key)
         {
-            var cmd = new StringCommand("GET", key);
+            var cmd = new BytesCommand("GET", key);
             OnCommand(cmd);
 
             return cmd;
@@ -124,9 +124,9 @@ namespace Sino.CacheStore.Internal
             return cmd;
         }
 
-        public override StringCommand CreateHGetCommand(string key, string field)
+        public override BytesCommand CreateHGetCommand(string key, string field)
         {
-            var cmd = new StringCommand("HGET", key, field);
+            var cmd = new BytesCommand("HGET", key, field);
             OnCommand(cmd);
 
             return cmd;
@@ -140,7 +140,7 @@ namespace Sino.CacheStore.Internal
             return cmd;
         }
 
-        public override BoolCommand CreateHSetCommand(string key, string field, object value)
+        public override BoolCommand CreateHSetCommand(string key, string field, byte[] value)
         {
             var cmd = new BoolCommand("HSET", key, field, value);
             OnCommand(cmd);
@@ -148,7 +148,7 @@ namespace Sino.CacheStore.Internal
             return cmd;
         }
 
-        public override BoolCommand CreateHSetWithNoExistCommand(string key, string field, object value)
+        public override BoolCommand CreateHSetWithNoExistCommand(string key, string field, byte[] value)
         {
             var cmd = new BoolCommand("HSETNX", key, field, value);
             OnCommand(cmd);
@@ -215,7 +215,7 @@ namespace Sino.CacheStore.Internal
         public override IntCommand CreateBitCountCommand(string key, long? start = null, long? end = null)
         {
             string[] args = start.HasValue && end.HasValue
-                ? new[] { key, start.Value.ToString(), end.Value.ToString() }
+                ? new[] { key, start.Value.ToString(), end.Value.ToString() }:
                 new[] { key };
             return new IntCommand("BITCOUNT", args);
         }

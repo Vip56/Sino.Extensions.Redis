@@ -11,6 +11,8 @@ namespace Sino.CacheStore
     /// </summary>
     public interface ICacheStore : ICacheStoreEvent
     {
+        Task Init();
+
         #region Key
 
         /// <summary>
@@ -59,9 +61,9 @@ namespace Sino.CacheStore
         /// <param name="key">需要设置的Key</param>
         /// <param name="value">超时时间,默认为秒</param>
         /// <param name="isSeconds">超时时间单位，true为秒，反之为毫秒</param>
-        void Expire(string key, long value, bool isSeconds = true);
+        bool Expire(string key, long value, bool isSeconds = true);
 
-        Task ExpireAsync(string key, long value, bool isSeconds = true);
+        Task<bool> ExpireAsync(string key, long value, bool isSeconds = true);
 
         /// <summary>
         /// 移除Key
@@ -215,16 +217,6 @@ namespace Sino.CacheStore
         #region List
 
         /// <summary>
-        /// 采用阻塞模式获取指定Key数组中任意头部值
-        /// </summary>
-        /// <param name="timeout">超时时间，单位秒</param>
-        /// <param name="keys">需要获取的Key数组</param>
-        /// <returns>返回获取到值的Key和值</returns>
-        Tuple<string, T> BLPop<T>(int timeout, params string[] keys);
-
-        Task<Tuple<string, T>> BLPopAsync<T>(int timeout, params string[] keys);
-
-        /// <summary>
         /// 移除并返回列表Key的头元素
         /// </summary>
         /// <param name="key">需要操作的列表Key</param>
@@ -232,16 +224,6 @@ namespace Sino.CacheStore
         T LPop<T>(string key);
 
         Task<T> LPopAsync<T>(string key);
-
-        /// <summary>
-        /// 采用阻塞模式获取指定Key数组中任意尾部值
-        /// </summary>
-        /// <param name="timeout">超时时间，单位秒</param>
-        /// <param name="keys">需要获取的Key数组</param>
-        /// <returns>返回获取到值的Key和值</returns>
-        Tuple<string, T> BRPop<T>(int timeout, params string[] keys);
-
-        Task<Tuple<string, T>> BRPopAsync<T>(int timeout, params string[] keys);
 
         /// <summary>
         /// 获取列表中指定下标的元素

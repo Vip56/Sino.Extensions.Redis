@@ -13,7 +13,7 @@ namespace Sino.CacheStore.Configuration
         /// <summary>
         /// Redis配置
         /// </summary>
-        public CacheStoreWithRedis Redis { get; set; }
+        public RedisCacheStoreOptions Redis { get; set; }
 
         CacheStoreOptions IOptions<CacheStoreOptions>.Value
         {

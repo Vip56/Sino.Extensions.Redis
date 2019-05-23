@@ -13,4 +13,8 @@
     <PackageReference Include="Pipelines.Sockets.Unofficial" Version="2.0.22" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Sino.Serializer.Abstractions\Sino.Serializer.Abstractions.csproj" />
+  </ItemGroup>
+
 </Project>

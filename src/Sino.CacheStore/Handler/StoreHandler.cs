@@ -8,6 +8,11 @@ namespace Sino.CacheStore.Handler
 {
     public abstract class StoreHandler : IStoreHandler
     {
-        public abstract Task<CacheStoreCommand<T>> Process<T>(CacheStoreCommand<T> command);
+        public virtual Task Init()
+        {
+            return Task.CompletedTask;
+        }
+
+        public abstract Task<CacheStoreCommand<T>> ProcessAsync<T>(CacheStoreCommand<T> command);
     }
 }

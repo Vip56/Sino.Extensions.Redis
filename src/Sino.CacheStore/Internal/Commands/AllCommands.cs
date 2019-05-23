@@ -56,11 +56,11 @@ namespace Sino.CacheStore.Internal
     }
 
     /// <summary>
-    /// reader.ReadBulkBytes(true);
+    /// 返回类型为字节数组的命令
     /// </summary>
-    public class ResultWithBytes : CacheStoreCommand<byte[]>
+    public class BytesCommand : CacheStoreCommand<byte[]>
     {
-        public ResultWithBytes(string command, params object[] args)
+        public BytesCommand(string command, params object[] args)
             : base(command, args) { }
     }
 

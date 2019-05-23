@@ -19,9 +19,9 @@ namespace Sino.CacheStore.Events
         /// </summary>
         Hash,
         /// <summary>
-        /// 集合操作
+        /// 按位或数值操作
         /// </summary>
-        Set,
+        BitAndNumber,
         /// <summary>
         /// 其他操作
         /// </summary>
