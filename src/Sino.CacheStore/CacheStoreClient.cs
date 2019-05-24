@@ -65,6 +65,45 @@ namespace Sino.CacheStore
             await _handler.Init();
         }
 
+        public string Ping()
+        {
+            return PingAsync().Result;
+        }
+
+        public async Task<string> PingAsync()
+        {
+            var cmd = _cmdFactory.CreatePingCommand();
+            var result = await _handler.ProcessAsync(cmd);
+
+            return result.Result;
+        }
+
+        public string Quit()
+        {
+            return QuitAsync().Result;
+        }
+
+        public async Task<string> QuitAsync()
+        {
+            var cmd = _cmdFactory.CreateQuitCommand();
+            var result = await _handler.ProcessAsync(cmd);
+
+            return result.Result;
+        }
+
+        public string Select(string dbName)
+        {
+            return SelectAsync(dbName).Result;
+        }
+
+        public async Task<string> SelectAsync(string dbName)
+        {
+            var cmd = _cmdFactory.CreateSelectCommand(dbName);
+            var result = await _handler.ProcessAsync(cmd);
+
+            return result.Result;
+        }
+
         public long BitCount(string key, long? start = null, long? end = null)
         {
             return BitCountAsync(key, start, end).Result;

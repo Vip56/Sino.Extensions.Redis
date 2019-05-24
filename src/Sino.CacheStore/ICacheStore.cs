@@ -13,6 +13,31 @@ namespace Sino.CacheStore
     {
         Task Init();
 
+        #region Basic
+
+        /// <summary>
+        /// 心跳检测
+        /// </summary>
+        string Ping();
+
+        Task<string> PingAsync();
+
+        /// <summary>
+        /// 退出
+        /// </summary>
+        string Quit();
+
+        Task<string> QuitAsync();
+
+        /// <summary>
+        /// 选择数据库
+        /// </summary>
+        string Select();
+
+        Task<string> SelectAsync();
+
+        #endregion
+
         #region Key
 
         /// <summary>

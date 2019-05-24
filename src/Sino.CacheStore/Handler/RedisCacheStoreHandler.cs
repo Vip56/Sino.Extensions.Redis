@@ -23,7 +23,7 @@ namespace Sino.CacheStore.Handler
         public RedisCacheStoreHandler(IOptions<CacheStoreOptions> optionsAccessor)
             : this(optionsAccessor?.Value) { }
 
-        public RedisCacheStoreHandler(CacheStoreOptions options)
+        public RedisCacheStoreHandler(CacheStoreOptions options, CacheStorePipeline pipeline = null)
         {
             _options = options.Redis ?? throw new ArgumentNullException(nameof(options.Redis));
 
@@ -35,7 +35,7 @@ namespace Sino.CacheStore.Handler
             _password = _options.Password;
 
             Encoding = new UTF8Encoding(false);
-            Pipeline = new RedisCacheStorePipeline(_options.Host, _options.Port);
+            Pipeline = pipeline ?? new RedisCacheStorePipeline(_options.Host, _options.Port);
         }
 
         public override async Task Init()

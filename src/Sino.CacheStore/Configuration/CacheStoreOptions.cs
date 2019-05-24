@@ -19,5 +19,15 @@ namespace Sino.CacheStore.Configuration
         {
             get { return this; }
         }
+
+        public CacheStoreOptions()
+        {
+            Redis = new RedisCacheStoreOptions
+            {
+                Host = "127.0.0.1",
+                Port = 6379,
+                InstanceName = "0"
+            };
+        }
     }
 }
