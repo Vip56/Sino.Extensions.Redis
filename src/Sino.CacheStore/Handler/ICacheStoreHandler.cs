@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Sino.CacheStore.Handler
 {
-    public interface IStoreHandler
+    public interface ICacheStoreHandler
     {
         Task Init();
         Task<CacheStoreCommand<T>> ProcessAsync<T>(CacheStoreCommand<T> command);

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Sino.CacheStore.Handler
 {
-    public class RedisStoreHandler : StoreHandler
+    public class RedisCacheStoreHandler : CacheStoreHandler
     {
         private readonly RedisCacheStoreOptions _options;
         private readonly string _instance;
@@ -18,12 +18,12 @@ namespace Sino.CacheStore.Handler
 
         public Encoding Encoding { get; set; }
 
-        public IStorePipeline Pipeline { get; set; }
+        public ICacheStorePipeline Pipeline { get; set; }
 
-        public RedisStoreHandler(IOptions<CacheStoreOptions> optionsAccessor)
+        public RedisCacheStoreHandler(IOptions<CacheStoreOptions> optionsAccessor)
             : this(optionsAccessor?.Value) { }
 
-        public RedisStoreHandler(CacheStoreOptions options)
+        public RedisCacheStoreHandler(CacheStoreOptions options)
         {
             _options = options.Redis ?? throw new ArgumentNullException(nameof(options.Redis));
 
@@ -35,7 +35,7 @@ namespace Sino.CacheStore.Handler
             _password = _options.Password;
 
             Encoding = new UTF8Encoding(false);
-            Pipeline = new RedisStorePipeline(_options.Host, _options.Port);
+            Pipeline = new RedisCacheStorePipeline(_options.Host, _options.Port);
         }
 
         public override async Task Init()

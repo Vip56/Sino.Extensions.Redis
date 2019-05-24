@@ -69,9 +69,9 @@ namespace Sino.CacheStore
         /// 移除Key
         /// </summary>
         /// <param name="key">需要移除的Key</param>
-        void Remove(string key);
+        long Remove(string key);
 
-        Task RemoveAsync(string key);
+        Task<long> RemoveAsync(string key);
 
         #endregion
 

@@ -10,7 +10,7 @@ using System.Threading;
 
 namespace Sino.CacheStore.Handler
 {
-    public class RedisStorePipeline : StorePipeline
+    public class RedisCacheStorePipeline : CacheStorePipeline
     {
         private SocketConnection _connection;
 
@@ -35,7 +35,7 @@ namespace Sino.CacheStore.Handler
         /// </summary>
         public int ReconnectWait { get; set; }
 
-        public RedisStorePipeline(string host, int port)
+        public RedisCacheStorePipeline(string host, int port)
         {
             EndPoint = new IPEndPoint(IPAddress.Parse(host), port);
         }

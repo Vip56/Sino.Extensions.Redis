@@ -5,6 +5,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using Pipelines.Sockets.Unofficial;
+using Sino.CacheStore;
+using Sino.CacheStore.Handler;
+using Sino.CacheStore.Internal;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -39,6 +42,9 @@ namespace Microsoft.Extensions.DependencyInjection
             }
 
             services.Configure<CacheStoreOptions>(fromConfiguration.GetSection(CACHE_STORE_SECTION));
+            services.Add(ServiceDescriptor.Singleton<ICacheStore, CacheStoreClient>());
+            services.Add(ServiceDescriptor.Singleton<ICacheStoreHandler, RedisCacheStoreHandler>());
+            services.Add(ServiceDescriptor.Singleton<CommandFactory, RedisCommandFactory>());
 
             return services;
         }
@@ -55,20 +61,9 @@ namespace Microsoft.Extensions.DependencyInjection
                 throw new ArgumentNullException(nameof(configureOptions));
 
             services.Configure(configureOptions);
-
-            return services;
-        }
-
-        /// <summary>
-        /// 对缓存进行设置
-        /// </summary>
-        public static IServiceCollection ConfigCacheStore(this IServiceCollection services, Action<CacheStoreSettings> settings = null)
-        {
-            if (services == null)
-                throw new ArgumentNullException(nameof(services));
-
-            var defaultSettings = new CacheStoreSettings();
-            settings?.Invoke(defaultSettings);
+            services.Add(ServiceDescriptor.Singleton<ICacheStore, CacheStoreClient>());
+            services.Add(ServiceDescriptor.Singleton<ICacheStoreHandler, RedisCacheStoreHandler>());
+            services.Add(ServiceDescriptor.Singleton<CommandFactory, RedisCommandFactory>());
 
             return services;
         }

@@ -13,14 +13,14 @@ namespace Sino.CacheStore
     public class CacheStoreClient : ICacheStore
     {
         private CommandFactory _cmdFactory;
-        private IStoreHandler _handler;
+        private ICacheStoreHandler _handler;
         private IConvertProvider _convertProvider;
 
         public event EventHandler<QueryEventArgs> OnQuery;
         public event EventHandler<ChangeEventArgs> OnChange;
         public event EventHandler<RemoveEventArgs> OnRemove;
 
-        public CacheStoreClient(CommandFactory cmdFactory, IStoreHandler handler, IConvertProvider convertProvider)
+        public CacheStoreClient(CommandFactory cmdFactory, ICacheStoreHandler handler, IConvertProvider convertProvider)
         {
             _cmdFactory = cmdFactory;
             _handler = handler;

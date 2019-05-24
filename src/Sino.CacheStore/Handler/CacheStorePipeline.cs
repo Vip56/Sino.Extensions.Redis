@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Sino.CacheStore.Handler
 {
-    public class StorePipeline : IStorePipeline
+    public class CacheStorePipeline : ICacheStorePipeline
     {
         public EndPoint EndPoint { get; set; }
         public virtual bool IsConnected { get; }

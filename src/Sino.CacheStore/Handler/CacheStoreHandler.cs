@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Sino.CacheStore.Handler
 {
-    public abstract class StoreHandler : IStoreHandler
+    public abstract class CacheStoreHandler : ICacheStoreHandler
     {
         public virtual Task Init()
         {
