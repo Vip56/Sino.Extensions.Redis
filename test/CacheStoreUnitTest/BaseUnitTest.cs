@@ -33,12 +33,12 @@ namespace CacheStoreUnitTest
             }
         }
 
-        public T Deserialize<T>(string obj, Encoding encoding = null) where T : class
+        public T Deserialize<T>(string obj, Encoding encoding = null)
         {
             throw new NotImplementedException();
         }
 
-        public Task<T> DeserializeAsync<T>(string obj, Encoding encoding = null) where T : class
+        public Task<T> DeserializeAsync<T>(string obj, Encoding encoding = null)
         {
             throw new NotImplementedException();
         }
@@ -48,17 +48,17 @@ namespace CacheStoreUnitTest
             throw new NotImplementedException();
         }
 
-        public Task<T> DeserializeByteAsync<T>(byte[] obj, Encoding encoding = null) where T : class
+        public Task<T> DeserializeByteAsync<T>(byte[] obj, Encoding encoding = null)
         {
             throw new NotImplementedException();
         }
 
-        public string Serialize<T>(T obj, Encoding encoding = null) where T : class
+        public string Serialize<T>(T obj, Encoding encoding = null)
         {
             throw new NotImplementedException();
         }
 
-        public Task<string> SerializeAsync<T>(T obj, Encoding encoding = null) where T : class
+        public Task<string> SerializeAsync<T>(T obj, Encoding encoding = null)
         {
             throw new NotImplementedException();
         }
@@ -68,7 +68,7 @@ namespace CacheStoreUnitTest
             throw new NotImplementedException();
         }
 
-        public Task<byte[]> SerializeByteAsync<T>(T obj, Encoding encoding = null) where T : class
+        public Task<byte[]> SerializeByteAsync<T>(T obj, Encoding encoding = null)
         {
             throw new NotImplementedException();
         }
