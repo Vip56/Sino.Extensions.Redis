@@ -32,9 +32,9 @@ namespace Sino.CacheStore
         /// <summary>
         /// 选择数据库
         /// </summary>
-        string Select();
+        string Select(string dbName);
 
-        Task<string> SelectAsync();
+        Task<string> SelectAsync(string dbName);
 
         #endregion
 

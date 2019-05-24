@@ -23,20 +23,20 @@ namespace Sino.Serializer.Abstractions
             DefaultEncoding = encoding;
         }
 
-        public abstract T Deserialize<T>(string obj, Encoding encoding = null) where T : class;
+        public abstract T Deserialize<T>(string obj, Encoding encoding = null);
 
-        public abstract Task<T> DeserializeAsync<T>(string obj, Encoding encoding = null) where T : class;
+        public abstract Task<T> DeserializeAsync<T>(string obj, Encoding encoding = null);
 
-        public abstract T DeserializeByte<T>(byte[] obj, Encoding encoding = null) where T : class;
+        public abstract T DeserializeByte<T>(byte[] obj, Encoding encoding = null);
 
-        public abstract Task<T> DeserializeByteAsync<T>(byte[] obj, Encoding encoding = null) where T : class;
+        public abstract Task<T> DeserializeByteAsync<T>(byte[] obj, Encoding encoding = null);
 
-        public abstract string Serialize<T>(T obj, Encoding encoding = null) where T : class;
+        public abstract string Serialize<T>(T obj, Encoding encoding = null);
 
-        public abstract Task<string> SerializeAsync<T>(T obj, Encoding encoding = null) where T : class;
+        public abstract Task<string> SerializeAsync<T>(T obj, Encoding encoding = null);
 
-        public abstract byte[] SerializeByte<T>(T obj, Encoding encoding = null) where T : class;
+        public abstract byte[] SerializeByte<T>(T obj, Encoding encoding = null);
 
-        public abstract Task<byte[]> SerializeByteAsync<T>(T obj, Encoding encoding = null) where T : class;
+        public abstract Task<byte[]> SerializeByteAsync<T>(T obj, Encoding encoding = null);
     }
 }
