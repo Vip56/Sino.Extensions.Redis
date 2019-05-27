@@ -43,9 +43,9 @@ namespace Sino.CacheStore.Internal
 
                     foreach (var arg in command.Arguments)
                     {
-                        sw.Write(Bulk);
                         if (arg is byte[] bytes)
                         {
+                            sw.Write(Bulk);
                             sw.Write(bytes.Length);
                             sw.Write(BOL);
                             sw.Write(bytes);
@@ -61,6 +61,7 @@ namespace Sino.CacheStore.Internal
                             sw.Write(BOL);
                         }
                     }
+                    sw.Flush();
                     return ms.ToArray();
                 }
             }

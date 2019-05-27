@@ -1,4 +1,5 @@
-﻿using Sino.CacheStore;
+﻿using Newtonsoft.Json;
+using Sino.CacheStore;
 using Sino.CacheStore.Configuration;
 using Sino.CacheStore.Handler;
 using Sino.CacheStore.Internal;
@@ -35,12 +36,12 @@ namespace CacheStoreUnitTest
 
         public T Deserialize<T>(string obj, Encoding encoding = null)
         {
-            throw new NotImplementedException();
+            return JsonConvert.DeserializeObject<T>(obj);
         }
 
         public Task<T> DeserializeAsync<T>(string obj, Encoding encoding = null)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(JsonConvert.DeserializeObject<T>(obj));
         }
 
         public T DeserializeByte<T>(byte[] obj, Encoding encoding = null)
