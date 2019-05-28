@@ -65,6 +65,8 @@ namespace Sino.CacheStore
             await _handler.Init();
         }
 
+        #region Basic
+
         public string Ping()
         {
             return PingAsync().Result;
@@ -104,6 +106,168 @@ namespace Sino.CacheStore
             return result.Result;
         }
 
+        #endregion
+
+        #region Key
+
+        public bool Exists(string key)
+        {
+            return ExistsAsync(key).Result;
+        }
+
+        public async Task<bool> ExistsAsync(string key)
+        {
+            if (string.IsNullOrEmpty(key))
+                throw new ArgumentNullException(nameof(key));
+
+            QueryEvent(key, OperatorType.Normal, nameof(ExistsAsync));
+            var cmd = _cmdFactory.CreateExistsCommand(key);
+            var result = await _handler.ProcessAsync(cmd);
+
+            return result.Result;
+        }
+
+        public T Get<T>(string key)
+        {
+            return GetAsync<T>(key).Result;
+        }
+
+        public async Task<T> GetAsync<T>(string key)
+        {
+            if (string.IsNullOrEmpty(key))
+                throw new ArgumentNullException(nameof(key));
+
+            QueryEvent(key, OperatorType.Normal, nameof(GetAsync));
+            var cmd = _cmdFactory.CreateGetCommand(key);
+            var result = await _handler.ProcessAsync(cmd);
+
+            var obj = _convertProvider.DeserializeByte<T>(result.Result);
+
+            return obj;
+        }
+
+        public byte[] GetBytes(string key)
+        {
+            return GetBytesAsync(key).Result;
+        }
+
+        public async Task<byte[]> GetBytesAsync(string key)
+        {
+            if (string.IsNullOrEmpty(key))
+                throw new ArgumentNullException(nameof(key));
+
+            QueryEvent(key, OperatorType.Normal, nameof(GetBytesAsync));
+            var cmd = _cmdFactory.CreateGetCommand(key);
+            var result = await _handler.ProcessAsync(cmd);
+
+            return result.Result;
+        }
+
+        public string Set<T>(string key, T value, int? timeout = null)
+        {
+            return SetAsync(key, value, timeout).Result;
+        }
+
+        public async Task<string> SetAsync<T>(string key, T value, int? timeout = null)
+        {
+            if (string.IsNullOrEmpty(key))
+                throw new ArgumentNullException(nameof(key));
+            if (value == null)
+                throw new ArgumentNullException(nameof(value));
+
+            ChangeEvent(key, OperatorType.Normal, nameof(SetAsync));
+            var bytes = _convertProvider.SerializeByte(value);
+            var cmd = _cmdFactory.CreateSetCommand(key, bytes, timeout);
+            var result = await _handler.ProcessAsync(cmd);
+
+            return result.Result;
+        }
+
+        public string SetBytes(string key, byte[] value, int? timeout = null)
+        {
+            return SetBytesAsync(key, value, timeout).Result;
+        }
+
+        public async Task<string> SetBytesAsync(string key, byte[] value, int? timeout = null)
+        {
+            if (string.IsNullOrEmpty(key))
+                throw new ArgumentNullException(nameof(key));
+            if (value == null)
+                throw new ArgumentNullException(nameof(value));
+
+            ChangeEvent(key, OperatorType.Normal, nameof(SetBytesAsync));
+            var cmd = _cmdFactory.CreateSetCommand(key, value, timeout);
+            var result = await _handler.ProcessAsync(cmd);
+
+            return result.Result;
+        }
+
+        public string SetWithNoExisted<T>(string key, T value)
+        {
+            return SetWithNoExistedAsync(key, value).Result;
+        }
+
+        public async Task<string> SetWithNoExistedAsync<T>(string key, T value)
+        {
+            if (string.IsNullOrEmpty(key))
+                throw new ArgumentNullException(nameof(key));
+            if (value == null)
+                throw new ArgumentNullException(nameof(value));
+
+            ChangeEvent(key, OperatorType.Normal, nameof(SetWithNoExistedAsync));
+            var bytes = _convertProvider.SerializeByte(value);
+            var cmd = _cmdFactory.CreateSetCommand(key, bytes, null, null, CacheStoreExistence.Nx);
+            var result = await _handler.ProcessAsync(cmd);
+
+            return result.Result;
+        }
+
+        public bool Expire(string key, long value, bool isSeconds = true)
+        {
+            return ExpireAsync(key, value, isSeconds).Result;
+        }
+
+        public async Task<bool> ExpireAsync(string key, long value, bool isSeconds = true)
+        {
+            if (string.IsNullOrEmpty(key))
+                throw new ArgumentNullException(nameof(key));
+
+            ChangeEvent(key, OperatorType.Normal, nameof(ExpireAsync));
+            CacheStoreCommand<bool> cmd = null;
+            if (isSeconds)
+            {
+                cmd = _cmdFactory.CreateExpireCommand(key, (int)value);
+            }
+            else
+            {
+                cmd = _cmdFactory.CreatePExpireCommand(key, value);
+            }
+            var result = await _handler.ProcessAsync(cmd);
+
+            return result.Result;
+        }
+
+        public long Remove(string key)
+        {
+            return RemoveAsync(key).Result;
+        }
+
+        public async Task<long> RemoveAsync(string key)
+        {
+            if (string.IsNullOrEmpty(key))
+                throw new ArgumentNullException(nameof(key));
+
+            RemoveEvent(key, OperatorType.Normal, nameof(RemoveAsync));
+            var cmd = _cmdFactory.CreateRemoveCommand(key);
+            var result = await _handler.ProcessAsync(cmd);
+
+            return result.Result;
+        }
+
+        #endregion
+
+        #region BitAndNumber
+
         public long BitCount(string key, long? start = null, long? end = null)
         {
             return BitCountAsync(key, start, end).Result;
@@ -118,6 +282,40 @@ namespace Sino.CacheStore
 
             QueryEvent(key, OperatorType.BitAndNumber, nameof(BitCount));
             var cmd = _cmdFactory.CreateBitCountCommand(key, start, end);
+            var result = await _handler.ProcessAsync(cmd);
+
+            return result.Result;
+        }
+
+        public bool GetBit(string key, uint offset)
+        {
+            return GetBitAsync(key, offset).Result;
+        }
+
+        public async Task<bool> GetBitAsync(string key, uint offset)
+        {
+            if (string.IsNullOrEmpty(key))
+                throw new ArgumentNullException(nameof(key));
+
+            QueryEvent(key, OperatorType.BitAndNumber, nameof(GetBitAsync));
+            var cmd = _cmdFactory.CreateGetBitCommand(key, offset);
+            var result = await _handler.ProcessAsync(cmd);
+
+            return result.Result;
+        }
+
+        public bool SetBit(string key, uint offset, bool value)
+        {
+            return SetBitAsync(key, offset, value).Result;
+        }
+
+        public async Task<bool> SetBitAsync(string key, uint offset, bool value)
+        {
+            if (string.IsNullOrEmpty(key))
+                throw new ArgumentNullException(nameof(key));
+
+            ChangeEvent(key, OperatorType.BitAndNumber, nameof(SetBitAsync));
+            var cmd = _cmdFactory.CreateSetBitCommand(key, offset, value);
             var result = await _handler.ProcessAsync(cmd);
 
             return result.Result;
@@ -157,83 +355,43 @@ namespace Sino.CacheStore
             return result.Result;
         }
 
-        public bool Exists(string key)
+        public long Incr(string key)
         {
-            return ExistsAsync(key).Result;
+            return IncrAsync(key).Result;
         }
 
-        public async Task<bool> ExistsAsync(string key)
+        public async Task<long> IncrAsync(string key)
         {
             if (string.IsNullOrEmpty(key))
                 throw new ArgumentNullException(nameof(key));
 
-            QueryEvent(key, OperatorType.Normal, nameof(ExistsAsync));
-            var cmd = _cmdFactory.CreateExistsCommand(key);
+            ChangeEvent(key, OperatorType.BitAndNumber, nameof(IncrAsync));
+            var cmd = _cmdFactory.CreateIncrCommand(key);
             var result = await _handler.ProcessAsync(cmd);
 
             return result.Result;
         }
 
-        public bool Expire(string key, long value, bool isSeconds = true)
+        public long IncrBy(string key, long increment)
         {
-            return ExpireAsync(key, value, isSeconds).Result;
+            return IncrByAsync(key, increment).Result;
         }
 
-        public async Task<bool> ExpireAsync(string key, long value, bool isSeconds = true)
+        public async Task<long> IncrByAsync(string key, long increment)
         {
             if (string.IsNullOrEmpty(key))
                 throw new ArgumentNullException(nameof(key));
 
-            ChangeEvent(key, OperatorType.Normal, nameof(ExpireAsync));
-            CacheStoreCommand<bool> cmd = null;
-            if (isSeconds)
-            {
-                cmd = _cmdFactory.CreateExpireCommand(key, (int)value);
-            }
-            else
-            {
-                cmd = _cmdFactory.CreatePExpireCommand(key, value);
-            }
+            ChangeEvent(key, OperatorType.BitAndNumber, nameof(IncrByAsync));
+            var cmd = _cmdFactory.CreateIncrByCommand(key, increment);
             var result = await _handler.ProcessAsync(cmd);
 
             return result.Result;
         }
 
-        public T Get<T>(string key)
-        {
-            throw new NotImplementedException();
-        }
+        #endregion
 
-        public async Task<T> GetAsync<T>(string key)
-        {
-            if (string.IsNullOrEmpty(key))
-                throw new ArgumentNullException(nameof(key));
-
-            QueryEvent(key, OperatorType.Normal, nameof(GetAsync));
-            var cmd = _cmdFactory.CreateGetCommand(key);
-            var result = await _handler.ProcessAsync(cmd);
-
-            var obj = _convertProvider.DeserializeByte<T>(result.Result);
-
-            return obj;
-        }
-
-        public bool GetBit(string key, uint offset)
-        {
-            return GetBitAsync(key, offset).Result;
-        }
-
-        public async Task<bool> GetBitAsync(string key, uint offset)
-        {
-            if (string.IsNullOrEmpty(key))
-                throw new ArgumentNullException(nameof(key));
-
-            QueryEvent(key, OperatorType.BitAndNumber, nameof(GetBitAsync));
-            var cmd = _cmdFactory.CreateGetBitCommand(key, offset);
-            var result = await _handler.ProcessAsync(cmd);
-
-            return result.Result;
-        }
+        #region Hash
 
         public long HDel(string key, params string[] fields)
         {
@@ -353,38 +511,26 @@ namespace Sino.CacheStore
             return result.Result;
         }
 
-        public long Incr(string key)
+        #endregion
+
+        #region List
+
+        public T LPop<T>(string key)
         {
-            return IncrAsync(key).Result;
+            return LPopAsync<T>(key).Result;
         }
 
-        public async Task<long> IncrAsync(string key)
+        public async Task<T> LPopAsync<T>(string key)
         {
             if (string.IsNullOrEmpty(key))
                 throw new ArgumentNullException(nameof(key));
 
-            ChangeEvent(key, OperatorType.BitAndNumber, nameof(IncrAsync));
-            var cmd = _cmdFactory.CreateIncrCommand(key);
+            QueryEvent(key, OperatorType.List, nameof(LPopAsync));
+            var cmd = _cmdFactory.CreateLPopCommand(key);
             var result = await _handler.ProcessAsync(cmd);
+            var obj = _convertProvider.DeserializeByte<T>(result.Result);
 
-            return result.Result;
-        }
-
-        public long IncrBy(string key, long increment)
-        {
-            return IncrByAsync(key, increment).Result;
-        }
-
-        public async Task<long> IncrByAsync(string key, long increment)
-        {
-            if (string.IsNullOrEmpty(key))
-                throw new ArgumentNullException(nameof(key));
-
-            ChangeEvent(key, OperatorType.BitAndNumber, nameof(IncrByAsync));
-            var cmd = _cmdFactory.CreateIncrByCommand(key, increment);
-            var result = await _handler.ProcessAsync(cmd);
-
-            return result.Result;
+            return obj;
         }
 
         public T LIndex<T>(string key, long index)
@@ -422,24 +568,6 @@ namespace Sino.CacheStore
             return result.Result;
         }
 
-        public T LPop<T>(string key)
-        {
-            return LPopAsync<T>(key).Result;
-        }
-
-        public async Task<T> LPopAsync<T>(string key)
-        {
-            if (string.IsNullOrEmpty(key))
-                throw new ArgumentNullException(nameof(key));
-
-            QueryEvent(key, OperatorType.List, nameof(LPopAsync));
-            var cmd = _cmdFactory.CreateLPopCommand(key);
-            var result = await _handler.ProcessAsync(cmd);
-            var obj = _convertProvider.DeserializeByte<T>(result.Result);
-
-            return obj;
-        }
-
         public long LPush<T>(string key, params T[] values)
         {
             return LPushAsync<T>(key, values.ToArray()).Result;
@@ -455,23 +583,6 @@ namespace Sino.CacheStore
             ChangeEvent(key, OperatorType.List, nameof(LPushAsync));
             var bytes = values.Select(x => _convertProvider.SerializeByte(x));
             var cmd = _cmdFactory.CreateLPushCommand(key, values.ToArray());
-            var result = await _handler.ProcessAsync(cmd);
-
-            return result.Result;
-        }
-
-        public long Remove(string key)
-        {
-            return RemoveAsync(key).Result;
-        }
-
-        public async Task<long> RemoveAsync(string key)
-        {
-            if (string.IsNullOrEmpty(key))
-                throw new ArgumentNullException(nameof(key));
-
-            RemoveEvent(key, OperatorType.Normal, nameof(RemoveAsync));
-            var cmd = _cmdFactory.CreateRemoveCommand(key);
             var result = await _handler.ProcessAsync(cmd);
 
             return result.Result;
@@ -516,61 +627,6 @@ namespace Sino.CacheStore
             return result.Result;
         }
 
-        public string Set<T>(string key, T value, int? timeout = null)
-        {
-            return SetAsync(key, value, timeout).Result;
-        }
-
-        public async Task<string> SetAsync<T>(string key, T value, int? timeout = null)
-        {
-            if (string.IsNullOrEmpty(key))
-                throw new ArgumentNullException(nameof(key));
-            if (value == null)
-                throw new ArgumentNullException(nameof(value));
-
-            ChangeEvent(key, OperatorType.Normal, nameof(SetAsync));
-            var bytes = _convertProvider.SerializeByte(value);
-            var cmd = _cmdFactory.CreateSetCommand(key, bytes, timeout);
-            var result = await _handler.ProcessAsync(cmd);
-
-            return result.Result;
-        }
-
-        public bool SetBit(string key, uint offset, bool value)
-        {
-            return SetBitAsync(key, offset, value).Result;
-        }
-
-        public async Task<bool> SetBitAsync(string key, uint offset, bool value)
-        {
-            if (string.IsNullOrEmpty(key))
-                throw new ArgumentNullException(nameof(key));
-
-            ChangeEvent(key, OperatorType.BitAndNumber, nameof(SetBitAsync));
-            var cmd = _cmdFactory.CreateSetBitCommand(key, offset, value);
-            var result = await _handler.ProcessAsync(cmd);
-
-            return result.Result;
-        }
-
-        public string SetWithNoExisted<T>(string key, T value)
-        {
-            return SetWithNoExistedAsync(key, value).Result;
-        }
-
-        public async Task<string> SetWithNoExistedAsync<T>(string key, T value)
-        {
-            if (string.IsNullOrEmpty(key))
-                throw new ArgumentNullException(nameof(key));
-            if (value == null)
-                throw new ArgumentNullException(nameof(value));
-
-            ChangeEvent(key, OperatorType.Normal, nameof(SetWithNoExistedAsync));
-            var bytes = _convertProvider.SerializeByte(value);
-            var cmd = _cmdFactory.CreateSetCommand(key, bytes, null, null, CacheStoreExistence.Nx);
-            var result = await _handler.ProcessAsync(cmd);
-
-            return result.Result;
-        }
+        #endregion
     }
 }

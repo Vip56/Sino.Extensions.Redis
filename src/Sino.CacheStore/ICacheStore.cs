@@ -57,8 +57,16 @@ namespace Sino.CacheStore
         /// <remarks>不存在则返回Null</remarks>
         T Get<T>(string key);
 
-
         Task<T> GetAsync<T>(string key);
+
+        /// <summary>
+        /// 根据Key返回缓存项
+        /// </summary>
+        /// <param name="key">需要检索的Key</param>
+        /// <returns>保存的值</returns>
+        byte[] GetBytes(string key);
+
+        Task<byte[]> GetBytesAsync(string key);
 
         /// <summary>
         /// 设置Key的值
@@ -69,6 +77,16 @@ namespace Sino.CacheStore
         string Set<T>(string key, T value, int? timeout = null);
 
         Task<string> SetAsync<T>(string key, T value, int? timeout = null);
+
+        /// <summary>
+        /// 设置Key的值
+        /// </summary>
+        /// <param name="key">需要保存得Key</param>
+        /// <param name="value">需要保存得值</param>
+        /// <param name="timeout">超时时间，单位秒</param>
+        string SetBytes(string key, byte[] value, int? timeout = null);
+
+        Task<string> SetBytesAsync(string key, byte[] value, int? timeout = null);
 
         /// <summary>
         /// 仅当Key不存在时设置其值
