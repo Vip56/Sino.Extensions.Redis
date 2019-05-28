@@ -222,6 +222,25 @@ namespace Sino.CacheStore
             return result.Result;
         }
 
+        public string SetWithNoExistedBytes(string key, byte[] value)
+        {
+            return SetWithNoExistedBytesAsync(key, value).Result;
+        }
+
+        public async Task<string> SetWithNoExistedBytesAsync(string key, byte[] value)
+        {
+            if (string.IsNullOrEmpty(key))
+                throw new ArgumentNullException(nameof(key));
+            if (value == null)
+                throw new ArgumentNullException(nameof(value));
+
+            ChangeEvent(key, OperatorType.Normal, nameof(SetWithNoExistedBytesAsync));
+            var cmd = _cmdFactory.CreateSetCommand(key, value, null, null, CacheStoreExistence.Nx);
+            var result = await _handler.ProcessAsync(cmd);
+
+            return result.Result;
+        }
+
         public bool Expire(string key, long value, bool isSeconds = true)
         {
             return ExpireAsync(key, value, isSeconds).Result;

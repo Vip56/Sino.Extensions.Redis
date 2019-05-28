@@ -66,7 +66,7 @@ namespace Sino.CacheStore.Internal
 
         public override StatusCommand CreateSetCommand(string key, object value, int? expirationSeconds = null, long? expirationMilliseconds = null, CacheStoreExistence? exists = null)
         {
-            var args = new List<string> { key, value.ToString() };
+            var args = new List<object> { key, value };
             if (expirationSeconds != null)
                 args.AddRange(new[] { "EX", expirationSeconds.ToString() });
             if (expirationMilliseconds != null)

@@ -99,6 +99,16 @@ namespace Sino.CacheStore
         Task<string> SetWithNoExistedAsync<T>(string key, T value);
 
         /// <summary>
+        /// 仅当Key不存在时设置其值
+        /// </summary>
+        /// <param name="key">需要保存的Key</param>
+        /// <param name="value">需要保存的值</param>
+        /// <returns>是否成功设置</returns>
+        string SetWithNoExistedBytes(string key, byte[] value);
+
+        Task<string> SetWithNoExistedBytesAsync(string key, byte[] value);
+
+        /// <summary>
         /// 设置Key的超时时间
         /// </summary>
         /// <param name="key">需要设置的Key</param>

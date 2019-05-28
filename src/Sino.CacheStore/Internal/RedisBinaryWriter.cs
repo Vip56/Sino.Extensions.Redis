@@ -48,7 +48,8 @@ namespace Sino.CacheStore.Internal
                             sw.Write(Bulk);
                             sw.Write(bytes.Length);
                             sw.Write(BOL);
-                            sw.Write(bytes);
+                            sw.Flush();
+                            ms.Write(bytes, 0, bytes.Length);
                             sw.Write(BOL);
                         }
                         else

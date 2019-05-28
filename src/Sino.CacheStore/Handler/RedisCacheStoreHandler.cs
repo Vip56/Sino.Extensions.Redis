@@ -94,7 +94,10 @@ namespace Sino.CacheStore.Handler
                         {
                             RedisMessage type = reader.ReadType();
                             if (type == RedisMessage.Status)
+                            {
                                 scmd.Result = reader.ReadStatus(false);
+                                break;
+                            }
 
                             object[] result = reader.ReadMultiBulk(false);
                             if (result != null)
