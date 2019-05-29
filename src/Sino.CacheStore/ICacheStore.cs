@@ -241,6 +241,16 @@ namespace Sino.CacheStore
         Task<T> HGetAsync<T>(string key, string field);
 
         /// <summary>
+        /// 获取哈希表中指定域的值
+        /// </summary>
+        /// <param name="key">需要获取的Key</param>
+        /// <param name="field">需要获取的域</param>
+        /// <returns>保存的值，不存在则返回Null</returns>
+        byte[] HGetBytes(string key, string field);
+
+        Task<byte[]> HGetBytesAsync(string key, string field);
+
+        /// <summary>
         /// 查看哈希表中域的数量
         /// </summary>
         /// <param name="key">需要查看的Key</param>
@@ -261,6 +271,17 @@ namespace Sino.CacheStore
         Task<bool> HSetAsync<T>(string key, string field, T value);
 
         /// <summary>
+        /// 设置哈希表中指定域的值
+        /// </summary>
+        /// <param name="key">需要设置的Key</param>
+        /// <param name="field">需要设置的域</param>
+        /// <param name="value">需要保存的值</param>
+        /// <returns>是否保存成功</returns>
+        bool HSetBytes(string key, string field, byte[] value);
+
+        Task<bool> HSetBytesAsync(string key, string field, byte[] value);
+
+        /// <summary>
         /// 仅当不存在时设置哈希表中指定域的值
         /// </summary>
         /// <param name="key">需要设置的Key</param>
@@ -270,6 +291,10 @@ namespace Sino.CacheStore
         bool HSetWithNoExisted<T>(string key, string field, T value);
 
         Task<bool> HSetWithNoExistedAsync<T>(string key, string field, T value);
+
+        bool HSetWithNoExistedBytes(string key, string field, byte[] value);
+
+        Task<bool> HSetWithNoExistedBytesAsync(string key, string field, byte[] value);
 
         #endregion
 

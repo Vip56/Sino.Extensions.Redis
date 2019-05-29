@@ -473,6 +473,25 @@ namespace Sino.CacheStore
             return obj;
         }
 
+        public byte[] HGetBytes(string key, string field)
+        {
+            return HGetBytesAsync(key, field).Result;
+        }
+
+        public async Task<byte[]> HGetBytesAsync(string key, string field)
+        {
+            if (string.IsNullOrEmpty(key))
+                throw new ArgumentNullException(nameof(key));
+            if (string.IsNullOrEmpty(field))
+                throw new ArgumentNullException(nameof(field));
+
+            QueryEvent(key, OperatorType.Hash, nameof(HGetBytesAsync));
+            var cmd = _cmdFactory.CreateHGetCommand(key, field);
+            var result = await _handler.ProcessAsync(cmd);
+
+            return result.Result;
+        }
+
         public long HLen(string key)
         {
             return HLenAsync(key).Result;
@@ -510,6 +529,25 @@ namespace Sino.CacheStore
             return result.Result;
         }
 
+        public bool HSetBytes(string key, string field, byte[] value)
+        {
+            return HSetBytesAsync(key, field, value).Result;
+        }
+
+        public async Task<bool> HSetBytesAsync(string key, string field, byte[] value)
+        {
+            if (string.IsNullOrEmpty(key))
+                throw new ArgumentNullException(nameof(key));
+            if (string.IsNullOrEmpty(field))
+                throw new ArgumentNullException(nameof(field));
+
+            ChangeEvent(key, OperatorType.Hash, nameof(HSetBytesAsync));
+            var cmd = _cmdFactory.CreateHSetCommand(key, field, value);
+            var result = await _handler.ProcessAsync(cmd);
+
+            return result.Result;
+        }
+
         public bool HSetWithNoExisted<T>(string key, string field, T value)
         {
             return HSetWithNoExistedAsync(key, field, value).Result;
@@ -525,6 +563,25 @@ namespace Sino.CacheStore
             ChangeEvent(key, OperatorType.Hash, nameof(HSetWithNoExistedAsync));
             var bytes = _convertProvider.SerializeByte(value);
             var cmd = _cmdFactory.CreateHSetWithNoExistCommand(key, field, bytes);
+            var result = await _handler.ProcessAsync(cmd);
+
+            return result.Result;
+        }
+
+        public bool HSetWithNoExistedBytes(string key, string field, byte[] value)
+        {
+            return HSetWithNoExistedBytesAsync(key, field, value).Result;
+        }
+
+        public async Task<bool> HSetWithNoExistedBytesAsync(string key, string field, byte[] value)
+        {
+            if (string.IsNullOrEmpty(key))
+                throw new ArgumentNullException(nameof(key));
+            if (string.IsNullOrEmpty(field))
+                throw new ArgumentNullException(nameof(field));
+
+            ChangeEvent(key, OperatorType.Hash, nameof(HSetWithNoExistedBytesAsync));
+            var cmd = _cmdFactory.CreateHSetWithNoExistCommand(key, field, value);
             var result = await _handler.ProcessAsync(cmd);
 
             return result.Result;
