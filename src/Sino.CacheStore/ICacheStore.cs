@@ -310,6 +310,15 @@ namespace Sino.CacheStore
         Task<T> LPopAsync<T>(string key);
 
         /// <summary>
+        /// 移除并返回列表Key的头元素
+        /// </summary>
+        /// <param name="key">需要操作的列表Key</param>
+        /// <returns>头元素</returns>
+        byte[] LPopBytes(string key);
+
+        Task<byte[]> LPopBytesAsync(string key);
+
+        /// <summary>
         /// 获取列表中指定下标的元素
         /// </summary>
         /// <param name="key">需要获取的列表</param>
@@ -318,6 +327,16 @@ namespace Sino.CacheStore
         T LIndex<T>(string key, long index);
 
         Task<T> LIndexAsync<T>(string key, long index);
+
+        /// <summary>
+        /// 获取列表中指定下标的元素
+        /// </summary>
+        /// <param name="key">需要获取的列表</param>
+        /// <param name="index">元素的下标</param>
+        /// <returns>获取的值</returns>
+        byte[] LIndexBytes(string key, long index);
+
+        Task<byte[]> LIndexBytesAsync(string key, long index);
 
         /// <summary>
         /// 获取列表的长度
@@ -329,14 +348,24 @@ namespace Sino.CacheStore
         Task<long> LLenAsync(string key);
 
         /// <summary>
-        /// 将一个或多个值插入列表的头部
+        /// 将值插入列表的头部
         /// </summary>
         /// <param name="key">需要插入的列表</param>
-        /// <param name="values">插入的值</param>
+        /// <param name="value">插入的值</param>
         /// <returns>成功插入的值数量</returns>
-        long LPush<T>(string key, params T[] values);
+        long LPush<T>(string key, T value);
 
-        Task<long> LPushAsync<T>(string key, params T[] values);
+        Task<long> LPushAsync<T>(string key, T value);
+
+        /// <summary>
+        /// 将值插入列表的头部
+        /// </summary>
+        /// <param name="key">需要插入的列表</param>
+        /// <param name="value">插入的值</param>
+        /// <returns>成功插入的值数量</returns>
+        long LPushBytes(string key, byte[] value);
+
+        Task<long> LPushBytesAsync(string key, byte[] value);
 
         /// <summary>
         /// 移除并返回列表的尾元素
@@ -348,14 +377,33 @@ namespace Sino.CacheStore
         Task<T> RPopAsync<T>(string key);
 
         /// <summary>
+        /// 移除并返回列表的尾元素
+        /// </summary>
+        /// <param name="key">需要操作的列表</param>
+        /// <returns>元素值</returns>
+        byte[] RPopBytes(string key);
+
+        Task<byte[]> RPopBytesAsync(string key);
+
+        /// <summary>
         /// 将一个或多个值插入列表尾部
         /// </summary>
         /// <param name="key">需要插入的列表</param>
         /// <param name="values">插入的值</param>
         /// <returns>成功插入的值数量</returns>
-        long RPush<T>(string key, params T[] values);
+        long RPush<T>(string key, T values);
 
-        Task<long> RPushAsync<T>(string key, params T[] values);
+        Task<long> RPushAsync<T>(string key, T values);
+
+        /// <summary>
+        /// 将一个或多个值插入列表尾部
+        /// </summary>
+        /// <param name="key">需要插入的列表</param>
+        /// <param name="value">插入的值</param>
+        /// <returns>成功插入的值数量</returns>
+        long RPushBytes(string key, byte[] value);
+
+        Task<long> RPushBytesAsync(string key, byte[] value);
 
         #endregion
     }

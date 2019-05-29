@@ -184,9 +184,9 @@ namespace Sino.CacheStore.Internal
             return cmd;
         }
 
-        public override IntCommand CreateLPushCommand(string key, params object[] values)
+        public override IntCommand CreateLPushCommand(string key, object value)
         {
-            var cmd = new IntCommand("LPUSH", values.Insert(key).ToArray());
+            var cmd = new IntCommand("LPUSH", key, value);
             OnCommand(cmd);
 
             return cmd;
@@ -200,9 +200,9 @@ namespace Sino.CacheStore.Internal
             return cmd;
         }
 
-        public override IntCommand CreateRPushCommand(string key, params object[] values)
+        public override IntCommand CreateRPushCommand(string key, object value)
         {
-            var cmd = new IntCommand("RPUSH", values.Insert(key).ToArray());
+            var cmd = new IntCommand("RPUSH", key, value);
             OnCommand(cmd);
 
             return cmd;

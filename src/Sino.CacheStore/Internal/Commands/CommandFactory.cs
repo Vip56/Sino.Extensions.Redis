@@ -178,9 +178,9 @@ namespace Sino.CacheStore.Internal
         /// 将一个或多个值插入到列表key的表头
         /// </summary>
         /// <param name="key">列表key</param>
-        /// <param name="values">插入的值</param>
+        /// <param name="value">插入的值</param>
         /// <returns>命令对象</returns>
-        public virtual IntCommand CreateLPushCommand(string key, params object[] values) => throw new NotImplementedException();
+        public virtual IntCommand CreateLPushCommand(string key, object value) => throw new NotImplementedException();
 
         /// <summary>
         /// 移除并返回列表key的尾元素
@@ -195,7 +195,7 @@ namespace Sino.CacheStore.Internal
         /// <param name="key">列表key</param>
         /// <param name="values">添加的值</param>
         /// <returns>命令对象</returns>
-        public virtual IntCommand CreateRPushCommand(string key, params object[] values) => throw new NotImplementedException();
+        public virtual IntCommand CreateRPushCommand(string key, object value) => throw new NotImplementedException();
 
         /// <summary>
         /// 计算给定字符串中被设置为1的比特位数量。

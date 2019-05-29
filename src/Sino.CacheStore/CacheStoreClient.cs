@@ -609,6 +609,23 @@ namespace Sino.CacheStore
             return obj;
         }
 
+        public byte[] LPopBytes(string key)
+        {
+            return LPopBytesAsync(key).Result;
+        }
+
+        public async Task<byte[]> LPopBytesAsync(string key)
+        {
+            if (string.IsNullOrEmpty(key))
+                throw new ArgumentNullException(nameof(key));
+
+            QueryEvent(key, OperatorType.List, nameof(LPopBytesAsync));
+            var cmd = _cmdFactory.CreateLPopCommand(key);
+            var result = await _handler.ProcessAsync(cmd);
+
+            return result.Result;
+        }
+
         public T LIndex<T>(string key, long index)
         {
             return LIndexAsync<T>(key, index).Result;
@@ -625,6 +642,23 @@ namespace Sino.CacheStore
             var obj = _convertProvider.DeserializeByte<T>(result.Result);
 
             return obj;
+        }
+
+        public byte[] LIndexBytes(string key, long index)
+        {
+            return LIndexBytesAsync(key, index).Result;
+        }
+
+        public async Task<byte[]> LIndexBytesAsync(string key, long index)
+        {
+            if (string.IsNullOrEmpty(key))
+                throw new ArgumentNullException(nameof(key));
+
+            QueryEvent(key, OperatorType.List, nameof(LIndexBytesAsync));
+            var cmd = _cmdFactory.CreateLIndexCommand(key, index);
+            var result = await _handler.ProcessAsync(cmd);
+
+            return result.Result;
         }
 
         public long LLen(string key)
@@ -644,21 +678,40 @@ namespace Sino.CacheStore
             return result.Result;
         }
 
-        public long LPush<T>(string key, params T[] values)
+        public long LPush<T>(string key, T value)
         {
-            return LPushAsync<T>(key, values.ToArray()).Result;
+            return LPushAsync<T>(key, value).Result;
         }
 
-        public async Task<long> LPushAsync<T>(string key, params T[] values)
+        public async Task<long> LPushAsync<T>(string key, T value)
         {
             if (string.IsNullOrEmpty(key))
                 throw new ArgumentNullException(nameof(key));
-            if (values == null || values?.Length <= 0)
-                throw new ArgumentNullException(nameof(values));
+            if (value == null)
+                throw new ArgumentNullException(nameof(value));
 
             ChangeEvent(key, OperatorType.List, nameof(LPushAsync));
-            var bytes = values.Select(x => _convertProvider.SerializeByte(x));
-            var cmd = _cmdFactory.CreateLPushCommand(key, values.ToArray());
+            var bytes = _convertProvider.SerializeByte(value);
+            var cmd = _cmdFactory.CreateLPushCommand(key, bytes);
+            var result = await _handler.ProcessAsync(cmd);
+
+            return result.Result;
+        }
+
+        public long LPushBytes(string key, byte[] value)
+        {
+            return LPushBytesAsync(key, value).Result;
+        }
+
+        public async Task<long> LPushBytesAsync(string key, byte[] value)
+        {
+            if (string.IsNullOrEmpty(key))
+                throw new ArgumentNullException(nameof(key));
+            if (value == null)
+                throw new ArgumentNullException(nameof(value));
+
+            ChangeEvent(key, OperatorType.List, nameof(LPushBytesAsync));
+            var cmd = _cmdFactory.CreateLPushCommand(key, value);
             var result = await _handler.ProcessAsync(cmd);
 
             return result.Result;
@@ -683,21 +736,57 @@ namespace Sino.CacheStore
             return obj;
         }
 
-        public long RPush<T>(string key, params T[] values)
+        public byte[] RPopBytes(string key)
         {
-            return RPushAsync<T>(key, values.ToArray()).Result;
+            return RPopBytesAsync(key).Result;
         }
 
-        public async Task<long> RPushAsync<T>(string key, params T[] values)
+        public async Task<byte[]> RPopBytesAsync(string key)
         {
             if (string.IsNullOrEmpty(key))
                 throw new ArgumentNullException(nameof(key));
-            if (values == null || values?.Length <= 0)
-                throw new ArgumentNullException(nameof(values));
+
+            ChangeEvent(key, OperatorType.List, nameof(RPopBytesAsync));
+            var cmd = _cmdFactory.CreateRPopCommand(key);
+            var result = await _handler.ProcessAsync(cmd);
+
+            return result.Result;
+        }
+
+        public long RPush<T>(string key, T value)
+        {
+            return RPushAsync<T>(key, value).Result;
+        }
+
+        public async Task<long> RPushAsync<T>(string key, T value)
+        {
+            if (string.IsNullOrEmpty(key))
+                throw new ArgumentNullException(nameof(key));
+            if (value == null)
+                throw new ArgumentNullException(nameof(value));
 
             ChangeEvent(key, OperatorType.List, nameof(RPushAsync));
-            var bytes = values.Select(x => _convertProvider.SerializeByte(x));
+            var bytes = _convertProvider.SerializeByte(value);
             var cmd = _cmdFactory.CreateRPushCommand(key, bytes.ToArray());
+            var result = await _handler.ProcessAsync(cmd);
+
+            return result.Result;
+        }
+
+        public long RPushBytes(string key, byte[] value)
+        {
+            return RPushBytesAsync(key, value).Result;
+        }
+
+        public async Task<long> RPushBytesAsync(string key, byte[] value)
+        {
+            if (string.IsNullOrEmpty(key))
+                throw new ArgumentNullException(nameof(key));
+            if (value == null)
+                throw new ArgumentNullException(nameof(value));
+
+            ChangeEvent(key, OperatorType.List, nameof(RPushBytesAsync));
+            var cmd = _cmdFactory.CreateRPushCommand(key, value);
             var result = await _handler.ProcessAsync(cmd);
 
             return result.Result;
