@@ -163,12 +163,12 @@ namespace Sino.CacheStore
             return result.Result;
         }
 
-        public string Set<T>(string key, T value, int? timeout = null)
+        public string Set<T>(string key, T value, int? seconds = null, long? milliSeconds = null)
         {
-            return SetAsync(key, value, timeout).Result;
+            return SetAsync(key, value, seconds, milliSeconds).Result;
         }
 
-        public async Task<string> SetAsync<T>(string key, T value, int? timeout = null)
+        public async Task<string> SetAsync<T>(string key, T value, int? seconds = null, long? milliSeconds = null)
         {
             if (string.IsNullOrEmpty(key))
                 throw new ArgumentNullException(nameof(key));
@@ -177,18 +177,18 @@ namespace Sino.CacheStore
 
             ChangeEvent(key, OperatorType.Normal, nameof(SetAsync));
             var bytes = _convertProvider.SerializeByte(value);
-            var cmd = _cmdFactory.CreateSetCommand(key, bytes, timeout);
+            var cmd = _cmdFactory.CreateSetCommand(key, bytes, seconds, milliSeconds);
             var result = await _handler.ProcessAsync(cmd);
 
             return result.Result;
         }
 
-        public string SetBytes(string key, byte[] value, int? timeout = null)
+        public string SetBytes(string key, byte[] value, int? seconds = null, long? milliSeconds = null)
         {
-            return SetBytesAsync(key, value, timeout).Result;
+            return SetBytesAsync(key, value, seconds, milliSeconds).Result;
         }
 
-        public async Task<string> SetBytesAsync(string key, byte[] value, int? timeout = null)
+        public async Task<string> SetBytesAsync(string key, byte[] value, int? seconds = null, long? milliSeconds = null)
         {
             if (string.IsNullOrEmpty(key))
                 throw new ArgumentNullException(nameof(key));
@@ -196,18 +196,18 @@ namespace Sino.CacheStore
                 throw new ArgumentNullException(nameof(value));
 
             ChangeEvent(key, OperatorType.Normal, nameof(SetBytesAsync));
-            var cmd = _cmdFactory.CreateSetCommand(key, value, timeout);
+            var cmd = _cmdFactory.CreateSetCommand(key, value, seconds, milliSeconds);
             var result = await _handler.ProcessAsync(cmd);
 
             return result.Result;
         }
 
-        public string SetWithNoExisted<T>(string key, T value)
+        public string SetWithNoExisted<T>(string key, T value, int? seconds = null, long? milliSeconds = null)
         {
-            return SetWithNoExistedAsync(key, value).Result;
+            return SetWithNoExistedAsync(key, value, seconds, milliSeconds).Result;
         }
 
-        public async Task<string> SetWithNoExistedAsync<T>(string key, T value)
+        public async Task<string> SetWithNoExistedAsync<T>(string key, T value, int? seconds = null, long? milliSeconds = null)
         {
             if (string.IsNullOrEmpty(key))
                 throw new ArgumentNullException(nameof(key));
@@ -216,18 +216,18 @@ namespace Sino.CacheStore
 
             ChangeEvent(key, OperatorType.Normal, nameof(SetWithNoExistedAsync));
             var bytes = _convertProvider.SerializeByte(value);
-            var cmd = _cmdFactory.CreateSetCommand(key, bytes, null, null, CacheStoreExistence.Nx);
+            var cmd = _cmdFactory.CreateSetCommand(key, bytes, seconds, milliSeconds, CacheStoreExistence.Nx);
             var result = await _handler.ProcessAsync(cmd);
 
             return result.Result;
         }
 
-        public string SetWithNoExistedBytes(string key, byte[] value)
+        public string SetWithNoExistedBytes(string key, byte[] value, int? seconds = null, long? milliSeconds = null)
         {
-            return SetWithNoExistedBytesAsync(key, value).Result;
+            return SetWithNoExistedBytesAsync(key, value, seconds, milliSeconds).Result;
         }
 
-        public async Task<string> SetWithNoExistedBytesAsync(string key, byte[] value)
+        public async Task<string> SetWithNoExistedBytesAsync(string key, byte[] value, int? seconds = null, long? milliSeconds = null)
         {
             if (string.IsNullOrEmpty(key))
                 throw new ArgumentNullException(nameof(key));
@@ -235,7 +235,7 @@ namespace Sino.CacheStore
                 throw new ArgumentNullException(nameof(value));
 
             ChangeEvent(key, OperatorType.Normal, nameof(SetWithNoExistedBytesAsync));
-            var cmd = _cmdFactory.CreateSetCommand(key, value, null, null, CacheStoreExistence.Nx);
+            var cmd = _cmdFactory.CreateSetCommand(key, value, seconds, milliSeconds, CacheStoreExistence.Nx);
             var result = await _handler.ProcessAsync(cmd);
 
             return result.Result;

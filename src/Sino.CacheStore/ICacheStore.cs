@@ -73,40 +73,46 @@ namespace Sino.CacheStore
         /// </summary>
         /// <param name="key">需要保存的Key</param>
         /// <param name="value">需要保存的值</param>
-        /// <param name="timeout">超时时间，单位秒</param>
-        string Set<T>(string key, T value, int? timeout = null);
+        /// <param name="seconds">超时时间，单位秒</param>
+        /// <param name="milliSeconds">超时时间，单位毫秒</param>
+        string Set<T>(string key, T value, int? seconds = null, long? milliSeconds = null);
 
-        Task<string> SetAsync<T>(string key, T value, int? timeout = null);
+        Task<string> SetAsync<T>(string key, T value, int? seconds = null, long? milliSeconds = null);
 
         /// <summary>
         /// 设置Key的值
         /// </summary>
         /// <param name="key">需要保存得Key</param>
         /// <param name="value">需要保存得值</param>
-        /// <param name="timeout">超时时间，单位秒</param>
-        string SetBytes(string key, byte[] value, int? timeout = null);
+        /// <param name="seconds">超时时间，单位秒</param>
+        /// <param name="milliSeconds">超时时间，单位毫秒</param>
+        string SetBytes(string key, byte[] value, int? seconds = null, long? milliSeconds = null);
 
-        Task<string> SetBytesAsync(string key, byte[] value, int? timeout = null);
-
-        /// <summary>
-        /// 仅当Key不存在时设置其值
-        /// </summary>
-        /// <param name="key">需要保存的Key</param>
-        /// <param name="value">需要保存的值</param>
-        /// <returns>是否成功设置</returns>
-        string SetWithNoExisted<T>(string key, T value);
-
-        Task<string> SetWithNoExistedAsync<T>(string key, T value);
+        Task<string> SetBytesAsync(string key, byte[] value, int? seconds = null, long? milliSeconds = null);
 
         /// <summary>
         /// 仅当Key不存在时设置其值
         /// </summary>
         /// <param name="key">需要保存的Key</param>
         /// <param name="value">需要保存的值</param>
+        /// <param name="seconds">超时时间，单位秒</param>
+        /// <param name="milliSeconds">超时时间，单位毫秒</param>
         /// <returns>是否成功设置</returns>
-        string SetWithNoExistedBytes(string key, byte[] value);
+        string SetWithNoExisted<T>(string key, T value, int? seconds = null, long? milliSeconds = null);
 
-        Task<string> SetWithNoExistedBytesAsync(string key, byte[] value);
+        Task<string> SetWithNoExistedAsync<T>(string key, T value, int? seconds = null, long? milliSeconds = null);
+
+        /// <summary>
+        /// 仅当Key不存在时设置其值
+        /// </summary>
+        /// <param name="key">需要保存的Key</param>
+        /// <param name="value">需要保存的值</param>
+        /// <param name="seconds">超时时间，单位秒</param>
+        /// <param name="milliSeconds">超时时间，单位毫秒</param>
+        /// <returns>是否成功设置</returns>
+        string SetWithNoExistedBytes(string key, byte[] value, int? seconds = null, long? milliSeconds = null);
+
+        Task<string> SetWithNoExistedBytesAsync(string key, byte[] value, int? seconds = null, long? milliSeconds = null);
 
         /// <summary>
         /// 设置Key的超时时间

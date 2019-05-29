@@ -58,8 +58,8 @@ namespace CacheStoreUnitTest
                 });
 
             await Test("$-1\r\n",
-                x => x.SetBytes("key", value, 1),
-                x => x.SetBytesAsync("key", value, 1),
+                x => x.SetBytes("key", value, null, 1),
+                x => x.SetBytesAsync("key", value, null, 1),
                 (x, r) =>
                 {
                     Assert.Null(r);
@@ -72,8 +72,8 @@ namespace CacheStoreUnitTest
         {
             var value = Encoding.UTF8.GetBytes("value");
             await Test("+OK\r\n",
-                x => x.SetWithNoExistedBytes("key", value),
-                x => x.SetWithNoExistedBytesAsync("key", value),
+                x => x.SetWithNoExistedBytes("key", value, 1),
+                x => x.SetWithNoExistedBytesAsync("key", value, 1),
                 (x, r) =>
                 {
                     Assert.Equal("OK", r);
@@ -81,8 +81,8 @@ namespace CacheStoreUnitTest
                 });
 
             await Test("$-1\r\n",
-                x => x.SetWithNoExistedBytes("key", value),
-                x => x.SetWithNoExistedBytesAsync("key", value),
+                x => x.SetWithNoExistedBytes("key", value, null, 1),
+                x => x.SetWithNoExistedBytesAsync("key", value, null, 1),
                 (x, r) =>
                 {
                     Assert.Null(r);
