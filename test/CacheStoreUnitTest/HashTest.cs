@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,6 +38,15 @@ namespace CacheStoreUnitTest
         [Fact]
         public async Task HGetTest()
         {
+            var body = new ConvertBody
+            {
+                Key = "test",
+                Value = "testv",
+                Number = 24
+            };
+
+            var bodyStr = JsonConvert.SerializeObject(body);
+
             await Test("$4\r\ntest\r\n",
                 x => x.HGetBytes("test", "field"),
                 x => x.HGetBytesAsync("test", "field"),
@@ -45,6 +55,18 @@ namespace CacheStoreUnitTest
                     var str = Encoding.UTF8.GetString(r);
                     Assert.Equal("test", str);
                     Assert.Equal("*3\r\n$4\r\nHGET\r\n$4\r\ntest\r\n$5\r\nfield\r\n", x.RequestString);
+                });
+
+            await Test($"${bodyStr.Length}\r\n{bodyStr}\r\n",
+                x => x.HGet<ConvertBody>("test", "field"),
+                x => x.HGetAsync<ConvertBody>("test", "field"),
+                (x, r) =>
+                {
+                    Assert.NotNull(r);
+                    Assert.Equal(body.Key, r.Key);
+                    Assert.Equal(body.Value, r.Value);
+                    Assert.Equal(body.Number, r.Number);
+                    Assert.Equal($"*3\r\n$4\r\nHGET\r\n$4\r\ntest\r\n$5\r\nfield\r\n", x.RequestString);
                 });
         }
 
@@ -65,6 +87,16 @@ namespace CacheStoreUnitTest
         public async Task HSetTest()
         {
             var value = Encoding.UTF8.GetBytes("test1");
+
+            var body = new ConvertBody
+            {
+                Key = "test",
+                Value = "testv",
+                Number = 24
+            };
+
+            var bodyStr = JsonConvert.SerializeObject(body);
+
             await Test(":1\r\n",
                 x => x.HSetBytes("test", "field1", value),
                 x => x.HSetBytesAsync("test", "field1", value),
@@ -73,12 +105,31 @@ namespace CacheStoreUnitTest
                     Assert.True(r);
                     Assert.Equal("*4\r\n$4\r\nHSET\r\n$4\r\ntest\r\n$6\r\nfield1\r\n$5\r\ntest1\r\n", x.RequestString);
                 });
+
+            await Test(":1\r\n",
+                x => x.HSet("test", "field1", body),
+                x => x.HSetAsync("test", "field1", body),
+                (x, r) =>
+                {
+                    Assert.True(r);
+                    Assert.Equal($"*4\r\n$4\r\nHSET\r\n$4\r\ntest\r\n$6\r\nfield1\r\n${bodyStr.Length}\r\n{bodyStr}\r\n", x.RequestString);
+                });
         }
 
         [Fact]
         public async Task HSetWithNoExistedTest()
         {
             var value = Encoding.UTF8.GetBytes("test1");
+
+            var body = new ConvertBody
+            {
+                Key = "test",
+                Value = "testv",
+                Number = 24
+            };
+
+            var bodyStr = JsonConvert.SerializeObject(body);
+
             await Test(":1\r\n",
                 x => x.HSetWithNoExistedBytes("test", "field1", value),
                 x => x.HSetWithNoExistedBytesAsync("test", "field1", value),
@@ -86,6 +137,15 @@ namespace CacheStoreUnitTest
                 {
                     Assert.True(r);
                     Assert.Equal("*4\r\n$6\r\nHSETNX\r\n$4\r\ntest\r\n$6\r\nfield1\r\n$5\r\ntest1\r\n", x.RequestString);
+                });
+
+            await Test(":1\r\n",
+                x => x.HSetWithNoExisted("test", "field1", body),
+                x => x.HSetWithNoExistedAsync("test", "field1", body),
+                (x, r) =>
+                {
+                    Assert.True(r);
+                    Assert.Equal($"*4\r\n$6\r\nHSETNX\r\n$4\r\ntest\r\n$6\r\nfield1\r\n${bodyStr.Length}\r\n{bodyStr}\r\n", x.RequestString);
                 });
         }
     }

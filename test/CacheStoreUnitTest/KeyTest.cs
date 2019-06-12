@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,6 +25,15 @@ namespace CacheStoreUnitTest
         [Fact]
         public async Task GetTest()
         {
+            var body = new ConvertBody
+            {
+                Key = "test",
+                Value = "testv",
+                Number = 24
+            };
+
+            var bodyStr = JsonConvert.SerializeObject(body);
+
             await Test("$5\r\nhello\r\n",
                 x => x.GetBytes("key"),
                 x => x.GetBytesAsync("key"),
@@ -33,12 +43,34 @@ namespace CacheStoreUnitTest
                     Assert.Equal("hello", key);
                     Assert.Equal("*2\r\n$3\r\nGET\r\n$3\r\nkey\r\n", x.RequestString);
                 });
+
+            await Test($"${bodyStr.Length}\r\n{bodyStr}\r\n",
+                x => x.Get<ConvertBody>("key1"),
+                x => x.GetAsync<ConvertBody>("key1"),
+                (x, r) =>
+                {
+                    Assert.NotNull(r);
+                    Assert.Equal(body.Key, r.Key);
+                    Assert.Equal(body.Value, r.Value);
+                    Assert.Equal(body.Number, r.Number);
+                    Assert.Equal("*2\r\n$3\r\nGET\r\n$4\r\nkey1\r\n", x.RequestString);
+                });
         }
 
         [Fact]
         public async Task SetTest()
         {
             var value = Encoding.UTF8.GetBytes("value");
+
+            var body = new ConvertBody
+            {
+                Key = "test",
+                Value = "testv",
+                Number = 24
+            };
+
+            var bodyStr = JsonConvert.SerializeObject(body);
+
             await Test("+OK\r\n",
                 x => x.SetBytes("key", value),
                 x => x.SetBytesAsync("key", value),
@@ -46,6 +78,15 @@ namespace CacheStoreUnitTest
                 {
                     Assert.Equal("OK", r);
                     Assert.Equal("*3\r\n$3\r\nSET\r\n$3\r\nkey\r\n$5\r\nvalue\r\n", x.RequestString);
+                });
+
+            await Test("+OK\r\n",
+                x => x.Set("key", body),
+                x => x.SetAsync("key", body),
+                (x, r) =>
+                {
+                    Assert.Equal("OK", r);
+                    Assert.Equal($"*3\r\n$3\r\nSET\r\n$3\r\nkey\r\n${bodyStr.Length}\r\n{bodyStr}\r\n", x.RequestString);
                 });
 
             await Test("+OK\r\n",
@@ -57,6 +98,15 @@ namespace CacheStoreUnitTest
                     Assert.Equal("*5\r\n$3\r\nSET\r\n$3\r\nkey\r\n$5\r\nvalue\r\n$2\r\nEX\r\n$1\r\n1\r\n", x.RequestString);
                 });
 
+            await Test("+OK\r\n",
+                x => x.Set("key", body, 1),
+                x => x.SetAsync("key", body, 1),
+                (x, r) =>
+                {
+                    Assert.Equal("OK", r);
+                    Assert.Equal($"*5\r\n$3\r\nSET\r\n$3\r\nkey\r\n${bodyStr.Length}\r\n{bodyStr}\r\n$2\r\nEX\r\n$1\r\n1\r\n", x.RequestString);
+                });
+
             await Test("$-1\r\n",
                 x => x.SetBytes("key", value, null, 1),
                 x => x.SetBytesAsync("key", value, null, 1),
@@ -65,12 +115,31 @@ namespace CacheStoreUnitTest
                     Assert.Null(r);
                     Assert.Equal("*5\r\n$3\r\nSET\r\n$3\r\nkey\r\n$5\r\nvalue\r\n$2\r\nPX\r\n$1\r\n1\r\n", x.RequestString);
                 });
+
+            await Test("$-1\r\n",
+                x => x.Set("key", body, null, 1),
+                x => x.SetAsync("key", body, null, 1),
+                (x, r) =>
+                {
+                    Assert.Null(r);
+                    Assert.Equal($"*5\r\n$3\r\nSET\r\n$3\r\nkey\r\n${bodyStr.Length}\r\n{bodyStr}\r\n$2\r\nPX\r\n$1\r\n1\r\n", x.RequestString);
+                });
         }
 
         [Fact]
         public async Task SetWithNoExistedTest()
         {
             var value = Encoding.UTF8.GetBytes("value");
+
+            var body = new ConvertBody
+            {
+                Key = "test",
+                Value = "testv",
+                Number = 24
+            };
+
+            var bodyStr = JsonConvert.SerializeObject(body);
+
             await Test("+OK\r\n",
                 x => x.SetWithNoExistedBytes("key", value, 1),
                 x => x.SetWithNoExistedBytesAsync("key", value, 1),
@@ -80,6 +149,15 @@ namespace CacheStoreUnitTest
                     Assert.Equal("*6\r\n$3\r\nSET\r\n$3\r\nkey\r\n$5\r\nvalue\r\n$2\r\nEX\r\n$1\r\n1\r\n$2\r\nNX\r\n", x.RequestString);
                 });
 
+            await Test("+OK\r\n",
+                x => x.SetWithNoExisted("key", body, 1),
+                x => x.SetWithNoExistedAsync("key", body, 1),
+                (x, r) =>
+                {
+                    Assert.Equal("OK", r);
+                    Assert.Equal($"*6\r\n$3\r\nSET\r\n$3\r\nkey\r\n${bodyStr.Length}\r\n{bodyStr}\r\n$2\r\nEX\r\n$1\r\n1\r\n$2\r\nNX\r\n", x.RequestString);
+                });
+
             await Test("$-1\r\n",
                 x => x.SetWithNoExistedBytes("key", value, null, 1),
                 x => x.SetWithNoExistedBytesAsync("key", value, null, 1),
@@ -87,6 +165,15 @@ namespace CacheStoreUnitTest
                 {
                     Assert.Null(r);
                     Assert.Equal("*6\r\n$3\r\nSET\r\n$3\r\nkey\r\n$5\r\nvalue\r\n$2\r\nPX\r\n$1\r\n1\r\n$2\r\nNX\r\n", x.RequestString);
+                });
+
+            await Test("$-1\r\n",
+                x => x.SetWithNoExisted("key", body, null, 1),
+                x => x.SetWithNoExistedAsync("key", body, null, 1),
+                (x, r) =>
+                {
+                    Assert.Null(r);
+                    Assert.Equal($"*6\r\n$3\r\nSET\r\n$3\r\nkey\r\n${bodyStr.Length}\r\n{bodyStr}\r\n$2\r\nPX\r\n$1\r\n1\r\n$2\r\nNX\r\n", x.RequestString);
                 });
         }
 

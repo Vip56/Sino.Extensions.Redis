@@ -46,32 +46,34 @@ namespace CacheStoreUnitTest
 
         public T DeserializeByte<T>(byte[] obj, Encoding encoding = null)
         {
-            throw new NotImplementedException();
+            var str = Encoding.UTF8.GetString(obj);
+            return JsonConvert.DeserializeObject<T>(str);
         }
 
         public Task<T> DeserializeByteAsync<T>(byte[] obj, Encoding encoding = null)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(DeserializeByte<T>(obj, encoding));
         }
 
         public string Serialize<T>(T obj, Encoding encoding = null)
         {
-            throw new NotImplementedException();
+            return JsonConvert.SerializeObject(obj);
         }
 
         public Task<string> SerializeAsync<T>(T obj, Encoding encoding = null)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(Serialize(obj));
         }
 
         public byte[] SerializeByte<T>(T obj, Encoding encoding = null)
         {
-            throw new NotImplementedException();
+            var str = JsonConvert.SerializeObject(obj);
+            return Encoding.UTF8.GetBytes(str);
         }
 
         public Task<byte[]> SerializeByteAsync<T>(T obj, Encoding encoding = null)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(SerializeByte(obj, encoding));
         }
     }
 }
