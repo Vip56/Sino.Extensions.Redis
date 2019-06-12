@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using Sino.CacheStore;
 using Sino.CacheStore.Configuration;
 using Sino.Serializer.Json;
 using System;
@@ -21,7 +22,12 @@ namespace ConsoleDemo
             services.AddSinoSerializer(x => x.AddJsonSerializer()
                 .SetDefaultConvertProvider(JsonConvertProvider.PROVIDER_NAME));
 
+            var provider = services.BuildServiceProvider();
 
+            var cacheStore = provider.GetService<ICacheStore>();
+
+            var key = new KeyTest(cacheStore);
+            key.ExistsTest().Wait();
         }
     }
 }

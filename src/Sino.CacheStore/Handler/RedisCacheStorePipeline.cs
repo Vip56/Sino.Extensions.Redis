@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using BeetleX.Clients;
 using BeetleX;
+using System.IO;
 
 namespace Sino.CacheStore.Handler
 {
@@ -32,6 +33,8 @@ namespace Sino.CacheStore.Handler
         /// </summary>
         public int ReconnectWait { get; set; }
 
+        public object lockobj = new object();
+
         public RedisCacheStorePipeline(string host, int port)
         {
             EndPoint = new IPEndPoint(IPAddress.Parse(host), port);
@@ -50,15 +53,19 @@ namespace Sino.CacheStore.Handler
             return Task.FromResult(_connection.IsConnected);
         }
 
-        public override async Task<byte[]> SendAsnyc(byte[] write)
+        public override Task<byte[]> SendAsnyc(byte[] write)
         {
-            TcpClient wresult = _connection.SendMessage(write);
-
-            while (true)
+            lock (lockobj)
             {
-                var rresult = _connection.Receive();
-                var buffer = rresult.GetReadBuffers().Data;
-                return buffer;
+                TcpClient wresult = _connection.SendMessage(write);
+
+                while (true)
+                {
+                    var rresult = _connection.Receive();
+                    byte[] results = new byte[rresult.Stream.Length];
+                    rresult.Read(results, 0, results.Length);
+                    return Task.FromResult(results);
+                }
             }
         }
 
