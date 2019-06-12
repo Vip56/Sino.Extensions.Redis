@@ -55,9 +55,9 @@ namespace Sino.CacheStore
         /// <param name="key">需要检索的Key</param>
         /// <returns>保存的值</returns>
         /// <remarks>不存在则返回Null</remarks>
-        T Get<T>(string key);
+        T Get<T>(string key) where T : class;
 
-        Task<T> GetAsync<T>(string key);
+        Task<T> GetAsync<T>(string key) where T : class;
 
         /// <summary>
         /// 根据Key返回缓存项
@@ -75,9 +75,9 @@ namespace Sino.CacheStore
         /// <param name="value">需要保存的值</param>
         /// <param name="seconds">超时时间，单位秒</param>
         /// <param name="milliSeconds">超时时间，单位毫秒</param>
-        string Set<T>(string key, T value, int? seconds = null, long? milliSeconds = null);
+        string Set<T>(string key, T value, int? seconds = null, long? milliSeconds = null) where T : class;
 
-        Task<string> SetAsync<T>(string key, T value, int? seconds = null, long? milliSeconds = null);
+        Task<string> SetAsync<T>(string key, T value, int? seconds = null, long? milliSeconds = null) where T : class;
 
         /// <summary>
         /// 设置Key的值
@@ -98,9 +98,9 @@ namespace Sino.CacheStore
         /// <param name="seconds">超时时间，单位秒</param>
         /// <param name="milliSeconds">超时时间，单位毫秒</param>
         /// <returns>是否成功设置</returns>
-        string SetWithNoExisted<T>(string key, T value, int? seconds = null, long? milliSeconds = null);
+        string SetWithNoExisted<T>(string key, T value, int? seconds = null, long? milliSeconds = null) where T : class;
 
-        Task<string> SetWithNoExistedAsync<T>(string key, T value, int? seconds = null, long? milliSeconds = null);
+        Task<string> SetWithNoExistedAsync<T>(string key, T value, int? seconds = null, long? milliSeconds = null) where T : class;
 
         /// <summary>
         /// 仅当Key不存在时设置其值
@@ -236,9 +236,9 @@ namespace Sino.CacheStore
         /// <param name="key">需要获取的Key</param>
         /// <param name="field">需要获取的域</param>
         /// <returns>保存的值，不存在则返回Null</returns>
-        T HGet<T>(string key, string field);
+        T HGet<T>(string key, string field) where T : class;
 
-        Task<T> HGetAsync<T>(string key, string field);
+        Task<T> HGetAsync<T>(string key, string field) where T : class;
 
         /// <summary>
         /// 获取哈希表中指定域的值
@@ -266,9 +266,9 @@ namespace Sino.CacheStore
         /// <param name="field">需要设置的域</param>
         /// <param name="value">需要保存的值</param>
         /// <returns>是否保存成功</returns>
-        bool HSet<T>(string key, string field, T value);
+        bool HSet<T>(string key, string field, T value) where T : class;
 
-        Task<bool> HSetAsync<T>(string key, string field, T value);
+        Task<bool> HSetAsync<T>(string key, string field, T value) where T : class;
 
         /// <summary>
         /// 设置哈希表中指定域的值
@@ -288,9 +288,9 @@ namespace Sino.CacheStore
         /// <param name="field">需要设置的域</param>
         /// <param name="value">需要保存的值</param>
         /// <returns>是否保存成功</returns>
-        bool HSetWithNoExisted<T>(string key, string field, T value);
+        bool HSetWithNoExisted<T>(string key, string field, T value) where T : class;
 
-        Task<bool> HSetWithNoExistedAsync<T>(string key, string field, T value);
+        Task<bool> HSetWithNoExistedAsync<T>(string key, string field, T value) where T : class;
 
         bool HSetWithNoExistedBytes(string key, string field, byte[] value);
 
@@ -305,9 +305,9 @@ namespace Sino.CacheStore
         /// </summary>
         /// <param name="key">需要操作的列表Key</param>
         /// <returns>头元素</returns>
-        T LPop<T>(string key);
+        T LPop<T>(string key) where T : class;
 
-        Task<T> LPopAsync<T>(string key);
+        Task<T> LPopAsync<T>(string key) where T : class;
 
         /// <summary>
         /// 移除并返回列表Key的头元素
@@ -324,9 +324,9 @@ namespace Sino.CacheStore
         /// <param name="key">需要获取的列表</param>
         /// <param name="index">元素的下标</param>
         /// <returns>获取的值</returns>
-        T LIndex<T>(string key, long index);
+        T LIndex<T>(string key, long index) where T : class;
 
-        Task<T> LIndexAsync<T>(string key, long index);
+        Task<T> LIndexAsync<T>(string key, long index) where T : class;
 
         /// <summary>
         /// 获取列表中指定下标的元素
@@ -353,9 +353,9 @@ namespace Sino.CacheStore
         /// <param name="key">需要插入的列表</param>
         /// <param name="value">插入的值</param>
         /// <returns>成功插入的值数量</returns>
-        long LPush<T>(string key, T value);
+        long LPush<T>(string key, T value) where T : class;
 
-        Task<long> LPushAsync<T>(string key, T value);
+        Task<long> LPushAsync<T>(string key, T value) where T : class;
 
         /// <summary>
         /// 将值插入列表的头部
@@ -372,9 +372,9 @@ namespace Sino.CacheStore
         /// </summary>
         /// <param name="key">需要操作的列表</param>
         /// <returns>元素值</returns>
-        T RPop<T>(string key);
+        T RPop<T>(string key) where T : class;
 
-        Task<T> RPopAsync<T>(string key);
+        Task<T> RPopAsync<T>(string key) where T : class;
 
         /// <summary>
         /// 移除并返回列表的尾元素
@@ -391,9 +391,9 @@ namespace Sino.CacheStore
         /// <param name="key">需要插入的列表</param>
         /// <param name="values">插入的值</param>
         /// <returns>成功插入的值数量</returns>
-        long RPush<T>(string key, T values);
+        long RPush<T>(string key, T values) where T : class;
 
-        Task<long> RPushAsync<T>(string key, T values);
+        Task<long> RPushAsync<T>(string key, T values) where T : class;
 
         /// <summary>
         /// 将一个或多个值插入列表尾部

@@ -127,12 +127,12 @@ namespace Sino.CacheStore
             return result.Result;
         }
 
-        public T Get<T>(string key)
+        public T Get<T>(string key) where T : class
         {
             return GetAsync<T>(key).Result;
         }
 
-        public async Task<T> GetAsync<T>(string key)
+        public async Task<T> GetAsync<T>(string key) where T : class
         {
             if (string.IsNullOrEmpty(key))
                 throw new ArgumentNullException(nameof(key));
@@ -163,12 +163,12 @@ namespace Sino.CacheStore
             return result.Result;
         }
 
-        public string Set<T>(string key, T value, int? seconds = null, long? milliSeconds = null)
+        public string Set<T>(string key, T value, int? seconds = null, long? milliSeconds = null) where T : class
         {
             return SetAsync(key, value, seconds, milliSeconds).Result;
         }
 
-        public async Task<string> SetAsync<T>(string key, T value, int? seconds = null, long? milliSeconds = null)
+        public async Task<string> SetAsync<T>(string key, T value, int? seconds = null, long? milliSeconds = null) where T : class
         {
             if (string.IsNullOrEmpty(key))
                 throw new ArgumentNullException(nameof(key));
@@ -202,12 +202,12 @@ namespace Sino.CacheStore
             return result.Result;
         }
 
-        public string SetWithNoExisted<T>(string key, T value, int? seconds = null, long? milliSeconds = null)
+        public string SetWithNoExisted<T>(string key, T value, int? seconds = null, long? milliSeconds = null) where T : class
         {
             return SetWithNoExistedAsync(key, value, seconds, milliSeconds).Result;
         }
 
-        public async Task<string> SetWithNoExistedAsync<T>(string key, T value, int? seconds = null, long? milliSeconds = null)
+        public async Task<string> SetWithNoExistedAsync<T>(string key, T value, int? seconds = null, long? milliSeconds = null) where T : class
         {
             if (string.IsNullOrEmpty(key))
                 throw new ArgumentNullException(nameof(key));
@@ -452,12 +452,12 @@ namespace Sino.CacheStore
             return result.Result;
         }
 
-        public T HGet<T>(string key, string field)
+        public T HGet<T>(string key, string field) where T : class
         {
             return HGetAsync<T>(key, field).Result;
         }
 
-        public async Task<T> HGetAsync<T>(string key, string field)
+        public async Task<T> HGetAsync<T>(string key, string field) where T : class
         {
             if (string.IsNullOrEmpty(key))
                 throw new ArgumentNullException(nameof(key));
@@ -509,12 +509,12 @@ namespace Sino.CacheStore
             return result.Result;
         }
 
-        public bool HSet<T>(string key, string field, T value)
+        public bool HSet<T>(string key, string field, T value) where T : class
         {
             return HSetAsync(key, field, value).Result;
         }
 
-        public async Task<bool> HSetAsync<T>(string key, string field, T value)
+        public async Task<bool> HSetAsync<T>(string key, string field, T value) where T : class
         {
             if (string.IsNullOrEmpty(key))
                 throw new ArgumentNullException(nameof(key));
@@ -548,12 +548,12 @@ namespace Sino.CacheStore
             return result.Result;
         }
 
-        public bool HSetWithNoExisted<T>(string key, string field, T value)
+        public bool HSetWithNoExisted<T>(string key, string field, T value) where T : class
         {
             return HSetWithNoExistedAsync(key, field, value).Result;
         }
 
-        public async Task<bool> HSetWithNoExistedAsync<T>(string key, string field, T value)
+        public async Task<bool> HSetWithNoExistedAsync<T>(string key, string field, T value) where T : class
         {
             if (string.IsNullOrEmpty(key))
                 throw new ArgumentNullException(nameof(key));
@@ -591,12 +591,12 @@ namespace Sino.CacheStore
 
         #region List
 
-        public T LPop<T>(string key)
+        public T LPop<T>(string key) where T : class
         {
             return LPopAsync<T>(key).Result;
         }
 
-        public async Task<T> LPopAsync<T>(string key)
+        public async Task<T> LPopAsync<T>(string key) where T : class
         {
             if (string.IsNullOrEmpty(key))
                 throw new ArgumentNullException(nameof(key));
@@ -626,12 +626,12 @@ namespace Sino.CacheStore
             return result.Result;
         }
 
-        public T LIndex<T>(string key, long index)
+        public T LIndex<T>(string key, long index) where T : class
         {
             return LIndexAsync<T>(key, index).Result;
         }
 
-        public async Task<T> LIndexAsync<T>(string key, long index)
+        public async Task<T> LIndexAsync<T>(string key, long index) where T : class
         {
             if (string.IsNullOrEmpty(key))
                 throw new ArgumentNullException(nameof(key));
@@ -678,12 +678,12 @@ namespace Sino.CacheStore
             return result.Result;
         }
 
-        public long LPush<T>(string key, T value)
+        public long LPush<T>(string key, T value) where T : class
         {
             return LPushAsync<T>(key, value).Result;
         }
 
-        public async Task<long> LPushAsync<T>(string key, T value)
+        public async Task<long> LPushAsync<T>(string key, T value) where T : class
         {
             if (string.IsNullOrEmpty(key))
                 throw new ArgumentNullException(nameof(key));
@@ -717,12 +717,12 @@ namespace Sino.CacheStore
             return result.Result;
         }
 
-        public T RPop<T>(string key)
+        public T RPop<T>(string key) where T : class
         {
             return RPopAsync<T>(key).Result;
         }
 
-        public async Task<T> RPopAsync<T>(string key)
+        public async Task<T> RPopAsync<T>(string key) where T : class
         {
             if (string.IsNullOrEmpty(key))
                 throw new ArgumentNullException(nameof(key));
@@ -753,12 +753,12 @@ namespace Sino.CacheStore
             return result.Result;
         }
 
-        public long RPush<T>(string key, T value)
+        public long RPush<T>(string key, T value) where T : class
         {
             return RPushAsync<T>(key, value).Result;
         }
 
-        public async Task<long> RPushAsync<T>(string key, T value)
+        public async Task<long> RPushAsync<T>(string key, T value) where T : class
         {
             if (string.IsNullOrEmpty(key))
                 throw new ArgumentNullException(nameof(key));

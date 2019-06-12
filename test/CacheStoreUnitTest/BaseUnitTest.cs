@@ -34,44 +34,44 @@ namespace CacheStoreUnitTest
             }
         }
 
-        public T Deserialize<T>(string obj, Encoding encoding = null)
+        public T Deserialize<T>(string obj, Encoding encoding = null) where T : class
         {
             return JsonConvert.DeserializeObject<T>(obj);
         }
 
-        public Task<T> DeserializeAsync<T>(string obj, Encoding encoding = null)
+        public Task<T> DeserializeAsync<T>(string obj, Encoding encoding = null) where T : class
         {
             return Task.FromResult(JsonConvert.DeserializeObject<T>(obj));
         }
 
-        public T DeserializeByte<T>(byte[] obj, Encoding encoding = null)
+        public T DeserializeByte<T>(byte[] obj, Encoding encoding = null) where T : class
         {
             var str = Encoding.UTF8.GetString(obj);
             return JsonConvert.DeserializeObject<T>(str);
         }
 
-        public Task<T> DeserializeByteAsync<T>(byte[] obj, Encoding encoding = null)
+        public Task<T> DeserializeByteAsync<T>(byte[] obj, Encoding encoding = null) where T : class
         {
             return Task.FromResult(DeserializeByte<T>(obj, encoding));
         }
 
-        public string Serialize<T>(T obj, Encoding encoding = null)
+        public string Serialize<T>(T obj, Encoding encoding = null) where T : class
         {
             return JsonConvert.SerializeObject(obj);
         }
 
-        public Task<string> SerializeAsync<T>(T obj, Encoding encoding = null)
+        public Task<string> SerializeAsync<T>(T obj, Encoding encoding = null) where T : class
         {
             return Task.FromResult(Serialize(obj));
         }
 
-        public byte[] SerializeByte<T>(T obj, Encoding encoding = null)
+        public byte[] SerializeByte<T>(T obj, Encoding encoding = null) where T : class
         {
             var str = JsonConvert.SerializeObject(obj);
             return Encoding.UTF8.GetBytes(str);
         }
 
-        public Task<byte[]> SerializeByteAsync<T>(T obj, Encoding encoding = null)
+        public Task<byte[]> SerializeByteAsync<T>(T obj, Encoding encoding = null) where T : class
         {
             return Task.FromResult(SerializeByte(obj, encoding));
         }
