@@ -1,10 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Sino.CacheStore.Configuration;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Linq;
-using Pipelines.Sockets.Unofficial;
 using Sino.CacheStore;
 using Sino.CacheStore.Handler;
 using Sino.CacheStore.Internal;

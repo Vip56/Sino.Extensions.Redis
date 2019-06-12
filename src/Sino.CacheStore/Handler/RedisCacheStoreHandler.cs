@@ -143,7 +143,6 @@ namespace Sino.CacheStore.Handler
                     {
                         throw new CacheStoreException("No Support Command");
                     }
-                    break;
             }
         }
 

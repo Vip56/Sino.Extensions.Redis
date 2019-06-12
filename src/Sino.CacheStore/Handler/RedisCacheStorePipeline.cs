@@ -1,18 +1,15 @@
-﻿using Pipelines.Sockets.Unofficial;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Net;
-using System.Text;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Buffers;
 using System.Threading;
+using BeetleX.Clients;
+using BeetleX;
 
 namespace Sino.CacheStore.Handler
 {
     public class RedisCacheStorePipeline : CacheStorePipeline
     {
-        private SocketConnection _connection;
+        private TcpClient _connection;
 
         /// <summary>
         /// 是否连接
@@ -21,7 +18,7 @@ namespace Sino.CacheStore.Handler
         {
             get
             {
-                return _connection.Socket.Connected;
+                return _connection.IsConnected;
             }
         }
 
@@ -38,33 +35,30 @@ namespace Sino.CacheStore.Handler
         public RedisCacheStorePipeline(string host, int port)
         {
             EndPoint = new IPEndPoint(IPAddress.Parse(host), port);
+            _connection = SocketFactory.CreateClient<TcpClient>(host, port);
         }
 
         /// <summary>
         /// 发起连接
         /// </summary>
-        public override async Task<bool> ConnectAsync()
+        public override Task<bool> ConnectAsync()
         {
-            _connection = await SocketConnection.ConnectAsync(EndPoint);
-
-            return _connection.Socket.Connected;
+            if (!_connection.IsConnected)
+            {
+                _connection.Connect();
+            }
+            return Task.FromResult(_connection.IsConnected);
         }
 
         public override async Task<byte[]> SendAsnyc(byte[] write)
         {
-            var wresult = await _connection.Output.WriteAsync(write).ConfigureAwait(false);
-            _connection.Output.Complete();
+            TcpClient wresult = _connection.SendMessage(write);
 
             while (true)
             {
-                var rresult = await _connection.Input.ReadAsync().ConfigureAwait(false);
-                var buffer = rresult.Buffer;
-                if (rresult.IsCompleted)
-                {
-                    return rresult.Buffer.ToArray();
-                }
-
-                _connection.Input.AdvanceTo(buffer.Start, buffer.End);
+                var rresult = _connection.Receive();
+                var buffer = rresult.GetReadBuffers().Data;
+                return buffer;
             }
         }
 
